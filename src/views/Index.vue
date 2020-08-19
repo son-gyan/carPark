@@ -34,9 +34,9 @@
 export default {
     data() {
         return {
-            form: {
+            form: { //form表单
                 curProject:'1',
-                carPark:'1',
+                carPark:'1'
             }
         }
     }
