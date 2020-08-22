@@ -25,8 +25,19 @@ export default {
     },
     methods: {
         onSubmit() {
-            console.log('submit');
-            this.$router.push('/index')
+            this.$api.login.login(this.form).then((res) => {
+                if(res.code == 200){
+                    this.$store.dispatch('setUser', res.result.userInfo)
+                    this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
+                    this.$store.dispatch('setDepId', res.result.park.id)
+                    sessionStorage.setItem('token',res.result.token)
+                    this.$router.push('/index')
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
     }
 }
