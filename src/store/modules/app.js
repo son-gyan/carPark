@@ -1,13 +1,15 @@
 import {
     SET_USER,
     SET_ORGCATEGORY,
-    SET_DEPID
+    SET_DEPID,
+    SET_CARPARKINFO,
 } from '../type'
 export default {
     state: {
         user:'',
         orgCategory:'',
-        depId:''
+        depId:'',
+        carParkInfo:{}
     },
     getters: {
         user (state) {
@@ -18,6 +20,9 @@ export default {
         },
         depId(state) {
             return state.depId
+        },
+        carParkInfo(state) {
+            return state.carParkInfo
         },
     },
     mutations: {
@@ -33,6 +38,10 @@ export default {
             state.depId = depId
             sessionStorage.setItem('depId', depId)
         },
+        [SET_CARPARKINFO]: (state, carParkInfo) => {
+            state.carParkInfo = carParkInfo
+            sessionStorage.setItem('carParkInfo', carParkInfo)
+        },
     },
     actions: {
         setUser ({ commit }, user) {
@@ -43,6 +52,9 @@ export default {
         },
         setDepId ({ commit }, depId) {
             commit(SET_DEPID, depId)
+        },
+        setCarParkInfo ({ commit }, carParkInfo) {
+            commit(SET_CARPARKINFO, carParkInfo)
         },
     }
 }

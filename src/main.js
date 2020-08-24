@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import api from './api'
+import './assets/css/reset.css'
 import './assets/js/rem' // rem布局
 import './assets/iconfont/iconfont.css'
 import Vant from 'vant';

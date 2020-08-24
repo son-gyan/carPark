@@ -17,8 +17,8 @@ export default function $axios(options) {
                 let token = sessionStorage.getItem("token");
                 if (token) {                    
                     config.headers = {
-                      "X-Access-Token":token,
-                      'Content-Type':'application/json;charset=UTF-8'
+                        "X-Access-Token":token,
+                        'Content-Type':options.headers?options.headers['Content-Type']:config.headers['Content-Type']
                     };
                 } else {
                     // 重定向到登录页面
@@ -26,16 +26,13 @@ export default function $axios(options) {
                 }
                 // 时间戳
                 if (config.method === 'post') {
-                    if(config.url == '/dev/reg/upload'){
-                      config.headers = {
-                        'Authorization':Authorization,
-                        "Content-Type": "multipart/form-data;charset=utf-8"
-                      };
+                    if(config.headers['Content-Type'] == "multipart/form-data;charset=utf-8"){
+                       
                     }else{
-                      config.data = {
-                        ...config.data,
-                        t: Date.parse(new Date()) / 1000
-                      }
+                        config.data = {
+                            ...config.data,
+                            t: Date.parse(new Date()) / 1000
+                        }
                     }                    
                 } else if (config.method === 'get') {
                     config.params = {
@@ -79,6 +76,7 @@ export default function $axios(options) {
                             err.message = "请求超时";
                             break;
                         case 500:
+                            debugger
                             err.message = "服务器内部错误";
                             break;
                         case 501:
@@ -97,6 +95,9 @@ export default function $axios(options) {
                             err.message = "HTTP版本不受支持";
                             break;
                     }
+                }else if(err.message !=""){
+                    // 重定向到登录页面
+                    router.push("/login");
                 }
                 return Promise.reject(err); // 返回接口返回的错误信息
             }

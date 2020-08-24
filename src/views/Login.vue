@@ -5,10 +5,13 @@
                 <el-input v-model="form.username"></el-input>
             </el-form-item>
             <el-form-item label="密码：">
-                <el-input v-model="form.password"></el-input>
+                <el-input v-model="form.password" type="password"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">登录</el-button>
+                <!-- <el-button type="primary" @click="onSubmit">登录</el-button> -->
+                <van-button block type="info"  @click="onSubmit">
+                登录
+                </van-button>
             </el-form-item>
         </el-form>
     </div>
@@ -29,7 +32,6 @@ export default {
                 if(res.code == 200){
                     this.$store.dispatch('setUser', res.result.userInfo)
                     this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
-                    this.$store.dispatch('setDepId', res.result.park.id)
                     sessionStorage.setItem('token',res.result.token)
                     this.$router.push('/index')
                 }else{

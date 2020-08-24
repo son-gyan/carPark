@@ -8,6 +8,7 @@ import PresentCar from "@/views/PresentCar";
 import DetentionInventory from "@/views/DetentionInventory";
 import Blacklist from "@/views/Blacklist";
 import Statistical from "@/views/Statistical";
+import addCar from "@/components/addCar";
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -61,6 +62,11 @@ const router = new Router({
             path: "/statistical",
             name: "statistical",
             component: Statistical
+        },
+        {
+            path: "/addCar",
+            name: "addCar",
+            component: addCar
         },
     ]
 });
