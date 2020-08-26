@@ -175,3 +175,13 @@ export const delBlacklist = (params) => {
         params
     })
 }
+
+
+//获取统计报表chart数据
+export const getStatisticalData = (params) => {
+    return axios({
+        url: '/park/zyb/zybBlacklist/list',
+        method: 'get',
+        params
+    })
+}

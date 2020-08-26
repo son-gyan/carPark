@@ -30,12 +30,19 @@
         </div>
         <van-divider dashed></van-divider>
         <div class="mainWrap">
-
+            <van-tabs v-model="active">
+                <van-tab title="统计图">
+                    <div class="chart" id="chart" ></div>
+                </van-tab>
+                <van-tab title="数据表">
+                </van-tab>
+            </van-tabs>
         </div>
     </div>
 </template>
 <script>
 import { mapGetters } from "vuex"
+import echarts from 'echarts'
 export default {
     data(){
         return {
@@ -45,6 +52,7 @@ export default {
                 endTime:""
             },
             times:[],
+            active:0
         }
     },
     computed: {
@@ -61,7 +69,7 @@ export default {
         },
         //数据初始化
         initData(){
-            this.$api.home.getBlacklist(this.params).then(res=>{
+            this.$api.home.getStatisticalData(this.params).then(res=>{
                 if(res.code == 200){
                     this.finished = true
                     this.blacklist = res.result.records
@@ -74,13 +82,37 @@ export default {
             });
         },
         //查询
-        searchData(){
-
+        searchData(){            
+            this.echartList()
         },
         //月报
         reportData(){
 
         },
+        //绘制柱状图
+        echartList(){
+            var dom = document.getElementById("chart");
+            var myChart = echarts.init(dom);
+            myChart.resize({height:400}); 
+            let option = {
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [120, 200, 150, 80, 70, 110, 130],
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)'
+                    }
+                }]
+            };
+            myChart.setOption(option, true);
+        }
     }
 }
 </script>
