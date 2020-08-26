@@ -32,7 +32,10 @@ html,body {
     width: 100%;
     height:100%;
     .pages{
-        height:100%;
+        height:100%; 
+    }
+    .van-nav-bar__text{
+        color:#fff
     }
 }
 </style>

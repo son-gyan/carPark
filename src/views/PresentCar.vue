@@ -37,7 +37,7 @@
                     <template #desc>
                         <p >车牌：{{item.carNum}}</p>
                         
-                        <p >入口：{{item.laneName}}</p>
+                        <p >入场：{{item.inTime}}</p>
                     </template>
                     <template #footer>
                         <van-button type="info" size="mini" @click="updatePresentCar(item)">修改</van-button>
@@ -65,16 +65,9 @@
                             name="inTime"
                             :value="form.inTime"
                             label="入场时间"
-                            placeholder="点击选择到期时间"
+                            placeholder="点击选择入场时间"
                             @click="showPickerEndTime = true"
                             />
-                        <van-popup v-model="showPickerEndTime" position="bottom">
-                            <van-datetime-picker
-                                type="datetime"
-                                @confirm="onConfirmEndTime"
-                                @cancel="showPickerEndTime = false"
-                            />
-                        </van-popup>
                     </van-form>
                 </main>
                 <footer>
@@ -83,6 +76,13 @@
                 </footer>
             </div>
         </div>
+        <van-popup v-model="showPickerEndTime" position="bottom">
+            <van-datetime-picker
+                type="datetime"
+                @confirm="onConfirmEndTime"
+                @cancel="showPickerEndTime = false"
+            />
+        </van-popup>
     </div>
 </template>
 <script>
@@ -208,9 +208,9 @@ export default {
             }
         },
         handleDiaClickOutside(){
-            if (this.dialogShow) {
+            /* if (this.dialogShow) {
                 this.dialogShow = false
-            }
+            } */
         },
         formatDate(dateTime) {
             let year = dateTime.getFullYear()

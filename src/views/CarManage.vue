@@ -86,13 +86,7 @@
                             placeholder="点击选择到期时间"
                             @click="showPickerEndTime = true"
                             />
-                        <van-popup v-model="showPickerEndTime" position="bottom">
-                            <van-datetime-picker
-                                type="date"
-                                @confirm="onConfirmEndTime"
-                                @cancel="showPickerEndTime = false"
-                            />
-                        </van-popup>
+                        
                         <van-field
                             v-model="form.memo"
                             name="memo"
@@ -110,7 +104,14 @@
                 </footer>
             </div>
         </div>
-    </div>
+        <van-popup v-model="showPickerEndTime" position="bottom">
+            <van-datetime-picker
+                type="date"
+                @confirm="onConfirmEndTime"
+                @cancel="showPickerEndTime = false"
+            />
+        </van-popup>
+</div>
 </template>
 <script>
 import { mapGetters } from "vuex"
@@ -260,9 +261,9 @@ export default {
             }
         },
         handleDiaClickOutside(){
-            if (this.dialogShow) {
+            /* if (this.dialogShow) {
                 this.dialogShow = false
-            }
+            } */
         },
         formatDate(date) {
             let year = date.getFullYear()

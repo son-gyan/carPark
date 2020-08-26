@@ -119,3 +119,59 @@ export const addPresentCar = (data) => {
         data
     })
 }
+
+
+//获取滞留盘点列表
+export const getRetentionList = (params) => {
+    return axios({
+        url: '/park/zyb/data/retentionList',
+        method: 'get',
+        params
+    })
+}
+
+//确认滞留盘点
+export const checkRetention = (params) => {
+    return axios({
+        url: '/park/zyb/data/checkRetention',
+        method: 'get',
+        params
+    })
+}
+
+//删除滞留盘点
+export const delRetention = (params) => {
+    return axios({
+        url: '/park/zyb/data/delete',
+        method: 'DELETE',
+        params
+    })
+}
+
+//获取黑名单列表
+export const getBlacklist = (params) => {
+    return axios({
+        url: '/park/zyb/zybBlacklist/list',
+        method: 'get',
+        params
+    })
+}
+
+//新增黑名单
+export const addBlacklist = (data) => {
+    return axios({
+        url: '/park/zyb/zybBlacklist/add',
+        method: 'post',
+        data
+    })
+}
+
+
+//删除黑名单
+export const delBlacklist = (params) => {
+    return axios({
+        url: '/park/zyb/zybBlacklist/delete',
+        method: 'DELETE',
+        params
+    })
+}

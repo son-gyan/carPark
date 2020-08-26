@@ -1,5 +1,6 @@
 <template>
     <div class="pages">
+        <van-nav-bar class="navBar" title="首页"  />
         <el-container>
             <el-header>
                 <el-form ref="form" :model="form" label-width="120px">
@@ -153,7 +154,7 @@ export default {
             border-bottom: 1px solid #eee;
         }
         .van-grid-item__content--center{
-            background-color: #169bd5;
+            background-color: #1989fa;
             color:#fff;
             .van-grid-item__text{
                 color:#fff;
