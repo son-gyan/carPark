@@ -24,7 +24,7 @@
                     <van-col span="6">车牌</van-col>
                     <van-col span="6">到期时间</van-col>
                 </van-row>
-                <van-row  class="cardWrap" type="flex" justify="center" align="center"
+                <van-row  class="cardWrap  van-coupon" type="flex" justify="center" align="center"
                     v-for="(item,index) in carList" :key='index' 
                     @click='changeState(index)'>
                     <van-col span="6">{{item.groupName}}</van-col>
@@ -32,7 +32,7 @@
                     <van-col span="6">{{item.licensePlate}}</van-col>
                     <van-col span="6">{{item.endTime}}</van-col>
                     <template class="btnGroup" v-if='isShow[index]'>                        
-                        <van-divider  class="divider"/>
+                        <van-divider dashed class="divider"/>
                         <van-col span="12">
                             <van-button type="info" @click='delay(item)'>延期</van-button>
                         </van-col>
@@ -302,7 +302,8 @@ export default {
             flex-wrap:wrap;
             margin-top:.2rem;
             padding: .1rem 0;
-            border: 1px solid #666;
+            /* border: 1px solid #666; */
+            box-shadow: 0 0 4px rgba(0,0,0,.5);
             text-align: center;
             .van-col {
                 padding: .1rem 0;

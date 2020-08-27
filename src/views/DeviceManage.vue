@@ -15,13 +15,13 @@
                     <van-col span="8">心跳时间</van-col>
                 </van-row>
                 <div class="list" v-for="(item,index) in deviceList" :key='index'>
-                    <van-row  class="cardWrap" type="flex" justify="center" align="center" @click='changeState(index)'>
+                    <van-row  class="cardWrap van-coupon" type="flex" justify="center" align="center" @click='changeState(index)'>
                         <van-col span="8">{{item.laneName}}</van-col>
                         <van-col span="8" class="red" v-if='item.onlineStatus==2'>离线</van-col>
                         <van-col span="8" class="green" v-if='item.onlineStatus==1'>在线</van-col>
                         <van-col span="8">{{item.heartBeatTime}}</van-col>
                         <template class="btnGroup" v-if='isShow[index]'>                        
-                            <van-divider  class="divider"/>
+                            <van-divider dashed class="divider"/>
                             <van-col span="8">
                                 <van-button type="info" @click='gateOpen(item.laneId)'>开闸</van-button>
                             </van-col>
@@ -160,7 +160,8 @@ export default {
             flex-wrap:wrap;
             margin-top:.2rem;
             padding: .1rem 0;
-            border: 1px solid #666;
+            /* border: 1px solid #666; */
+            box-shadow: 0 0 4px rgba(0,0,0,.5);
             text-align: center;
             .van-col {
                 padding: .1rem 0;
