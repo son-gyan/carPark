@@ -76,15 +76,14 @@ export default router
 
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
-    /* if(token){
-        next({
-            path:from.fullPath
-        });   
-    }else{        
-        // 重定向到登录页面
-        next({
-            path:'/login'
-        })
-    } */
+    if (to.path === '/login') {
+        next();
+    } else {
+        if (token === 'null' || token === '') {
+            next('/login');
+        } else {
+            next();
+        }
+    }
     next()
 })

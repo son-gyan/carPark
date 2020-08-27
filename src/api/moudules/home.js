@@ -180,7 +180,7 @@ export const delBlacklist = (params) => {
 //获取统计报表chart数据
 export const getStatisticalData = (params) => {
     return axios({
-        url: '/park/zyb/zybBlacklist/list',
+        url: '/park/zyb/data/payChar',
         method: 'get',
         params
     })

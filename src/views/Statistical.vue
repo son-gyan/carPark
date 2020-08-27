@@ -32,9 +32,50 @@
         <div class="mainWrap">
             <van-tabs v-model="active">
                 <van-tab title="统计图">
-                    <div class="chart" id="chart" ></div>
+                    <van-divider class="lineDivider" ></van-divider>
+                    <van-empty description="暂无数据"  v-if="tableData.length==0"/>
+                    <div class="chart" id="chart" >
+                        
+                    </div>
                 </van-tab>
                 <van-tab title="数据表">
+                    <van-divider class="lineDivider"></van-divider>
+                    <div class="elTable">
+                        <el-table
+                            :data="tableData"
+                            border
+                            size="mini"
+                            style="width:99%">
+                            <el-table-column
+                                prop="days"
+                                label="日期"
+                                align="center">
+                            </el-table-column>
+                            <el-table-column
+                                prop="monthcar"
+                                label="月租充值"
+                                align="center">
+                            </el-table-column>
+                            <el-table-column
+                                prop="temporary"
+                                label="临时车"
+                                align="center"
+                                width="60">
+                            </el-table-column>
+                            <el-table-column
+                                prop="train"
+                                label="班次"
+                                align="center"
+                                width="50"
+                                >
+                            </el-table-column>
+                            <el-table-column
+                                prop="unlicensed"
+                                label="无牌预付"
+                                align="center">
+                            </el-table-column>
+                        </el-table>
+                    </div>
                 </van-tab>
             </van-tabs>
         </div>
@@ -52,7 +93,8 @@ export default {
                 endTime:""
             },
             times:[],
-            active:0
+            active:0,
+            tableData:[]
         }
     },
     computed: {
@@ -60,7 +102,6 @@ export default {
     },
     created() {
         this.params.depId = this.carParkInfo.depId
-        this.initData();
     },
     methods:{
         //返回
@@ -69,11 +110,21 @@ export default {
         },
         //数据初始化
         initData(){
+            if(this.params.bTime == ""){
+                this.$toast('请选择开始时间');
+                return
+            }else if(this.params.endTime == ""){
+                this.$toast('请选择结束时间');
+                return
+            }else if(this.params.bTime>this.params.endTime){
+                this.$toast('开始时间不能大于结束时间');
+                return
+            }
             this.$api.home.getStatisticalData(this.params).then(res=>{
                 if(res.code == 200){
                     this.finished = true
-                    this.blacklist = res.result.records
-                    this.blacklist.map(o=>this.isShow.push(false))
+                    this.tableData = res.result
+                    this.echartList(this.tableData)
                 }else{
                     this.$toast(res.message);
                 }
@@ -83,33 +134,81 @@ export default {
         },
         //查询
         searchData(){            
-            this.echartList()
+            this.initData();
         },
         //月报
         reportData(){
 
         },
         //绘制柱状图
-        echartList(){
+        echartList(chartArry){
             var dom = document.getElementById("chart");
-            var myChart = echarts.init(dom);
-            myChart.resize({height:400}); 
+            var myChart = echarts.init(dom);            
+            if(chartArry.length>0){
+                myChart.resize({height:400}); 
+            }else{
+                myChart.resize({height:4}); 
+            }
+            let daysArry = []
+            let monthcarArry = []
+            let temporaryArry = []
+            let unlicensedArry = []
+            for (let i = 0; i < chartArry.length; i++) {
+                const item = chartArry[i];
+                daysArry.push(item.days)
+                monthcarArry.push(item.monthcar)
+                temporaryArry.push(item.temporary)
+                unlicensedArry.push(item.unlicensed)
+            }
             let option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['月租充值', '临时车', '无牌预付']
+                },
                 xAxis: {
                     type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                    data: daysArry
                 },
                 yAxis: {
                     type: 'value'
                 },
-                series: [{
-                    data: [120, 200, 150, 80, 70, 110, 130],
-                    type: 'bar',
-                    showBackground: true,
-                    backgroundStyle: {
-                        color: 'rgba(220, 220, 220, 0.8)'
+                series: [
+                    {   
+                        name: '月租充值',
+                        data: monthcarArry,
+                        type: 'bar',
+                        stack: '总量',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
+                    },
+                    {
+                        name: '临时车',
+                        data: temporaryArry,
+                        type: 'bar',
+                        stack: '总量',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
+                    },
+                    {
+                        name: '无牌预付',
+                        data: unlicensedArry,
+                        type: 'bar',
+                        stack: '总量',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
                     }
-                }]
+                ]
             };
             myChart.setOption(option, true);
         }
@@ -151,5 +250,24 @@ export default {
         .el-button+.el-button{
             margin-left:3px;
         }
+    }
+    .lineDivider{
+        margin-top:0;
+    }
+    .noData{
+        padding-top:.5rem ;
+        text-align: center;
+    }
+    .chart{
+        padding-top:.5rem ;
+    }
+    .elTable{
+        padding: .5rem .1rem;
+        
+    }
+</style>
+<style lang="less">
+    .elTable .el-table .cell{
+        padding: 0 3px !important;
     }
 </style>
