@@ -24,14 +24,14 @@
                     </el-form-item>
                 </el-form>
             </el-header>
-            <el-main>
-                <van-grid :gutter="10" :column-num="2">
-                    <van-grid-item icon="photo-o" text="设备管理" @click='jumpTo(1)' to="" />
-                    <van-grid-item icon="photo-o" text="车辆管理" @click='jumpTo(2)' to="" />
-                    <van-grid-item icon="photo-o" text="在场车辆" @click='jumpTo(3)' to="" />
-                    <van-grid-item icon="photo-o" text="滞留盘点" @click='jumpTo(4)' to="" />
-                    <van-grid-item icon="photo-o" text="黑名单"   @click='jumpTo(5)' to="" />
-                    <van-grid-item icon="photo-o" text="统计报表" @click='jumpTo(6)' to="" />
+            <el-main class="elMain">
+                <van-grid :gutter="0" :column-num="2">
+                    <van-grid-item  text="设备管理" @click='jumpTo(1)' to="" />
+                    <van-grid-item  text="车辆管理" @click='jumpTo(2)' to="" />
+                    <van-grid-item  text="在场车辆" @click='jumpTo(3)' to="" />
+                    <van-grid-item  text="滞留盘点" @click='jumpTo(4)' to="" />
+                    <van-grid-item  text="黑名单"   @click='jumpTo(5)' to="" />
+                    <van-grid-item  text="统计报表" @click='jumpTo(6)' to="" />
                 </van-grid>
             </el-main>
         </el-container>
@@ -153,11 +153,21 @@ export default {
             padding-top:0.5rem;
             border-bottom: 1px solid #eee;
         }
+        .elMain{
+            padding:0;
+        }
+        .van-grid{
+            margin-top:.5rem;
+            box-shadow: 0 2px 11px rgba(0,0,0,.6);
+        }
         .van-grid-item__content--center{
+            height:2.8rem;
             background-color: #1989fa;
             color:#fff;
             .van-grid-item__text{
                 color:#fff;
+                font-size: .3rem;
+                font-weight: bold;
             }
         }
     }

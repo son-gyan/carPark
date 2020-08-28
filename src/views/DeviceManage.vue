@@ -160,8 +160,9 @@ export default {
             flex-wrap:wrap;
             margin-top:.2rem;
             padding: .1rem 0;
-            /* border: 1px solid #666; */
+            padding: 0.2rem 0.1rem;
             box-shadow: 0 0 4px rgba(0,0,0,.5);
+            border-radius: 4px;
             text-align: center;
             .van-col {
                 padding: .1rem 0;
