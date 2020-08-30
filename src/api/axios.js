@@ -15,6 +15,7 @@ export default function $axios(options) {
         instance.interceptors.request.use(
             config => {
                 let token = sessionStorage.getItem("token");
+                //debugger
                 if (token) {                    
                     config.headers = {
                         "X-Access-Token":token,
@@ -22,7 +23,7 @@ export default function $axios(options) {
                     };
                 } else {
                     // 重定向到登录页面
-                    router.push("/login");
+                    //router.push("/login");
                 }
                 // 时间戳
                 if (config.method === 'post') {

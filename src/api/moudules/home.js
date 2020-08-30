@@ -61,6 +61,14 @@ export const getCarList = (params) => {
         params
     })
 }
+// 获取机构列表
+export const getGroupList = (params) => {
+    return axios({
+        url: '/park/zyb/zybGroup/list',
+        method: 'get',
+        params
+    })
+}
 // 获取收费标准列表
 export const getZybFeesList = (params) => {
     return axios({
@@ -111,12 +119,29 @@ export const getPresentCarList = (params) => {
         params
     })
 }
-// 新增修改在场车辆
+//获取在场车辆列表
+export const onParkTypeNum = (params) => {
+    return axios({
+        url: '/park/zyb/data/onParkTypeNum',
+        method: 'get',
+        params
+    })
+}
+// 新增在场车辆
 export const addPresentCar = (data) => {
     return axios({
         url: '/park/zyb/data/add',
         method: 'post',
         data
+    })
+}
+// 修改在场车辆
+export const updataCarNum = (data) => {
+    return axios({
+        url: '/park/zyb/data/updataCarNum',
+        method: 'post',
+        data,
+        headers: header
     })
 }
 

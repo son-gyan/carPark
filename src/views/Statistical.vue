@@ -138,7 +138,10 @@ export default {
         },
         //月报
         reportData(){
-
+            let curDate = new Date();
+            this.params.bTime = new Date(curDate.getTime() - 30*24*60*60*1000);
+            this.params.endTime = curDate; 
+            this.initData(); 
         },
         //绘制柱状图
         echartList(chartArry){

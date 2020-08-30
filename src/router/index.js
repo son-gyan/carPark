@@ -26,12 +26,14 @@ const router = new Router({
         {
             path: '/login',
             name: 'login',
-            component: Login
+            component: Login,
+            meta: {keepAlive: false}
         },
         {
             path: "/index",
             name: "index",
-            component: Index
+            component: Index,
+            meta: {keepAlive: true}
         },
         {
             path: "/deviceManage",
@@ -77,6 +79,7 @@ export default router
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
     if (to.path === '/login') {
+        sessionStorage.clear()
         next();
     } else {
         if (token === 'null' || token === '') {

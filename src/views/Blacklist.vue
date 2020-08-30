@@ -33,7 +33,7 @@
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main>
-                    <van-form @submit="saveData" class="formWrap">
+                    <van-form @submit="saveData" class="formWrap" :key="+new Date()">
                         <van-field
                             v-model="form.licensePlate"
                             name="licensePlate"
@@ -60,13 +60,14 @@
                             autosize
                             placeholder="备注"
                         />
+                        <footer>
+                            <button native-type="submit">保存</button>
+                            <button @click="cancelDialog">取消</button>
+                        </footer>
                     </van-form>
                 </main>
                 
-                <footer>
-                    <button @click="saveData">保存</button>
-                    <button @click="cancelDialog">取消</button>
-                </footer>
+                
             </div>
         </div>
         <van-popup v-model="showPickerEndTime" position="bottom">

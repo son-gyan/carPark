@@ -9,7 +9,7 @@
             </el-form-item>
             <el-form-item>
                 <!-- <el-button type="primary" @click="onSubmit">登录</el-button> -->
-                <van-button block type="info"  @click="onSubmit">
+                <van-button block type="info"  @click.stop="onSubmit">
                 登录
                 </van-button>
             </el-form-item>

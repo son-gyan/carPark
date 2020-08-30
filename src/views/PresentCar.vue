@@ -19,8 +19,8 @@
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="addPresentCar">添加</van-button>
                 </van-search>
                 <van-row type="flex" justify="center" class="cardHeaderWrap" >
-                    <van-col span="12">在场月租车：120</van-col>
-                    <van-col span="12">在场临时车：120</van-col>
+                    <van-col span="12">在场月租车：{{list.curyzNum}}</van-col>
+                    <van-col span="12">在场临时车：{{list.curlsNum}}</van-col>
                 </van-row>
                 <van-card
                     v-for="(item,index) in presentCarList"  :key="index"
@@ -51,7 +51,7 @@
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main>
-                    <van-form @submit="saveData" class="formWrap">
+                    <van-form @submit="saveData" class="formWrap" :key="+new Date()">
                         <van-field
                             v-model="form.carNum"
                             name="carNum"
@@ -60,6 +60,7 @@
                             :rules="[{ required: true, message: '请输入车牌' }]"
                         />
                         <van-field
+                            v-if="!form.id||form.id==''"
                             readonly
                             clickable
                             name="inTime"
@@ -68,12 +69,13 @@
                             placeholder="点击选择入场时间"
                             @click="showPickerEndTime = true"
                             />
+                        <footer>
+                            <button native-type="submit">保存</button>
+                            <button @click="cancelDialog">取消</button>
+                        </footer>
                     </van-form>
                 </main>
-                <footer>
-                    <button @click="saveData">保存</button>
-                    <button @click="cancelDialog">取消</button>
-                </footer>
+                
             </div>
         </div>
         <van-popup v-model="showPickerEndTime" position="bottom">
@@ -98,6 +100,10 @@ export default {
             finished: false,
             loading: false,
             isShow:[],
+            list:{
+                curlsNum:0,
+                curyzNum:0
+            },
             presentCarList:[],
             searchVal:'',
             params:{
@@ -152,6 +158,22 @@ export default {
         //数据初始化
         initData(){
             console.log(this.params,'params')
+            /* let formData = new FormData();
+            formData.append('id',this.form.depId) */
+            let para = {
+                depId:this.form.depId
+            }
+            this.$api.home.onParkTypeNum(para).then(res=>{
+                if(res.code == 200){
+                    //debugger
+                    this.list.curlsNum = res.result.temporary
+                    this.list.curyzNum = res.result.month
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
             this.$api.home.getPresentCarList(this.params).then(res=>{
                 if(res.code == 200){
                     this.finished = true
@@ -183,18 +205,45 @@ export default {
         //弹窗保存
         saveData(){
             console.log(this.form,'this.form');
-            this.$api.home.addPresentCar(this.form).then(res=>{
-                if(res.code == 200){
-                    this.finished = true
-                    this.cancelDialog();
-                    this.$toast(res.message);
-                    this.initData();
-                }else{
-                    this.$toast(res.message);
+            if(!this.form.id||this.form.id==""){
+                if(this.form.inTime ==""){
+                    this.$toast("请选择入场时间");
+                    return
                 }
-            }).catch((res) => {
-                this.loading = false;
-            });
+                this.$api.home.addPresentCar(this.form).then(res=>{
+                    if(res.code == 200){
+                        this.finished = true
+                        this.cancelDialog();
+                        this.$toast(res.message);
+                        this.initData();
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            }else{
+                let param = {
+                    id:this.form.id,
+                    carNum:this.form.carNum
+                }
+                let formData = new FormData();
+                formData.append('id',this.form.id)
+                formData.append('carNum',this.form.carNum)
+                this.$api.home.updataCarNum(formData).then(res=>{
+                    if(res.code == 200){
+                        this.finished = true
+                        this.cancelDialog();
+                        this.$toast(res.message);
+                        this.initData();
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            }
+            
         },
         //弹窗关闭
         cancelDialog(){

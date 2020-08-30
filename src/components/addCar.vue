@@ -12,12 +12,15 @@
             />
             <van-field
                 v-model="form.phone"
-                type="number"
+                type="tel"
                 name="phone"
                 label="手机号："
                 label-align='right'
                 placeholder="请输入手机号"
-                :rules="[{ required: true, message: '请填写手机号' }]"
+                :rules="[
+                    { required: true, message: '请填写手机号' },
+                    { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误！'}
+                ]"
             />
             <van-field
                 v-model="form.licensePlate"
@@ -30,11 +33,32 @@
             <van-field
                 readonly
                 clickable
+                name="picker"
+                :value="groupVal"
+                label="部门："
+                label-align='right'
+                placeholder="点击选择部门"
+                @click="showGroup = true"
+                :rules="[{ required: true, message: '请选择部门' }]"
+                />
+            <van-popup v-model="showGroup" position="bottom">
+                <van-picker
+                    show-toolbar
+                    value-key="name"
+                    :columns="columnsGroup"
+                    @confirm="confirmGroup"
+                    @cancel="showGroup = false"
+                />
+            </van-popup>
+            <van-field
+                readonly
+                clickable
                 name="datetimePicker"
                 :value="form.startTime"
                 label="开始时间："
                 placeholder="点击选择开始时间"
                 @click="showPickerStartTime = true"
+                :rules="[{ required: true, message: '请选择开始时间' }]"
                 />
             <van-popup v-model="showPickerStartTime" position="bottom">
                 <van-datetime-picker
@@ -51,6 +75,7 @@
                 label="结束时间："
                 placeholder="点击选择结束时间"
                 @click="showPickerEndTime = true"
+                :rules="[{ required: true, message: '请选择结束时间' }]"
                 />
             <van-popup v-model="showPickerEndTime" position="bottom">
                 <van-datetime-picker
@@ -67,6 +92,7 @@
                 label="收费标准："
                 placeholder="点击选择收费标准"
                 @click="showPickerFees = true"
+                :rules="[{ required: true, message: '请选择收费标准' }]"
                 />
             <van-popup v-model="showPickerFees" position="bottom">
                 <van-picker
@@ -77,7 +103,7 @@
                     @cancel="showPickerFees = false"
                 />
             </van-popup>
-            <van-field name="packageList" label="月卡套餐：">
+            <van-field name="packageList" label="月卡套餐：" :rules="[{ required: true, message: '请选择月卡套餐' }]">
                 <template #input>
                     <van-checkbox-group v-model="form.packageList" direction="horizontal">
                         <van-checkbox :name="item" shape="square" 
@@ -103,7 +129,9 @@ export default {
         return {
             form:{
                 depId:'',
+                groupId:'',
                 userName:'',
+                nickname:'',
                 phone:'',
                 licensePlate:'',
                 startTime:'',
@@ -114,23 +142,28 @@ export default {
                 isOpen:1,
                 parkId:'',
                 chargeType:1,
-                ownerId:''
+                ownerId:'',
+                memo:''
             },
+            groupVal:'',
             feesVal:'',
             feesList:[],
             packageList:[],
+            columnsGroup:[],
+            showGroup:false,
             showPickerStartTime:false,
             showPickerEndTime:false,
-            showPickerFees:false
+            showPickerFees:false,
+            arrList:[]
         };
     },
     computed: {
-        ...mapGetters(['carParkInfo','user'])
+        ...mapGetters(["orgCategory",'carParkInfo','user'])
     },
     created() {
         this.form.depId = this.carParkInfo.depId
         this.form.parkId = this.carParkInfo.id
-        this.form.ownerId = this.user.id
+        //this.form.ownerId = this.user.id
         this.initData()
     },
     methods: {
@@ -158,6 +191,38 @@ export default {
             }).catch((res) => {
                 this.loading = false;
             });
+
+            let parm = {
+                depId:this.carParkInfo.depId,
+            }
+            this.$api.home.getGroupList(parm).then(res=>{
+                if(res.code == 200){
+                    this.arrList = [];
+                    this.columnsGroup = this.readNodes(JSON.parse(JSON.stringify(res.result)))
+                    console.log(this.columnsGroup,'columnsGroup')                 
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+        },
+        readNodes (treeData) {
+            let obj = {
+                id:"",
+                name:""
+            }
+            for (let item of treeData) {
+                obj = {
+                    id:item.id,
+                    name:item.name
+                }
+                this.arrList.push(obj)
+                if (item.childList && item.childList.length) {
+                    this.readNodes(item.childList)
+                }
+            }
+            return this.arrList
         },
         //返回
         onClickLeft(){
@@ -174,6 +239,11 @@ export default {
             }).catch((res) => {
                 this.loading = false;
             });
+        },
+        confirmGroup(val){
+            this.form.groupId = val.id
+            this.groupVal = val.name
+            this.showGroup = false
         },
         onConfirmStartTime(val){
             this.form.startTime = this.formatDate(val)
