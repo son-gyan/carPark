@@ -1,7 +1,7 @@
 <template>
     <div class="pages">
         <van-nav-bar class="navBar" title="首页"  />
-        <el-container>
+        <el-container v-loading="loading">
             <el-header>
                 <el-form ref="form" :model="form" label-width="120px">
                     <el-form-item label="当前项目：">
@@ -42,6 +42,7 @@ import { mapGetters } from "vuex"
 export default {
     data() {
         return {
+            loading:false,
             form: { //form表单
                 curProject:'',
                 carPark:''
@@ -59,6 +60,7 @@ export default {
     methods: {
         //获取当前项目
         getProject(){
+            this.loading = true;
             let params = {
                 orgCategory:this.orgCategory,
                 pageNo:1,
@@ -88,6 +90,7 @@ export default {
             this.$store.dispatch('setDepId', val)
             this.$api.home.getCarPark(pram).then(res=>{
                 if(res.code == 200){
+                    this.loading = false;
                     this.carParkLst = res.result.records
                     if(this.carParkLst.length>0){                        
                         this.form.carPark = this.carParkLst[0].id
