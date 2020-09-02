@@ -7,6 +7,7 @@ import CarManage from "@/views/CarManage";
 import PresentCar from "@/views/PresentCar";
 import DetentionInventory from "@/views/DetentionInventory";
 import Blacklist from "@/views/Blacklist";
+import Blankpage from "@/views/Blankpage";
 import Statistical from "@/views/Statistical";
 import addCar from "@/components/addCar";
 
@@ -18,6 +19,7 @@ Router.prototype.push = function push(location) {
 Vue.use(Router);
 
 const router = new Router({
+    mode: 'history',
     routes: [
         {
             path: "/",
@@ -59,6 +61,11 @@ const router = new Router({
             path: "/blacklist",
             name: "blacklist",
             component: Blacklist
+        },
+        {
+            path: "/blankpage",
+            name: "blankpage",
+            component: Blankpage
         },
         {
             path: "/statistical",

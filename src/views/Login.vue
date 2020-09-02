@@ -8,9 +8,13 @@
                 <el-input v-model="form.password" type="password"></el-input>
             </el-form-item>
             <el-form-item>
-                <!-- <el-button type="primary" @click="onSubmit">登录</el-button> -->
-                <van-button block type="info"  @click.stop="onSubmit">
+                <van-button block type="info"  @click.prevent="onSubmit">
                 登录
+                </van-button>
+            </el-form-item>
+            <el-form-item>
+                <van-button block type="info"  @click.prevent="wxLogin">
+                   微信登录
                 </van-button>
             </el-form-item>
         </el-form>
@@ -41,6 +45,14 @@ export default {
                 this.loading = false;
             });
         },
+        wxLogin(){
+            const wxLogin = (appid, url) => {
+                let redirect_uri = encodeURIComponent(url)
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATUS#wechat_redirect`
+            }
+            wxLogin('wx546563fe38304393', 'http://whc.mouhua.cn/mobile/blankpage')
+        }
+            
     }
 }
 </script>
