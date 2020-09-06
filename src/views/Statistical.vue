@@ -64,7 +64,7 @@
                             </el-table-column>
                             <el-table-column
                                 prop="train"
-                                label="班次"
+                                label="车次"
                                 align="center"
                                 width="50"
                                 >
@@ -102,6 +102,10 @@ export default {
     },
     created() {
         this.params.depId = this.carParkInfo.depId
+        let curDate = new Date();
+        this.params.bTime = new Date(curDate.getTime() - 7*24*60*60*1000);
+        this.params.endTime = curDate; 
+        this.initData();
     },
     methods:{
         //返回

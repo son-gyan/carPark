@@ -174,6 +174,7 @@ export default {
             this.$api.home.delBlacklist(formData).then(res=>{
                 if(res.code == 200){
                     this.$toast(res.message);
+                    this.blacklist = []
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -190,6 +191,7 @@ export default {
                     this.finished = true
                     this.cancelDialog();
                     this.$toast(res.message);
+                    this.blacklist = []
                     this.initData();
                 }else{
                     this.$toast(res.message);

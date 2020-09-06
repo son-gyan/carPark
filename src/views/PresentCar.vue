@@ -232,6 +232,7 @@ export default {
                         this.finished = true
                         this.cancelDialog();
                         this.$toast(res.message);
+                        this.presentCarList = []
                         this.initData();
                     }else{
                         this.$toast(res.message);
@@ -252,6 +253,7 @@ export default {
                         this.finished = true
                         this.cancelDialog();
                         this.$toast(res.message);
+                        this.presentCarList = []
                         this.initData();
                     }else{
                         this.$toast(res.message);

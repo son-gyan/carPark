@@ -244,6 +244,7 @@ export default {
                 if(res.code == 200){
                     this.finished = true
                     this.$toast(res.message);
+                    this.carList = []
                     this.initData();
                 }else{
                     this.$toast(res.message);
@@ -259,6 +260,7 @@ export default {
                 if(res.code == 200){
                     this.finished = true
                     this.$toast(res.message);
+                    this.carList = []
                     this.initData();
                 }else{
                     this.$toast(res.message);

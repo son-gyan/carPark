@@ -1,6 +1,11 @@
 <template>
     <div class="pages">
-        <van-nav-bar class="navBar" title="首页"  />
+        <van-nav-bar class="navBar" title="首页"  >
+            <template #right>
+                <span class="span">{{user.username}}</span>
+                <span class="span" @click="logout" style="margin-left:10px;">切换账号</span>
+            </template>
+        </van-nav-bar>
         <el-container v-loading="loading">
             <el-header>
                 <el-form ref="form" :model="form" label-width="120px">
@@ -52,7 +57,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["orgCategory",'depId'])
+        ...mapGetters(["orgCategory",'depId','user'])
     },
     created() {
         this.getProject()
@@ -144,6 +149,11 @@ export default {
                 }
             }
 
+        },
+        logout(){
+            window.location.replace(
+                window.location.origin + "/login?openid="+this.user.openid
+            );
         }
     },
     beforeRouteEnter  (to, from, next) {
@@ -179,6 +189,11 @@ export default {
                 color:#fff;
                 font-size: .3rem;
                 font-weight: bold;
+            }
+        }
+        .navBar{
+            .span{
+                color:#fff;
             }
         }
     }

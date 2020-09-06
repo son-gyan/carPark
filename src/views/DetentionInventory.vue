@@ -121,6 +121,7 @@ export default {
             this.$api.home.checkRetention(formData).then(res=>{
                 if(res.code == 200){
                     this.$toast(res.message);
+                    this.retentionList = []
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -139,6 +140,7 @@ export default {
             this.$api.home.delRetention(formData).then(res=>{
                 if(res.code == 200){
                     this.$toast(res.message);
+                    this.retentionList = []
                     this.initData()
                 }else{
                     this.$toast(res.message);

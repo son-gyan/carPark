@@ -111,6 +111,7 @@ export default {
             this.$api.home.gateOpen(formData).then(res=>{
                 if(res.code == 200){
                     this.$toast('开闸'+res.message);
+                    this.deviceList= []
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -126,6 +127,7 @@ export default {
             this.$api.home.gateClose(formData).then(res=>{
                 if(res.code == 200){
                     this.$toast('关闸'+res.message);
+                    this.deviceList= []
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -141,6 +143,7 @@ export default {
             this.$api.home.restart(formData).then(res=>{
                 if(res.code == 200){
                     this.$toast('重启'+res.message);
+                    this.deviceList= []
                     this.initData()
                 }else{
                     this.$toast(res.message);
