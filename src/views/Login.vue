@@ -78,7 +78,7 @@ export default {
             width:60px ;
             height:60px;
             padding: 0;
-            background: url('../assets/images/wxIcon.png') center;
+            //background: url('../assets/images/wxIcon.png') center;
             background-size: cover;
             border-radius: .2rem;
         }
