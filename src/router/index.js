@@ -22,6 +22,7 @@ const Blacklist = () => import("@/views/Blacklist")
 const Blankpage = () => import("@/views/Blankpage") 
 const Statistical = () => import("@/views/Statistical") 
 const addCar = () => import("@/components/addCar") 
+const Loading = () => import("@/views/Loading")
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -35,7 +36,13 @@ const router = new Router({
     routes: [
         {
             path: "/",
-            redirect: '/login'
+            redirect: '/loading'
+        },
+        {
+            path: '/loading',
+            name: 'loading',
+            component: Loading,
+            meta: {keepAlive: false}
         },
         {
             path: '/login',
