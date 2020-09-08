@@ -73,7 +73,9 @@ export default {
         },
         // 下拉加载
         onLoad () {
-            this.pageNo++;
+            if (!this.loading) {
+                return false
+            }            
             this.initData();
         },
         //数据初始化
@@ -96,6 +98,7 @@ export default {
                     if (this.retentionList.length >= this.total) {
                         this.finished = true;
                     }
+                    this.pageNo++;
                 }else{
                     this.$toast(res.message);
                 }
@@ -123,6 +126,7 @@ export default {
                     this.$toast(res.message);
                     this.retentionList = []
                     this.pageNo = 1
+                    this.loading = true
                     this.finished = false;
                     this.initData()
                 }else{
@@ -144,6 +148,7 @@ export default {
                     this.$toast(res.message);
                     this.retentionList = []
                     this.pageNo = 1
+                    this.loading = true
                     this.finished = false;
                     this.initData()
                 }else{

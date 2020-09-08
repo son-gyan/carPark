@@ -198,3 +198,12 @@ export default {
         }
     }
 </style>
+<style lang="scss" scoped>
+.pages{
+    .navBar{
+       /deep/ .van-ellipsis{
+           margin-left: 40%;
+        }
+    }
+}
+</style>
