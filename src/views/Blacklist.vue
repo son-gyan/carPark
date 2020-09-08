@@ -175,6 +175,8 @@ export default {
                 if(res.code == 200){
                     this.$toast(res.message);
                     this.blacklist = []
+                    this.pageNo = 1
+                    this.finished = false;
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -188,10 +190,11 @@ export default {
             console.log(this.form,'this.form');
             this.$api.home.addBlacklist(this.form).then(res=>{
                 if(res.code == 200){
-                    this.finished = true
                     this.cancelDialog();
                     this.$toast(res.message);
                     this.blacklist = []
+                    this.pageNo = 1
+                    this.finished = false;
                     this.initData();
                 }else{
                     this.$toast(res.message);

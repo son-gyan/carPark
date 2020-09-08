@@ -122,6 +122,8 @@ export default {
                 if(res.code == 200){
                     this.$toast(res.message);
                     this.retentionList = []
+                    this.pageNo = 1
+                    this.finished = false;
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -141,6 +143,8 @@ export default {
                 if(res.code == 200){
                     this.$toast(res.message);
                     this.retentionList = []
+                    this.pageNo = 1
+                    this.finished = false;
                     this.initData()
                 }else{
                     this.$toast(res.message);

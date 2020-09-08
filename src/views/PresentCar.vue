@@ -93,6 +93,7 @@
 import { mapGetters } from "vuex"
 import ClickOutside from 'element-ui/src/utils/clickoutside'
 import { ImagePreview } from 'vant';
+import {timeFormate} from '@/utils'
 export default {
     components: {
         [ImagePreview.Component.name]: ImagePreview.Component,
@@ -206,6 +207,7 @@ export default {
         addPresentCar(){
             this.dialogShow = true
             this.dialogTit = "新增在场车辆"
+            this.form.inTime = this.formatDate(new Date())
         },
         //修改
         updatePresentCar(item){
@@ -229,10 +231,11 @@ export default {
                 }
                 this.$api.home.addPresentCar(this.form).then(res=>{
                     if(res.code == 200){
-                        this.finished = true
                         this.cancelDialog();
                         this.$toast(res.message);
                         this.presentCarList = []
+                        this.pageNo = 1
+                        this.finished = false;
                         this.initData();
                     }else{
                         this.$toast(res.message);
@@ -250,10 +253,11 @@ export default {
                 formData.append('carNum',this.form.carNum)
                 this.$api.home.updataCarNum(formData).then(res=>{
                     if(res.code == 200){
-                        this.finished = true
                         this.cancelDialog();
                         this.$toast(res.message);
                         this.presentCarList = []
+                        this.pageNo = 1
+                        this.finished = false;
                         this.initData();
                     }else{
                         this.$toast(res.message);
@@ -270,7 +274,7 @@ export default {
             this.form={
                 depId:this.carParkInfo.depId,
                 carNum:'',
-                inTime:'',
+                inTime:this.formatDate(new Date()),
                 serialNum:"",
                 parkId:this.carParkInfo.id
             }

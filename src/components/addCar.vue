@@ -165,6 +165,9 @@ export default {
         this.form.parkId = this.carParkInfo.id
         //this.form.ownerId = this.user.id
         this.initData()
+        let curDate = new Date();
+        this.form.startTime = this.formatDate(curDate)
+        this.form.endTime = this.formatDate(new Date(curDate.getTime() + 30*24*60*60*1000));
     },
     methods: {
         initData(){

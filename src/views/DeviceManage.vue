@@ -112,6 +112,7 @@ export default {
                 if(res.code == 200){
                     this.$toast('开闸'+res.message);
                     this.deviceList= []
+                    this.pageNo = 1
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -128,6 +129,7 @@ export default {
                 if(res.code == 200){
                     this.$toast('关闸'+res.message);
                     this.deviceList= []
+                    this.pageNo = 1
                     this.initData()
                 }else{
                     this.$toast(res.message);
@@ -144,6 +146,7 @@ export default {
                 if(res.code == 200){
                     this.$toast('重启'+res.message);
                     this.deviceList= []
+                    this.pageNo = 1
                     this.initData()
                 }else{
                     this.$toast(res.message);

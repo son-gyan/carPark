@@ -242,9 +242,10 @@ export default {
             formData.append('id',id)
             this.$api.home.delCar(formData).then(res=>{
                 if(res.code == 200){
-                    this.finished = true
                     this.$toast(res.message);
                     this.carList = []
+                    this.pageNo = 1
+                    this.finished = false;
                     this.initData();
                 }else{
                     this.$toast(res.message);
@@ -258,9 +259,10 @@ export default {
             console.log(this.form,'this.form');
             this.$api.home.customRecharge(this.form).then(res=>{
                 if(res.code == 200){
-                    this.finished = true
                     this.$toast(res.message);
                     this.carList = []
+                    this.pageNo = 1
+                    this.finished = false;
                     this.initData();
                 }else{
                     this.$toast(res.message);
