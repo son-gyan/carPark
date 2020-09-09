@@ -31,18 +31,19 @@
             </van-list>    
         </div>
         <!-- 弹框 -->
-        <div class="covers" v-show="dialogShow">
+        <div class="covers blacklistDialog" v-show="dialogShow">
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main>
+                    <plateNumber @getPlateLicense="getPlateLicense"></plateNumber>
                     <van-form @submit="saveData" class="formWrap" :key="+new Date()">
-                        <van-field
+                        <!-- <van-field
                             v-model="form.licensePlate"
                             name="licensePlate"
                             label="车牌："
                             placeholder="请输入车牌"
                             :rules="[{ required: true, message: '请输入车牌' }]"
-                        />
+                        /> -->
                         <van-field
                             readonly
                             clickable
@@ -84,7 +85,11 @@
 <script>
 import { mapGetters } from "vuex"
 import ClickOutside from 'element-ui/src/utils/clickoutside'
+import plateNumber from '@/components/plateNumber'
 export default {
+    components: {
+        plateNumber
+    },
     data() {
         return {
             finished: false,
@@ -120,6 +125,9 @@ export default {
         this.initData();
     },
     methods: {
+        getPlateLicense(data){
+            this.form.licensePlate = data
+        },
         //返回
         onClickLeft(){
             this.$router.go(-1)
@@ -128,6 +136,7 @@ export default {
         addBlacklist(){
             this.dialogShow = true
             this.dialogTit = "新增黑名单"
+            this.form.deadline = this.formatDate(new Date())
         },
         // 下拉加载
         onLoad () {
@@ -191,6 +200,10 @@ export default {
         },
         //弹窗保存
         saveData(){
+            if(this.form.licensePlate == ''){
+                this.$toast('请输入车牌号')
+                return
+            }
             console.log(this.form,'this.form');
             this.$api.home.addBlacklist(this.form).then(res=>{
                 if(res.code == 200){
@@ -214,7 +227,7 @@ export default {
             this.form={
                 depId:this.carParkInfo.depId,
                 licensePlate:'',
-                deadline:'',
+                deadline:this.formatDate(new Date()),
                 memo:""
             }
         },
@@ -257,5 +270,9 @@ export default {
                 text-align: right;
             }
         }
+    }
+    .blacklistDialog .dialog{
+        width: 7.3rem;
+        margin-bottom: 2rem;
     }
 </style>

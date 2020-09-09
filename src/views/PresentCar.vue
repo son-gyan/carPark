@@ -49,18 +49,19 @@
             </van-list>
         </div>
         <!-- 弹框 -->
-        <div class="covers" v-show="dialogShow">
+        <div class="covers presentcarDialog" v-show="dialogShow">
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main>
+                    <plateNumber @getPlateLicense="getPlateLicense"></plateNumber>
                     <van-form @submit="saveData" class="formWrap" :key="+new Date()">
-                        <van-field
+                        <!-- <van-field
                             v-model="form.carNum"
                             name="carNum"
                             label="车牌："
                             placeholder="请输入车牌"
                             :rules="[{ required: true, message: '请输入车牌' }]"
-                        />
+                        /> -->
                         <van-field
                             v-if="!form.id||form.id==''"
                             readonly
@@ -69,7 +70,7 @@
                             :value="form.inTime"
                             label="入场时间"
                             placeholder="点击选择入场时间"
-                            @click="showPickerEndTime = true"
+                            @click.stop.prevent="showPickerEndTime = true"
                             />
                         <footer>
                             <button native-type="submit">保存</button>
@@ -94,9 +95,11 @@ import { mapGetters } from "vuex"
 import ClickOutside from 'element-ui/src/utils/clickoutside'
 import { ImagePreview } from 'vant';
 import {timeFormate} from '@/utils'
+import plateNumber from '@/components/plateNumber'
 export default {
     components: {
         [ImagePreview.Component.name]: ImagePreview.Component,
+        plateNumber
     },
     data(){
         return {
@@ -141,6 +144,9 @@ export default {
         this.initData();
     },
     methods: {
+        getPlateLicense(data){
+            this.form.carNum = data
+        },
         //查询
         onSearch(){
             if(this.searchVal!=''){
@@ -227,6 +233,10 @@ export default {
         //弹窗保存
         saveData(){
             console.log(this.form,'this.form');
+            if(this.form.carNum == ''){
+                this.$toast('请输入车牌号')
+                return
+            }
             if(!this.form.id||this.form.id==""){
                 if(this.form.inTime ==""){
                     this.$toast("请选择入场时间");
@@ -369,5 +379,9 @@ export default {
     }
     .radioItem{
         margin-bottom: 10px;
+    }
+    .presentcarDialog.covers .dialog{
+        width: 7.3rem;
+        margin-bottom: 5rem;
     }
 </style>

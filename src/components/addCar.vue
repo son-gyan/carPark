@@ -22,14 +22,15 @@
                     { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式错误！'}
                 ]"
             />
-            <van-field
+            <!-- <van-field
                 v-model="form.licensePlate"
                 name="licensePlate"
                 label="车牌号："
                 label-align='right'
                 placeholder="请输入车牌号"
                 :rules="[{ required: true, message: '请填写车牌号' }]"
-            />
+            /> -->
+            <plateNumber @getPlateLicense="getPlateLicense"></plateNumber>
             <van-field
                 readonly
                 clickable
@@ -124,7 +125,11 @@
 </template>
 <script>
 import { mapGetters } from "vuex"
+import plateNumber from '@/components/plateNumber'
 export default {
+    components: {
+        plateNumber
+    },
     data() {
         return {
             form:{
@@ -170,6 +175,10 @@ export default {
         this.form.endTime = this.formatDate(new Date(curDate.getTime() + 30*24*60*60*1000));
     },
     methods: {
+        getPlateLicense(data){
+            console.log('组件传出的data',data)
+            this.form.licensePlate = data
+        },
         initData(){
             let params = {
                 depId:this.carParkInfo.depId,
@@ -232,6 +241,10 @@ export default {
             this.$router.go(-1)
         },
         onSubmit(values) {        
+            if(this.form.licensePlate == ''){
+                this.$toast('请输入车牌号')
+                return
+            }
             console.log('submitForm', this.form);
             this.$api.home.addCar(this.form).then(res=>{
                 if(res.code == 200){
