@@ -53,7 +53,7 @@
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main>
-                    <plateNumber @getPlateLicense="getPlateLicense"></plateNumber>
+                    <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
                     <van-form @submit="saveData" class="formWrap" :key="+new Date()">
                         <!-- <van-field
                             v-model="form.carNum"
