@@ -411,11 +411,10 @@ export default {
   padding: 0.85rem 0.6rem; */
   background-color: #fff;
   //border-radius: 0.2rem;
-  padding: .1rem 0;
+  padding: .1rem 16px;
     border-bottom: 1px solid #ebedf0;
   .singleBlock{
     display: flex;
-    justify-content: center;
     align-items: center;
   }
   .radio-box {
@@ -438,10 +437,13 @@ export default {
     }
   }
   .card-header {
-        width: 1.5rem;
-    font-size: .25rem;
+    width: 6.2em;
+    padding-right: 16px;
+    font-size: 14px;
     color: #4a4a4a;
     text-align: right;
+    margin-right: 12px;
+    box-sizing: border-box;
   }
   // input输入框
   .num-box {
@@ -455,8 +457,8 @@ export default {
       background-color: #d8d8d8;
     }
     & > div {
-        width: .68rem;
-        height: .68rem;
+        width: .5rem;
+        height: .5rem;
       border: 1px solid #e4e4e4;
       &.first {
         position: relative;
