@@ -190,6 +190,7 @@
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex"
 export default {
   data () {
     return {
@@ -208,9 +209,9 @@ export default {
         No1: [1, 2, 3, 4, 5, 6, 7],
         No2: [8, 9, 0],
         No3: ['A', 'B', 'C', 'D', 'E', 'F', 'G'],
-        No4: ['H', 'J', 'K', 'L', 'M', 'N', 'O'],
-        No5: ['P', 'Q', 'R', 'S', 'T', 'U', 'V'],
-        No6: ['W', 'X', 'Y', 'Z'],
+        No4: ['H', 'J', 'K', 'L', 'M', 'N', 'P'],
+        No5: ['Q', 'R', 'S', 'T', 'U', 'V', 'W'],
+        No6: ['X', 'Y', 'Z'],
         No7: ['港', '澳', '学', '领', '警']
       },
       activeKeyWordIndex: 1, // 当前车牌号
@@ -222,9 +223,47 @@ export default {
       submitConfirmText: ''
     }
   },
-  mounted () {
+  computed: {
+    depId(){
+      return this.$store.getters.depId
+    }
+  },
+  watch: {
+    depId () {
+      this.getData()
+    }
+  },
+  mounted () { 
+    this.getData()
   },
   methods: {
+    //预设车牌
+    getData(depId){
+      let params = {
+        depId:this.$store.getters.depId
+      }
+      console.log(params)
+      this.$api.home.queryByDepId(params).then(res=>{
+          if(res.code == 200){
+              //   预设车牌城市选择
+              if (res.result.setLicensePlate) {
+                this.formData.num0 = res.result.setLicensePlate.substr(0, 1)
+              } else {
+                this.formData.num0 = ''
+              }
+              //   预设车牌ABC选择
+              if (res.result.setLicensePlate) {
+                this.formData.num1 = res.result.setLicensePlate.substr(1, 1)
+              } else {
+                this.formData.num1 = ''
+              }
+          }else{
+              this.$toast(res.message);
+          }
+      }).catch((res) => {
+          this.loading = false;
+      });
+    },
     clickFirstWrap () {
       // 点击第一个输入框
       this.firstClickStatus = true

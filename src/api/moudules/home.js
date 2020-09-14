@@ -107,7 +107,8 @@ export const customRecharge = (data) => {
     return axios({
         url: '/park/zyb/zybVehicle/customRecharge',
         method: 'post',
-        data
+        data,
+        headers: header 
     })
 }
 
@@ -206,6 +207,15 @@ export const delBlacklist = (params) => {
 export const getStatisticalData = (params) => {
     return axios({
         url: '/park/zyb/data/payChar',
+        method: 'get',
+        params
+    })
+}
+
+// 预设车牌 queryByDepId
+export const queryByDepId = (params) => {
+    return axios({
+        url: '/park/zyb/zybParkConfig/queryByDepId',
         method: 'get',
         params
     })

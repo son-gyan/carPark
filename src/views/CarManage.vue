@@ -21,24 +21,25 @@
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="addCar">添加月卡车</van-button>
                 </van-search>
                 <van-row type="flex" justify="center" class="cardHeaderWrap" >
-                    <van-col span="6">部门</van-col>
-                    <van-col span="6">用户</van-col>
-                    <van-col span="6">车牌</van-col>
-                    <van-col span="6">到期时间</van-col>
+                    <!-- <van-col span="6">部门</van-col> -->
+                    <van-col span="8">用户</van-col>
+                    <van-col span="8">车牌</van-col>
+                    <van-col span="8">到期时间</van-col>
                 </van-row>
                 <van-row  class="cardWrap  van-coupon" type="flex" justify="center" align="center"
                     v-for="(item,index) in carList" :key='index' 
                     @click='changeState(index)'>
-                    <van-col span="6">{{item.groupName}}</van-col>
-                    <van-col span="6">{{item.userName}}</van-col>
-                    <van-col span="6">{{item.licensePlate}}</van-col>
-                    <van-col span="6">{{item.endTime}}</van-col>
+                    <!-- <van-col span="6">{{item.groupName}}</van-col> -->
+                    <van-col span="8">{{item.userName}}</van-col>
+                    <van-col span="8">{{item.licensePlate}}</van-col>
+                    <van-col span="8">{{item.endTime}}</van-col>
                     <template class="btnGroup" v-if='isShow[index]'>                        
                         <van-divider dashed class="divider"/>
                         <van-col span="12">
-                            <van-button type="info" @click='delay(item)'>延期</van-button>
+                            {{item.phone}}
                         </van-col>
                         <van-col span="12">
+                            <van-button type="info" @click='delay(item)'>延期</van-button>
                             <van-button type="info" @click='handleDel(item.id)'>删除</van-button>
                         </van-col>
                     </template>
@@ -215,13 +216,17 @@ export default {
         delay(item){
             this.singlePacklist = item.packageList
             this.radioVal = "1"
-            this.packageList = this.singlePacklist[0]
-            this.form={
-                veId:item.id,
-                rechargeMoney:this.singlePacklist[0].price,
-                endDateStr:this.singlePacklist[0].updateTime,
-                memo:''
-            },
+            if(this.singlePacklist){
+                this.packageList = this.singlePacklist[0]
+                this.form={
+                    veId:item.id,
+                    rechargeMoney:this.singlePacklist[0].price,
+                    endDateStr:this.singlePacklist[0].updateTime,
+                    memo:''
+                }
+            }else{
+               this.form.veId = item.id
+            }
             this.dialogShow = true
         },
         changeRadio(val){
@@ -261,7 +266,13 @@ export default {
         //弹窗保存
         saveData(){
             console.log(this.form,'this.form');
-            this.$api.home.customRecharge(this.form).then(res=>{
+            let formData = new FormData();
+            formData.append('veId',this.form.veId) 
+            formData.append('endDateStr',this.form.endDateStr) 
+            formData.append('rechargeMoney',this.form.rechargeMoney) 
+            formData.append('memo',this.form.memo) 
+            this.$api.home.customRecharge(formData).then(res=>{
+                this.dialogShow = true
                 if(res.code == 200){
                     this.$toast(res.message);
                     this.carList = []
@@ -273,6 +284,7 @@ export default {
                     this.$toast(res.message);
                 }
             }).catch((res) => {
+                this.dialogShow = true
                 this.loading = false;
             });
         },

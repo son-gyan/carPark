@@ -30,7 +30,7 @@
                 </el-form>
             </el-header>
             <el-main class="elMain">
-                <van-grid :gutter="0" :column-num="2">
+                <van-grid :gutter="5" :column-num="2">
                     <van-grid-item  text="设备管理" @click='jumpTo(1)' to="" />
                     <van-grid-item  text="车辆管理" @click='jumpTo(2)' to="" />
                     <van-grid-item  text="在场车辆" @click='jumpTo(3)' to="" />
@@ -202,7 +202,7 @@ export default {
 .pages{
     .navBar{
        /deep/ .van-ellipsis{
-           margin-left: 40%;
+           margin-left: 1rem;
         }
     }
 }

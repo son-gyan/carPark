@@ -84,6 +84,7 @@
 <script>
 import { mapGetters } from "vuex"
 import echarts from 'echarts'
+import {formatDate} from '@/utils'
 export default {
     data(){
         return {
@@ -103,8 +104,8 @@ export default {
     created() {
         this.params.depId = this.carParkInfo.depId
         let curDate = new Date();
-        this.params.bTime = new Date(curDate.getTime() - 7*24*60*60*1000);
-        this.params.endTime = curDate; 
+        this.params.bTime = formatDate(new Date(curDate.getTime() - 7*24*60*60*1000));
+        this.params.endTime = formatDate(curDate); 
         this.initData();
     },
     methods:{
