@@ -276,7 +276,7 @@ export default {
             formData.append('rechargeMoney',this.form.rechargeMoney) 
             formData.append('memo',this.form.memo) 
             this.$api.home.customRecharge(formData).then(res=>{
-                this.dialogShow = true
+                this.dialogShow = false
                 if(res.code == 200){
                     this.$toast(res.message);
                     this.carList = []
@@ -288,7 +288,7 @@ export default {
                     this.$toast(res.message);
                 }
             }).catch((res) => {
-                this.dialogShow = true
+                this.dialogShow = false
                 this.loading = false;
             });
         },
