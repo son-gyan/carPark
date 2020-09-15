@@ -51,6 +51,28 @@
                     @cancel="showGroup = false"
                 />
             </van-popup>
+            
+            <van-field
+                readonly
+                clickable
+                name="picker"
+                :value="typeVal"
+                label="收费类型："
+                label-align='right'
+                placeholder="点击选择收费类型"
+                @click="showType = true"
+                :rules="[{ required: true, message: '请选择收费类型' }]"
+                />
+            <van-popup v-model="showType" position="bottom">
+                <van-picker
+                    show-toolbar
+                    value-key="name"
+                    :columns="columnsType"
+                    @confirm="confirmType"
+                    @cancel="showType = false"
+                />
+            </van-popup>
+
             <van-field
                 readonly
                 clickable
@@ -104,7 +126,7 @@
                     @cancel="showPickerFees = false"
                 />
             </van-popup>
-            <van-field name="packageList" label="月卡套餐：" :rules="[{ required: true, message: '请选择月卡套餐' }]">
+            <van-field name="packageList" label="月卡套餐：" :rules="[{ required: true, message: '请选择月卡套餐' }]" v-if="packageStatus">
                 <template #input>
                     <van-checkbox-group v-model="form.packageList" direction="horizontal">
                         <van-checkbox :name="item" shape="square" 
@@ -159,7 +181,20 @@ export default {
             showPickerStartTime:false,
             showPickerEndTime:false,
             showPickerFees:false,
-            arrList:[]
+            arrList:[],
+            typeVal:"",
+            showType:false,
+            columnsType:[
+                {
+                    name:"月租车",
+                    value:1,
+                },
+                {
+                    name:"免费车",
+                    value:3,
+                }
+            ],
+            packageStatus:true
         };
     },
     computed: {
@@ -260,6 +295,17 @@ export default {
             this.form.groupId = val.id
             this.groupVal = val.name
             this.showGroup = false
+        },
+        confirmType(val){
+            this.form.chargeType = val.value
+            this.typeVal = val.name
+            this.showType = false
+            if(this.form.chargeType == 3){                
+                this.packageStatus = false
+                this.form.packageList = []
+            }else{
+                this.packageStatus = true
+            }
         },
         onConfirmStartTime(val){
             this.form.startTime = this.formatDate(val)

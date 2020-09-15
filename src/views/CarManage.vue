@@ -161,6 +161,10 @@ export default {
     methods: {
         //查询
         onSearch(){
+            this.carList = []
+            this.pageNo = 1
+            this.loading = true
+            this.finished = false;
             this.initData();
         },
         //返回

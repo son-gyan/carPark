@@ -113,7 +113,7 @@ export default {
             presentCarList:[],
             searchVal:'',
             params:{
-                recordJson:'',
+                carNum:'',
                 depId:'',
                 pageNo:1,
                 pageSize:10 
@@ -149,12 +149,17 @@ export default {
         },
         //查询
         onSearch(){
-            if(this.searchVal!=''){
+            /* if(this.searchVal!=''){
                 let json = {
                     carNum:this.searchVal
                 }
                 this.params.recordJson = JSON.stringify(json)
-            }
+            } */
+            this.params.carNum = this.searchVal
+            this.presentCarList = []
+            this.pageNo = 1
+            this.loading = true
+            this.finished = false;
             this.initData();
         },
         //返回

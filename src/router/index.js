@@ -37,6 +37,7 @@ const router = new Router({
         {
             path: "/",
             redirect: '/loading'
+            //redirect: '/login'
         },
         {
             path: '/loading',
