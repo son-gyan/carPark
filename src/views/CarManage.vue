@@ -139,6 +139,7 @@ export default {
             dialogShow:false,
             form:{
                 veId:'',
+                packageId:"",
                 rechargeMoney:'',
                 endDateStr:'',
                 memo:""
@@ -222,12 +223,14 @@ export default {
             this.radioVal = "1"
             if(this.singlePacklist){
                 this.packageList = this.singlePacklist[0]
-                this.form={
+                /* this.form={
                     veId:item.id,
                     rechargeMoney:this.singlePacklist[0].price,
                     endDateStr:this.singlePacklist[0].updateTime,
                     memo:''
-                }
+                } */
+                this.form.veId = item.id
+                this.form.packageId = this.singlePacklist[0].id
             }else{
                this.form.veId = item.id
             }
@@ -239,8 +242,9 @@ export default {
                 this.form.endDateStr = ""
                 this.subItemShow= true
             }else{
-                this.form.rechargeMoney = this.packageList.price
-                this.form.endDateStr = this.packageList.updateTime
+                this.form.packageId = this.packageList.id
+                /* this.form.rechargeMoney = this.packageList.price
+                this.form.endDateStr = this.packageList.updateTime */
                 this.subItemShow= false
             }
         },
@@ -270,33 +274,57 @@ export default {
         //弹窗保存
         saveData(){
             console.log(this.form,'this.form');
-            let formData = new FormData();
-            formData.append('veId',this.form.veId) 
-            formData.append('endDateStr',this.form.endDateStr) 
-            formData.append('rechargeMoney',this.form.rechargeMoney) 
-            formData.append('memo',this.form.memo) 
-            this.$api.home.customRecharge(formData).then(res=>{
-                this.dialogShow = false
-                if(res.code == 200){
-                    this.$toast(res.message);
-                    this.carList = []
-                    this.pageNo = 1
-                    this.loading = true
-                    this.finished = false;
-                    this.initData();
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.dialogShow = false
-                this.loading = false;
-            });
+            if(this.radioVal == '2'){
+                let formData = new FormData();
+                formData.append('veId',this.form.veId) 
+                formData.append('endDateStr',this.form.endDateStr) 
+                formData.append('rechargeMoney',this.form.rechargeMoney) 
+                formData.append('memo',this.form.memo) 
+                this.$api.home.customRecharge(formData).then(res=>{
+                    this.cancelDialog()
+                    if(res.code == 200){
+                        this.$toast(res.message);
+                        this.carList = []
+                        this.pageNo = 1
+                        this.loading = true
+                        this.finished = false;
+                        this.initData();
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.cancelDialog()
+                    this.loading = false;
+                });
+            }else{
+                let formData = new FormData();
+                formData.append('veId',this.form.veId) 
+                formData.append('packageId',this.form.packageId) 
+                formData.append('memo',this.form.memo) 
+                this.$api.home.packageRecharge(formData).then(res=>{
+                    this.cancelDialog()
+                    if(res.code == 200){
+                        this.$toast(res.message);
+                        this.carList = []
+                        this.pageNo = 1
+                        this.loading = true
+                        this.finished = false;
+                        this.initData();
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.cancelDialog()
+                    this.loading = false;
+                });
+            }
         },
         //弹窗关闭
         cancelDialog(){
             this.dialogShow = false
             this.form={
                 veId:"",
+                packageId:"",
                 rechargeMoney:'',
                 endDateStr:'',
                 memo:''

@@ -102,10 +102,19 @@ export const delCar = (data) => {
         headers: header 
     })
 }
-// 延期车辆
+// 延期车辆 自定义充值
 export const customRecharge = (data) => {
     return axios({
         url: '/park/zyb/zybVehicle/customRecharge',
+        method: 'post',
+        data,
+        headers: header 
+    })
+}
+// 延期车辆 套餐充值
+export const packageRecharge = (data) => {
+    return axios({
+        url: '/park/zyb/zybVehicle/packageRecharge',
         method: 'post',
         data,
         headers: header 
