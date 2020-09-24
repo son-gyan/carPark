@@ -35,8 +35,13 @@
                     <van-grid-item  text="车辆管理" @click='jumpTo(2)' to="" />
                     <van-grid-item  text="在场车辆" @click='jumpTo(3)' to="" />
                     <van-grid-item  text="滞留盘点" @click='jumpTo(4)' to="" />
+                    <!-- <van-grid-item  text="黑名单"   @click='jumpTo(5)' to="" />
+                    <van-grid-item  text="统计报表" @click='jumpTo(6)' to="" /> -->
+                </van-grid>
+                <van-grid :gutter="5" :column-num="3" class="vanGrid">
                     <van-grid-item  text="黑名单"   @click='jumpTo(5)' to="" />
                     <van-grid-item  text="统计报表" @click='jumpTo(6)' to="" />
+                    <van-grid-item  text="预约车场" @click='jumpTo(7)' to="" />
                 </van-grid>
             </el-main>
         </el-container>
@@ -144,6 +149,9 @@ export default {
                     case 6:
                         this.$router.push('/statistical')
                         break;                
+                    case 7:
+                        this.$router.push('/order')
+                        break;                
                     default:
                         break;
                 }
@@ -179,7 +187,13 @@ export default {
         }
         .van-grid{
             margin-top:.5rem;
-            box-shadow: 0 2px 11px rgba(0,0,0,.6);
+            /* box-shadow: 0 2px 11px rgba(0,0,0,.6); */
+        }
+        .vanGrid{
+            margin-top:.1rem;
+            /deep/.van-grid-item__content--center{
+                height:2.3rem;
+            }
         }
         .van-grid-item__content--center{
             height:2.8rem;

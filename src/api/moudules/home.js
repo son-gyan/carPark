@@ -229,3 +229,22 @@ export const queryByDepId = (params) => {
         params
     })
 }
+
+// 预约车辆列表 /park/zyb/reservecar/manageReserveCarlist
+export const getOrderCarList = (params) => {
+    return axios({
+        url: '/park/zyb/reservecar/manageReserveCarlist',
+        method: 'get',
+        params
+    })
+}
+
+// 删除预约车辆
+export const delOrderCar = (data) => {
+    return axios({
+        url: '/park/zyb/reservecar/delReserveCar',
+        method: 'DELETE',
+        data,
+        headers: header 
+    })
+}

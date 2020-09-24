@@ -1,28 +1,24 @@
 import Vue from "vue";
 import Router from "vue-router";
-
-/* import Login from "@/views/Login";
-import Index from "@/views/Index";
-import DeviceManage from "@/views/DeviceManage";
-import CarManage from "@/views/CarManage";
-import PresentCar from "@/views/PresentCar";
-import DetentionInventory from "@/views/DetentionInventory";
-import Blacklist from "@/views/Blacklist";
-import Blankpage from "@/views/Blankpage";
-import Statistical from "@/views/Statistical";
-import addCar from "@/components/addCar"; */
-
-const Login = () => import("@/views/Login") 
-const Index = () => import("@/views/Index") 
-const DeviceManage = () => import("@/views/DeviceManage") 
-const CarManage = () => import("@/views/CarManage") 
-const PresentCar = () => import("@/views/PresentCar") 
-const DetentionInventory = () => import("@/views/DetentionInventory") 
-const Blacklist = () => import("@/views/Blacklist") 
-const Blankpage = () => import("@/views/Blankpage") 
-const Statistical = () => import("@/views/Statistical") 
-const addCar = () => import("@/components/addCar") 
-const Loading = () => import("@/views/Loading")
+//管理员路径
+const Login = () => import("@/views/admin/Login") 
+const Index = () => import("@/views/admin/Index") 
+const DeviceManage = () => import("@/views/admin/DeviceManage") 
+const CarManage = () => import("@/views/admin/CarManage") 
+const PresentCar = () => import("@/views/admin/PresentCar") 
+const DetentionInventory = () => import("@/views/admin/DetentionInventory") 
+const Blacklist = () => import("@/views/admin/Blacklist") 
+const Blankpage = () => import("@/views/admin/Blankpage") 
+const Statistical = () => import("@/views/admin/Statistical") 
+const addCar = () => import("@/components/admin/addCar") 
+const Loading = () => import("@/views/admin/Loading")
+const Order = () => import("@/views/admin/Order") 
+//商户路径
+const LoadingShop = () => import("@/views/business/LoadingShop")
+const BlankpageShop = () => import("@/views/business/BlankpageShop") 
+const LoginShop = () => import("@/views/business/LoginShop") 
+const IndexShop = () => import("@/views/business/IndexShop") 
+const OrderShop = () => import("@/views/business/OrderShop") 
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -36,8 +32,8 @@ const router = new Router({
     routes: [
         {
             path: "/",
-            redirect: '/loading'
-            //redirect: '/login'
+            //redirect: '/loading'
+            redirect: '/login'
         },
         {
             path: '/loading',
@@ -51,6 +47,7 @@ const router = new Router({
             component: Login,
             meta: {keepAlive: false}
         },
+        
         {
             path: "/index",
             name: "index",
@@ -97,6 +94,42 @@ const router = new Router({
             name: "addCar",
             component: addCar
         },
+        {
+            path:"/order",
+            name: "order",
+            component: Order,
+            meta: {keepAlive: false}
+        },
+        //商户路由
+        {
+            path: '/loadingShop',
+            name: 'loadingShop',
+            component: LoadingShop,
+            meta: {keepAlive: false}
+        },
+        {
+            path: "/blankpageShop",
+            name: "blankpageShop",
+            component: BlankpageShop
+        },        
+        {
+            path: '/loginShop',
+            name: 'loginShop',
+            component: LoginShop,
+            meta: {keepAlive: false}
+        },
+        {
+            path: "/indexShop",
+            name: "indexShop",
+            component: IndexShop,
+            meta: {keepAlive: true}
+        },
+        {
+            path:"/orderShop",
+            name: "orderShop",
+            component: OrderShop,
+            meta: {keepAlive: false}
+        }
     ]
 });
 

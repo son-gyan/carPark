@@ -1,6 +1,6 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="在场车辆" left-text="返回" left-arrow @click-left="onClickLeft" />
+        <van-nav-bar class="navBar" title="预约车辆" left-text="返回" left-arrow @click-left="onClickLeft" />
         <div class="mainWrap">
             <van-list
                 :finished="finished"
@@ -18,34 +18,31 @@
                     background="#dcdfe6"
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
-                    <van-button class="searchBtn" slot="action" type="info" size="small" @click="addPresentCar">添加</van-button>
+                    <van-button class="searchBtn" slot="action" type="info" size="small" @click="addOrderCar">添加</van-button>
                 </van-search>
                 <van-row type="flex" justify="center" class="cardHeaderWrap" >
-                    <van-col span="12">在场月租车：{{list.curyzNum}}</van-col>
-                    <van-col span="12">在场临时车：{{list.curlsNum}}</van-col>
+                    <van-col span="24">最大车位数：{{list.maxNum}}</van-col>
                 </van-row>
                 <van-card
-                    v-for="(item,index) in presentCarList"  :key="index"
-                    :thumb="item.imgUrl"
+                    v-for="(item,index) in orderCarList"  :key="index"
+                    :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
                     @click-thumb="imgPreview(item.imgUrl)"
                     >
                     <template #title>
-                        <p v-if="item.carType==1">月租车</p> 
-                        <p v-if="item.carType==2">储值车</p> 
-                        <p v-if="item.carType==3">免费车</p> 
-                        <p v-if="item.carType==4">临时车</p> 
-                        <p v-if="item.carType==5">时段限制月租</p> 
+                        <p >车牌：{{item.carNum}}</p>
                     </template>
                     <template #desc>
-                        <p >车牌：{{item.carNum}}</p>
-                        
-                        <p >入场：{{item.inTime}}</p>
+                        <p >车主电话：{{item.ownerPhone}}</p>
+                        <p >预约入场时间：{{item.reserveInTime}}</p>
+                        <p >预约出场时间：{{item.reserveOutTime}}</p>
                     </template>
                     <template #footer>
-                        <van-button type="info" size="mini" @click="updatePresentCar(item)">修改</van-button>
+                        <van-button type="info" size="mini" @click="exitOrderCar(item.id)" v-if="item.isLeave==0">确认离场</van-button>
+                        <span v-else>已确认离场</span>
+                        <van-button type="info" size="mini" @click="delOrderCar(item.id)">删除</van-button>
                     </template>
                 </van-card>
-                <div class="noSearch" v-if="presentCarList.length === 0">暂无查询数据</div>
+                <div class="noSearch" v-if="orderCarList.length === 0">暂无查询数据</div>
             </van-list>
         </div>
         <!-- 弹框 -->
@@ -54,21 +51,34 @@
                 <header>{{dialogTit}}</header>
                 <main>
                     <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
-                    <van-form @submit="saveData" class="formWrap" :key="+new Date()">
-                        <!-- <van-field
-                            v-model="form.carNum"
-                            name="carNum"
-                            label="车牌："
-                            placeholder="请输入车牌"
-                            :rules="[{ required: true, message: '请输入车牌' }]"
-                        /> -->
+                    <van-form @submit="saveData" class="formWrap" ref="form"> <!-- :key="+new Date()" -->
                         <van-field
-                            v-if="!form.id||form.id==''"
+                            v-model="form.ownerPhone"
+                            type="tel"
+                            name="ownerPhone"
+                            label="车主电话"
+                            label-align='right'
+                            placeholder="请输入车主电话"
+                            :rules="[
+                                { required: true, message: '请填写车主电话' },
+                                { pattern: /^1[3456789]\d{9}$/, message: '号码格式错误！'}
+                            ]"
+                        />
+                        <van-field
                             readonly
                             clickable
-                            name="inTime"
-                            :value="form.inTime"
-                            label="入场时间"
+                            name="reserveInTime"
+                            :value="form.reserveInTime"
+                            label="预约入场时间"
+                            placeholder="点击选择入场时间"
+                            @click.stop.prevent="showPickerStartTime = true"
+                            />
+                        <van-field
+                            readonly
+                            clickable
+                            name="reserveOutTime"
+                            :value="form.reserveOutTime"
+                            label="预约出场时间"
                             placeholder="点击选择入场时间"
                             @click.stop.prevent="showPickerEndTime = true"
                             />
@@ -81,6 +91,13 @@
                 
             </div>
         </div>
+        <van-popup v-model="showPickerStartTime" position="bottom">
+            <van-datetime-picker
+                type="datetime"
+                @confirm="onConfirmStartTime"
+                @cancel="showPickerStartTime = false"
+            />
+        </van-popup>
         <van-popup v-model="showPickerEndTime" position="bottom">
             <van-datetime-picker
                 type="datetime"
@@ -108,13 +125,14 @@ export default {
             isShow:[],
             list:{
                 curlsNum:0,
-                curyzNum:0
+                curyzNum:0,
+                maxNum:0
             },
-            presentCarList:[],
+            orderCarList:[],
             searchVal:'',
             params:{
                 carNum:'',
-                depId:'',
+                merId:'',
                 pageNo:1,
                 pageSize:10 
             },
@@ -122,25 +140,25 @@ export default {
             pageSize: 10,//每页请求的数量
             total: 0,//总共的数据条数
             dialogShow:false,
-            dialogTit:"新增在场车辆",
+            dialogTit:"新增预约车辆",
             form:{
-                depId:'',
+                merId:"",
                 carNum:'',
-                inTime:'',
-                serialNum:"",
-                parkId:""
+                reserveInTime:'',
+                reserveOutTime:"",
+                ownerPhone:""
             },
+            showPickerStartTime:false,
             showPickerEndTime:false
         }
     },
     computed: {
-        ...mapGetters(["orgCategory",'carParkInfo'])
+        ...mapGetters(["user"])
     },
     directives: { ClickOutside },
     created() {
-        this.params.depId = this.carParkInfo.depId
-        this.form.depId = this.carParkInfo.depId
-        this.form.parkId = this.carParkInfo.id
+        this.params.merId = this.user.merId
+        this.form.merId = this.user.merId
         this.initData();
     },
     methods: {
@@ -149,14 +167,8 @@ export default {
         },
         //查询
         onSearch(){
-            /* if(this.searchVal!=''){
-                let json = {
-                    carNum:this.searchVal
-                }
-                this.params.recordJson = JSON.stringify(json)
-            } */
             this.params.carNum = this.searchVal
-            this.presentCarList = []
+            this.orderCarList = []
             this.pageNo = 1
             this.loading = true
             this.finished = false;
@@ -178,35 +190,22 @@ export default {
             console.log(this.params,'params')
             /* let formData = new FormData();
             formData.append('id',this.form.depId) */
-            let para = {
-                depId:this.form.depId
-            }
-            this.$api.home.onParkTypeNum(para).then(res=>{
-                if(res.code == 200){
-                    //debugger
-                    this.list.curlsNum = res.result.temporary
-                    this.list.curyzNum = res.result.month
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
-            });
             this.params.pageNo = this.pageNo
             this.params.pageSize = this.pageSize
-            this.$api.home.getPresentCarList(this.params).then(res=>{
+            this.$api.business.getOrderCarList(this.params).then(res=>{
                 if(res.code == 200){
                     this.loading = false;
                     this.total = res.result.total
+                    this.list.maxNum = res.message
                     let rows = res.result.records; //请求返回当页的列表
                     if (rows == null || rows.length === 0) {
                         // 加载结束
                         this.finished = true;
                         return;
                     }
-                    this.presentCarList = this.presentCarList.concat(rows)
+                    this.orderCarList = this.orderCarList.concat(rows)
                     //如果列表数据条数>=总条数，不再触发滚动加载
-                    if (this.presentCarList.length >= this.total) {
+                    if (this.orderCarList.length >= this.total) {
                         this.finished = true;
                     }                    
                     this.pageNo++;
@@ -217,22 +216,58 @@ export default {
                 this.loading = false;
             });
         },
-        //添加
-        addPresentCar(){
-            this.dialogShow = true
-            this.dialogTit = "新增在场车辆"
-            this.form.inTime = this.formatDate(new Date())
+        // 确认离场
+        exitOrderCar(id){
+            let formData = new FormData();
+            formData.append('id',id)
+            this.$api.business.exitOrderCar(formData).then(res=>{
+                if(res.code == 200){
+                    this.$toast(res.message);
+                    this.orderCarList = []
+                    this.pageNo = 1
+                    this.loading = true
+                    this.finished = false;
+                    this.initData();
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
-        //修改
-        updatePresentCar(item){
+        // 删除
+        delOrderCar(id){
+            let formData = new FormData();
+            formData.append('id',id)
+            this.$api.business.delOrderCar(formData).then(res=>{
+                if(res.code == 200){
+                    this.$toast(res.message);
+                    this.orderCarList = []
+                    this.pageNo = 1
+                    this.loading = true
+                    this.finished = false;
+                    this.initData();
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+        },
+        //添加
+        addOrderCar(){
             this.dialogShow = true
-            this.dialogTit = "修改在场车辆"
-            this.form.id = item.id
-            this.form.carNum = item.carNum
-            this.form.inTime = item.inTime
+            this.dialogTit = "新增预约车辆"
+            this.form.reserveInTime = this.formatDate(new Date())
+            this.form.reserveOutTime = this.formatDate(new Date())
+            this.$refs.form.resetValidation();
+        },
+        onConfirmStartTime(val){
+            this.form.reserveInTime = this.formatDate(val)
+            this.showPickerStartTime = false
         },
         onConfirmEndTime(val){
-            this.form.inTime = this.formatDate(val)
+            this.form.reserveOutTime = this.formatDate(val)
             this.showPickerEndTime = false
         },
         //弹窗保存
@@ -243,15 +278,19 @@ export default {
                 return
             }
             if(!this.form.id||this.form.id==""){
-                if(this.form.inTime ==""){
-                    this.$toast("请选择入场时间");
+                if(this.form.reserveInTime ==""){
+                    this.$toast("请选择预约入场时间");
+                    return
+                }else if(this.form.reserveOutTime ==""){
+                    this.$toast("请选择预约出场时间");
                     return
                 }
-                this.$api.home.addPresentCar(this.form).then(res=>{
+                this.$api.business.addOrderCar(this.form).then(res=>{
                     if(res.code == 200){
+                        debugger
                         this.cancelDialog();
                         this.$toast(res.message);
-                        this.presentCarList = []
+                        this.orderCarList = []
                         this.pageNo = 1
                         this.loading = true
                         this.finished = false;
@@ -274,7 +313,7 @@ export default {
                     if(res.code == 200){
                         this.cancelDialog();
                         this.$toast(res.message);
-                        this.presentCarList = []
+                        this.orderCarList = []
                         this.pageNo = 1
                         this.loading = true
                         this.finished = false;
@@ -292,11 +331,12 @@ export default {
         cancelDialog(){
             this.dialogShow = false
             this.form={
-                depId:this.carParkInfo.depId,
+                merId:this.user.merId,
                 carNum:'',
                 inTime:this.formatDate(new Date()),
-                serialNum:"",
-                parkId:this.carParkInfo.id
+                reserveInTime:this.formatDate(new Date()),
+                reserveOutTime:this.formatDate(new Date()),
+                ownerPhone:""
             }
         },
         handleDiaClickOutside(){
