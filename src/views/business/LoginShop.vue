@@ -45,8 +45,9 @@ export default {
         onSubmit() {
             this.$api.login.login(this.form).then((res) => {
                 if(res.code == 200){
+                    this.$store.dispatch('setDepId', res.result.merInfo.depId)
                     this.$store.dispatch('setUser', res.result.userInfo)
-                    this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
+                    //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                     sessionStorage.setItem('token',res.result.token)
                     this.$router.push('/indexShop')
                 }else{

@@ -27,7 +27,8 @@ export default {
             form:{                
                 username: '',
                 password: '',
-                openId:''
+                openId:'',
+                type:0
             }
         };
     },

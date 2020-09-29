@@ -7,10 +7,14 @@
             </template>
         </van-nav-bar>
         <el-container class="elContainer" v-loading="loading">
-            <el-main class="elMain">
-                <van-button  type="info"  @click.prevent="jumpTo(7)">
+            <!-- <el-main class="elMainShop"> -->
+            <el-main class="">
+                <van-grid :gutter="5" :column-num="2">
+                    <van-grid-item  text="预约车场" @click='jumpTo(7)' to="" />
+                </van-grid>
+                <!-- <van-button  type="info"  @click.prevent="jumpTo(7)">
                 预约车场
-                </van-button>
+                </van-button> -->
             </el-main>
         </el-container>
     </div>
@@ -72,7 +76,7 @@ export default {
     },
 }
 </script>
-<style lang="scss">
+<style lang="scss" >
     .pages{
 
         .el-header{
@@ -84,27 +88,14 @@ export default {
         .elContainer{
             height:100%;
         }
-        .elMain{
+        .elMainShop{
             display: flex;
             height:100%;
             align-items: center;
             justify-content: center;
             padding:0;
         }
-        .van-grid{
-            margin-top:.5rem;
-            box-shadow: 0 2px 11px rgba(0,0,0,.6);
-        }
-        .van-grid-item__content--center{
-            height:2.8rem;
-            background-color: #1989fa;
-            color:#fff;
-            .van-grid-item__text{
-                color:#fff;
-                font-size: .3rem;
-                font-weight: bold;
-            }
-        }
+        
         .navBar{
             .span{
                 color:#fff;
@@ -117,6 +108,21 @@ export default {
     .navBar{
        /deep/ .van-ellipsis{
            margin-left: 1rem;
+        }
+        
+    }
+    .van-grid{
+        /*margin-top:.5rem;
+            box-shadow: 0 2px 11px rgba(0,0,0,.6); */
+    }
+    /deep/ .van-grid-item__content--center{
+        height:2.8rem;
+        background-color: #1989fa;
+        color:#fff;
+        .van-grid-item__text{
+            color:#fff;
+            font-size: .3rem;
+            font-weight: bold;
         }
     }
 }

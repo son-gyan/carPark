@@ -298,6 +298,7 @@ export default {
         this.activeKeyWordIndex++
         if (this.activeKeyWordIndex > 7) {
           this.keyBoardStatus = false
+          this.finishedHandle()
         }
       }
     },

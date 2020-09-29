@@ -21,7 +21,7 @@
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="addOrderCar">添加</van-button>
                 </van-search>
                 <van-row type="flex" justify="center" class="cardHeaderWrap" >
-                    <van-col span="24">最大车位数：{{list.maxNum}}</van-col>
+                    <van-col span="24">可添加车位数：{{list.maxNum}}</van-col>
                 </van-row>
                 <van-card
                     v-for="(item,index) in orderCarList"  :key="index"
@@ -37,9 +37,9 @@
                         <p >预约出场时间：{{item.reserveOutTime}}</p>
                     </template>
                     <template #footer>
-                        <van-button type="info" size="mini" @click="exitOrderCar(item.id)" v-if="item.isLeave==0">确认离场</van-button>
-                        <span v-else>已确认离场</span>
-                        <van-button type="info" size="mini" @click="delOrderCar(item.id)">删除</van-button>
+                        <van-button type="info" size="mini" @click="exitOrderCar(item.id)" v-if="item.isLeave==0&&item.parkStatus!=0">确认离场</van-button>
+                        <span v-if="item.isLeave==1">已确认离场</span>
+                        <!-- <van-button type="info" size="mini" @click="delOrderCar(item.id)">删除</van-button> -->
                     </template>
                 </van-card>
                 <div class="noSearch" v-if="orderCarList.length === 0">暂无查询数据</div>
@@ -93,6 +93,7 @@
         </div>
         <van-popup v-model="showPickerStartTime" position="bottom">
             <van-datetime-picker
+                v-model="currentStartDate"
                 type="datetime"
                 @confirm="onConfirmStartTime"
                 @cancel="showPickerStartTime = false"
@@ -100,6 +101,7 @@
         </van-popup>
         <van-popup v-model="showPickerEndTime" position="bottom">
             <van-datetime-picker
+                v-model="currentEndDate"
                 type="datetime"
                 @confirm="onConfirmEndTime"
                 @cancel="showPickerEndTime = false"
@@ -149,7 +151,9 @@ export default {
                 ownerPhone:""
             },
             showPickerStartTime:false,
-            showPickerEndTime:false
+            showPickerEndTime:false,
+            currentStartDate:new Date(),
+            currentEndDate: new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1)
         }
     },
     computed: {
@@ -258,8 +262,10 @@ export default {
         addOrderCar(){
             this.dialogShow = true
             this.dialogTit = "新增预约车辆"
+            this.currentStartDate = new Date()
+            this.currentEndDate = new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1)
             this.form.reserveInTime = this.formatDate(new Date())
-            this.form.reserveOutTime = this.formatDate(new Date())
+            this.form.reserveOutTime = this.formatDate(new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1))
             this.$refs.form.resetValidation();
         },
         onConfirmStartTime(val){

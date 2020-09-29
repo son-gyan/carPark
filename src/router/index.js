@@ -32,8 +32,8 @@ const router = new Router({
     routes: [
         {
             path: "/",
-            //redirect: '/loading'
-            redirect: '/login'
+            redirect: '/loading'
+            //redirect: '/login'
         },
         {
             path: '/loading',
@@ -138,7 +138,7 @@ export default router
 
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
-    if (to.path === '/login') {
+    if (to.path === '/login'||to.path === '/loginShop'||to.path === '/'||to.path === '/loadingShop') {
         sessionStorage.clear()
         next();
     } else {

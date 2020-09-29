@@ -28,6 +28,8 @@
                         <p >车牌：{{item.carNum}}</p>
                     </template>
                     <template #desc>
+                        <p>商户名称：{{item.name}}</p >
+                        <p>商户联系电话：{{item.contactsNum}}</p >
                         <p >车主电话：{{item.ownerPhone}}</p>
                         <p >预约入场时间：{{item.reserveInTime}}</p>
                         <p >预约出场时间：{{item.reserveOutTime}}</p>
