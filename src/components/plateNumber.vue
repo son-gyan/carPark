@@ -53,7 +53,7 @@
       <div class="first-word"
         @click="selectFirstWord($event)">
         <div class="word">
-          <span>翼</span>
+          <span>冀</span>
         </div>
         <div class="word">
           <span>川</span>

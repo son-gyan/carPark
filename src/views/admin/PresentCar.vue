@@ -263,14 +263,17 @@ export default {
                     this.loading = false;
                 });
             }else{
-                let param = {
+                /* let param = {
                     id:this.form.id,
                     carNum:this.form.carNum
                 }
+                this.$api.home.updataCarNum(param).then(res=>{ */
                 let formData = new FormData();
                 formData.append('id',this.form.id)
                 formData.append('carNum',this.form.carNum)
-                this.$api.home.updataCarNum(formData).then(res=>{
+                console.log(formData.get("id"),"updataCarNum:formData:id")
+                console.log(formData.get("carNum"),"updataCarNum:formData:carNum")
+                this.$api.home.updataCarNum(formData).then(res=>{               
                     if(res.code == 200){
                         this.cancelDialog();
                         this.$toast(res.message);

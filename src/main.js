@@ -14,6 +14,11 @@ import 'vant/lib/index.css';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; 
 
+/* import VConsole from 'vconsole'
+let vConsole = new VConsole()
+Vue.use(vConsole) */
+
+
 Vue.use(ElementUI);
 Vue.use(Vant);
 
