@@ -32,7 +32,7 @@
                         <p >车牌：{{item.carNum}}</p>
                     </template>
                     <template #desc>
-                        <p >车主电话：{{item.ownerPhone}}</p>
+                        <p >车主电话：<a :href="'tel:'+item.ownerPhone">{{item.ownerPhone}}</a></p>
                         <p >预约入场时间：{{item.reserveInTime}}</p>
                         <p >预约出场时间：{{item.reserveOutTime}}</p>
                     </template>

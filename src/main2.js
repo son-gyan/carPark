@@ -9,20 +9,15 @@ import api from './api'
 import './assets/css/reset.css'
 import './assets/js/rem' // rem布局
 import './assets/iconfont/iconfont.css'
+import Vant from 'vant';
+import 'vant/lib/index.css';
 
-/* import 'element-ui/lib/theme-chalk/index.css'; 
-import element from './element/index'
-Vue.use(element)*/
-/* import 'vant/lib/index.css';
-import vant from './vant/index'
-Vue.use(vant)  */
-/* import VConsole from 'vconsole'
-let vConsole = new VConsole()
-Vue.use(vConsole) */
 
+Vue.use(Vant);
 
 Vue.use(api)
 Vue.config.productionTip = false
+//Vue.prototype.$echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({

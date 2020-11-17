@@ -29,8 +29,8 @@
                     </template>
                     <template #desc>
                         <p>商户名称：{{item.name}}</p >
-                        <p>商户联系电话：{{item.contactsNum}}</p >
-                        <p >车主电话：{{item.ownerPhone}}</p>
+                        <p>商户联系电话：<a :href="'tel:'+item.contactsNum">{{item.contactsNum}}</a></p >
+                        <p >车主电话：<a :href="'tel:'+item.ownerPhone">{{item.ownerPhone}}</a></p>
                         <p >预约入场时间：{{item.reserveInTime}}</p>
                         <p >预约出场时间：{{item.reserveOutTime}}</p>
                     </template>

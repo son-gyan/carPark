@@ -157,6 +157,7 @@ export default {
             this.$api.home.getBlacklist(this.params).then(res=>{
                 if(res.code == 200){
                     this.loading = false;
+                    //debugger
                     this.total = res.result.total
                     let rows = res.result.records; //请求返回当页的列表
                     if (rows == null || rows.length === 0) {
@@ -165,7 +166,9 @@ export default {
                         return;
                     }
                     this.blacklist = this.blacklist.concat(rows)
+                    console.log(this.blacklist,'this.blacklist1')
                     this.blacklist.map(o=>this.isShow.push(false))
+                    console.log(this.blacklist,'this.blacklist')
                     //如果列表数据条数>=总条数，不再触发滚动加载
                     if (this.blacklist.length >= this.total) {
                         this.finished = true;

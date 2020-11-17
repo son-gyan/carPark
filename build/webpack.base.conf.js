@@ -13,7 +13,7 @@ function resolve (dir) {
 module.exports = {
   context: path.resolve(__dirname, '../'),
   entry: {
-    app: './src/main.js'
+    app: ["babel-polyfill",'./src/main.js']
   },
   output: {
     path: config.build.assetsRoot,
@@ -80,5 +80,8 @@ module.exports = {
     child_process: 'empty'
   },
   externals: {
+    'vue': 'Vue',
+    'element-ui': 'ELEMENT',
+    'echarts':'echarts'
   }
 }

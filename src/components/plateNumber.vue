@@ -288,7 +288,7 @@ export default {
     clickKeyBoard (item) { // 点击自定义键盘
       console.log(item)
       this.formData['num' + this.activeKeyWordIndex] = item
-
+      //debugger
       if (this.formData.commonCard === '1') {
         this.activeKeyWordIndex++
         if (this.activeKeyWordIndex > 6) {
@@ -296,6 +296,17 @@ export default {
         }
       } else {
         this.activeKeyWordIndex++
+        /* if(this.activeKeyWordIndex == 7){
+          
+        } */
+        let plateLicense
+        plateLicense = this.plate_license_1
+        plateLicense = this.palindrome(plateLicense)
+        /* if (plateLicense.length < 7) {
+            this.$toast('请输入正确的车牌号')
+            return
+        } */
+        this.$emit('getPlateLicense',plateLicense)
         if (this.activeKeyWordIndex > 7) {
           this.keyBoardStatus = false
           this.finishedHandle()

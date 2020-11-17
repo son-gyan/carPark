@@ -241,6 +241,9 @@ export default {
             if(this.form.carNum == ''){
                 this.$toast('请输入车牌号')
                 return
+            }else if(this.form.carNum.length < 7){
+                this.$toast('请输入正确的车牌号')
+                return
             }
             if(!this.form.id||this.form.id==""){
                 if(this.form.inTime ==""){

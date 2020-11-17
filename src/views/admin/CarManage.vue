@@ -63,7 +63,7 @@
                         </van-field>
                         <van-field name="radio" label="套餐选择" v-if="!subItemShow">
                             <template #input v-if="!subItemShow">
-                                <van-radio-group v-model="packageList" direction="horizontal">
+                                <van-radio-group v-model="packageList" direction="horizontal" v-if="singlePacklist">
                                     <van-radio :name="item" class="radioItem"
                                         v-for="(item,index) in singlePacklist" :key="index">
                                         {{item.name}}
