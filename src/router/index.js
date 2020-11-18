@@ -1,5 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
+import {GetQueryByString} from '@/utils'
+
 //管理员路径
 const Login = () => import("@/views/admin/Login") 
 const Index = () => import("@/views/admin/Index") 
@@ -138,6 +140,14 @@ export default router
 
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
+    if(!token){
+        const url=window.location.href;//获取当前地址栏
+        const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
+        let isURL = window.location.href.indexOf('code=') === -1
+        if(isURL){
+            wxLogin(to.path)
+        }
+    }
     if (to.path === '/login'||to.path === '/loginShop'||to.path === '/'||to.path === '/loadingShop') {
         sessionStorage.clear()
         next();
@@ -150,3 +160,17 @@ router.beforeEach((to, from, next) => {
     }
     next()
 })
+
+function wxLogin(path){
+    console.log(path,"path");
+    const wxLoginJump = (appid, url) => {
+        let redirect_uri = encodeURIComponent(url)                
+        //this.$toast(redirect_uri);
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATUS#wechat_redirect`
+    }
+    if(path == '/loading'){        
+        wxLoginJump('wx653ad587382d8bf5', 'http://gzh.52tingche.com/Blankpage')
+    }else if(path == '/loadingShop'){
+        wxLoginJump('wx653ad587382d8bf5', 'http://gzh.52tingche.com/BlankpageShop')
+    }
+}

@@ -72,7 +72,7 @@ export default {
         getProject(){
             this.loading = true;
             let params = {
-                orgCategory:this.orgCategory,
+                orgCategory:this.orgCategory||sessionStorage.getItem('orgCategory'),
                 pageNo:1,
                 pageSize:999
             }

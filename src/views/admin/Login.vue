@@ -74,7 +74,7 @@ export default {
         height:100%;
         padding:4.5rem 0.5rem;
         background: #eee;
-        
+        box-sizing: border-box;
         .wxIcon{
             width:60px ;
             height:60px;

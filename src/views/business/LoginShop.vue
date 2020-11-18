@@ -33,13 +33,13 @@ export default {
         };
     },
     created() {
-        const url=window.location.href;//获取当前地址栏
+        /* const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
         if(!openid){            
             //this.wxLogin()
         }else{
             this.form.openId = openid
-        }
+        } */
     },
     methods: {
         onSubmit() {
@@ -75,7 +75,7 @@ export default {
         height:100%;
         padding:4.5rem 0.5rem;
         background: #eee;
-        
+        box-sizing: border-box;
         .wxIcon{
             width:60px ;
             height:60px;
