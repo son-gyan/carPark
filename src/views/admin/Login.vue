@@ -56,8 +56,7 @@ export default {
                 this.loading = false;
             });
         },
-        wxLogin(){
-            
+        wxLogin(){            
             const wxLogin = (appid, url) => {
                 let redirect_uri = encodeURIComponent(url)                
                 //this.$toast(redirect_uri);
