@@ -34,8 +34,8 @@ const router = new Router({
     routes: [
         {
             path: "/",
-            redirect: '/loading'
-            //redirect: '/login'
+            //redirect: '/loading'
+            redirect: '/login'
         },
         {
             path: '/loading',
@@ -140,14 +140,14 @@ export default router
 
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
-    if(!token){
+    /* if(!token){
         const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
         let isURL = window.location.href.indexOf('code=') === -1
         if(isURL){
             wxLogin(to.path)
         }
-    }
+    } */
     if (to.path === '/login'||to.path === '/loginShop'||to.path === '/'||to.path === '/loadingShop') {
         sessionStorage.clear()
         next();
