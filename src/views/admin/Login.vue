@@ -40,6 +40,7 @@ export default {
         }else{
             this.form.openId = openid
         }
+        console.log()
     },
     methods: {
         onSubmit() {

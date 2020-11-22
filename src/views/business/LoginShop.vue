@@ -33,13 +33,13 @@ export default {
         };
     },
     created() {
-        /* const url=window.location.href;//获取当前地址栏
+        const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
         if(!openid){            
             //this.wxLogin()
         }else{
             this.form.openId = openid
-        } */
+        }
     },
     methods: {
         onSubmit() {

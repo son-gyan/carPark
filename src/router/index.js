@@ -168,14 +168,14 @@ export default router
 
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
-    /* if(!token){
+    if(!token){
         const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
         let isURL = window.location.href.indexOf('code=') === -1
         if(isURL){
             wxLogin(to.path)
         }
-    } */
+    }
     if (to.path === '/login'||to.path === '/loginShop'||to.path === '/loginOwner'
         ||to.path === '/'||to.path === '/loadingShop'||to.path === '/loadingOwner') {
         sessionStorage.clear()
@@ -193,9 +193,10 @@ router.beforeEach((to, from, next) => {
 function wxLogin(path){
     console.log(path,"path");
     const wxLoginJump = (appid, url) => {
-        let redirect_uri = encodeURIComponent(url)                
+        let redirect_uri = encodeURIComponent(url) 
+        let snsapi_scope = "snsapi_base"               
         //this.$toast(redirect_uri);
-        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATUS#wechat_redirect`
+        window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${snsapi_scope}&state=STATUS#wechat_redirect`
     }
     if(path == '/loading'){        
         wxLoginJump('wx653ad587382d8bf5', 'http://gzh.52tingche.com/Blankpage')

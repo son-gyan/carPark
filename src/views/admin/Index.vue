@@ -76,9 +76,9 @@ export default {
                 pageNo:1,
                 pageSize:999
             }
-            this.$api.home.getProject(params).then(res=>{
+            this.$api.home.getProject().then(res=>{
                 if(res.code == 200){
-                    this.projectLst = res.result.records
+                    this.projectLst = res.result
                     if(this.projectLst.length>0){
                         this.form.curProject = this.projectLst[0].id
                         this.changeProject(this.projectLst[0].id)

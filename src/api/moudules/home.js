@@ -5,9 +5,9 @@ const header = {
 // 获取当前项目列表
 export const getProject = (params) => {
     return axios({
-        url: '/park/sys/sysDepart/list',
+        url: '/park/sys/sysDepart/parklist',
         method: 'get',
-        params
+        //params
     })
 }
 // 获取车场列表
