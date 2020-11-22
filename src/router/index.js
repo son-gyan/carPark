@@ -21,6 +21,11 @@ const BlankpageShop = () => import("@/views/business/BlankpageShop")
 const LoginShop = () => import("@/views/business/LoginShop") 
 const IndexShop = () => import("@/views/business/IndexShop") 
 const OrderShop = () => import("@/views/business/OrderShop") 
+//车主路径
+const LoadingOwner = () => import("@/views/owner/LoadingOwner")
+const BlankpageOwner = () => import("@/views/owner/BlankpageOwner") 
+const LoginOwner = () => import("@/views/owner/LoginOwner")
+const IndexOwner = () => import("@/views/owner/IndexOwner")
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -131,6 +136,29 @@ const router = new Router({
             name: "orderShop",
             component: OrderShop,
             meta: {keepAlive: false}
+        },
+        // 车主路由
+        {
+            path: '/loadingOwner',
+            name: 'loadingOwner',
+            component: LoadingOwner,
+            meta: {keepAlive: false}
+        },
+        {
+            path: "/blankpageOwner",
+            name: "blankpageOwner",
+            component: BlankpageOwner
+        },        
+        {
+            path: '/loginOwner',
+            name: 'loginOwner',
+            component: LoginOwner,
+            meta: {keepAlive: false}
+        },
+        {
+            path: "/indexOwner",
+            name: "indexOwner",
+            component: IndexOwner
         }
     ]
 });
@@ -148,7 +176,8 @@ router.beforeEach((to, from, next) => {
             wxLogin(to.path)
         }
     } */
-    if (to.path === '/login'||to.path === '/loginShop'||to.path === '/'||to.path === '/loadingShop') {
+    if (to.path === '/login'||to.path === '/loginShop'||to.path === '/loginOwner'
+        ||to.path === '/'||to.path === '/loadingShop'||to.path === '/loadingOwner') {
         sessionStorage.clear()
         next();
     } else {
