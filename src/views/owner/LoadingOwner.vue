@@ -16,9 +16,10 @@ export default {
         wxLogin(){
             
             const wxLogin = (appid, url) => {
-                let redirect_uri = encodeURIComponent(url)                
+                let redirect_uri = encodeURIComponent(url)  
+                let scope = "snsapi_base"              
                 //this.$toast(redirect_uri);
-                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATUS#wechat_redirect`
+                window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${scope}&state=STATUS#wechat_redirect`
             }
             wxLogin('wx653ad587382d8bf5', 'http://gzh.52tingche.com/BlankpageOwner')
         }
