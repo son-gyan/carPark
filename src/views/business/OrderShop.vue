@@ -161,8 +161,8 @@ export default {
     },
     directives: { ClickOutside },
     created() {
-        this.params.merId = this.user.merId
-        this.form.merId = this.user.merId
+        this.params.merId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
+        this.form.merId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
         this.initData();
     },
     methods: {
@@ -337,7 +337,7 @@ export default {
         cancelDialog(){
             this.dialogShow = false
             this.form={
-                merId:this.user.merId,
+                merId:this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId,
                 carNum:'',
                 inTime:this.formatDate(new Date()),
                 reserveInTime:this.formatDate(new Date()),

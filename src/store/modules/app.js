@@ -28,7 +28,7 @@ export default {
     mutations: {
         [SET_USER]: (state, user) => {
             state.user = user
-            sessionStorage.setItem('user', user)
+            sessionStorage.setItem('user', JSON.stringify(user))
         },
         [SET_ORGCATEGORY]: (state, orgCategory) => {
             state.orgCategory = orgCategory
@@ -40,7 +40,7 @@ export default {
         },
         [SET_CARPARKINFO]: (state, carParkInfo) => {
             state.carParkInfo = carParkInfo
-            sessionStorage.setItem('carParkInfo', carParkInfo)
+            sessionStorage.setItem('carParkInfo', JSON.stringify(carParkInfo))
         },
     },
     actions: {

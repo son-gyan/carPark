@@ -138,9 +138,9 @@ export default {
     },
     directives: { ClickOutside },
     created() {
-        this.params.depId = this.carParkInfo.depId
-        this.form.depId = this.carParkInfo.depId
-        this.form.parkId = this.carParkInfo.id
+        this.params.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
+        this.form.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
+        this.form.parkId = this.carParkInfo.id||JSON.parse(sessionStorage.getItem('carParkInfo')).id
         this.initData();
     },
     methods: {
@@ -298,11 +298,11 @@ export default {
         cancelDialog(){
             this.dialogShow = false
             this.form={
-                depId:this.carParkInfo.depId,
+                depId:this.carParkInfo.depId||sessionStorage.getItem('depId'),
                 carNum:'',
                 inTime:this.formatDate(new Date()),
                 serialNum:"",
-                parkId:this.carParkInfo.id
+                parkId:this.carParkInfo.id||JSON.parse(sessionStorage.getItem('carParkInfo')).id
             }
         },
         handleDiaClickOutside(){

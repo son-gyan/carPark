@@ -120,8 +120,8 @@ export default {
     },
     directives: { ClickOutside },
     created() {
-        this.params.depId = this.carParkInfo.depId
-        this.form.depId = this.carParkInfo.depId
+        this.params.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
+        this.form.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
         this.initData();
     },
     methods: {
@@ -228,7 +228,7 @@ export default {
         cancelDialog(){
             this.dialogShow = false
             this.form={
-                depId:this.carParkInfo.depId,
+                depId:this.carParkInfo.depId||JSON.parse(sessionStorage.getItem('carParkInfo')).depId,
                 licensePlate:'',
                 deadline:this.formatDate(new Date()),
                 memo:""

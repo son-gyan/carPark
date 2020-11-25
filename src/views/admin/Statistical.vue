@@ -102,7 +102,7 @@ export default {
         ...mapGetters(["orgCategory",'carParkInfo'])
     },
     created() {
-        this.params.depId = this.carParkInfo.depId
+        this.params.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
         let curDate = new Date();
         this.params.bTime = formatDate(new Date(curDate.getTime() - 7*24*60*60*1000));
         this.params.endTime = formatDate(curDate); 

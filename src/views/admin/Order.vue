@@ -80,7 +80,7 @@ export default {
     },
     directives: { ClickOutside },
     created() {
-        this.params.depId = this.carParkInfo.depId
+        this.params.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
         this.initData();
     },
     methods: {

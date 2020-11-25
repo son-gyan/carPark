@@ -225,7 +225,7 @@ export default {
   },
   computed: {
     depId(){
-      return this.$store.getters.depId
+      return this.$store.getters.depId||sessionStorage.getItem('depId')
     }
   },
   watch: {
@@ -240,7 +240,7 @@ export default {
     //预设车牌
     getData(depId){
       let params = {
-        depId:this.$store.getters.depId
+        depId:this.$store.getters.depId||sessionStorage.getItem('depId')
       }
       console.log(params)
       this.$api.home.queryByDepId(params).then(res=>{

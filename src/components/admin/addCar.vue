@@ -201,8 +201,8 @@ export default {
         ...mapGetters(["orgCategory",'carParkInfo','user'])
     },
     created() {
-        this.form.depId = this.carParkInfo.depId
-        this.form.parkId = this.carParkInfo.id
+        this.form.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
+        this.form.parkId = this.carParkInfo.id||JSON.parse(sessionStorage.getItem('carParkInfo')).id
         //this.form.ownerId = this.user.id
         this.initData()
         let curDate = new Date();
@@ -216,7 +216,7 @@ export default {
         },
         initData(){
             let params = {
-                depId:this.carParkInfo.depId,
+                depId:this.carParkInfo.depId||sessionStorage.getItem('depId'),
                 pageNo:1,
                 pageSize:999
             }
@@ -240,7 +240,7 @@ export default {
             });
 
             let parm = {
-                depId:this.carParkInfo.depId,
+                depId:this.carParkInfo.depId||sessionStorage.getItem('depId'),
             }
             this.$api.home.getGroupList(parm).then(res=>{
                 if(res.code == 200){

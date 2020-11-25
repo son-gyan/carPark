@@ -74,7 +74,7 @@ export default {
         //数据初始化
         initData(){
             let params = {
-                depId:this.carParkInfo.depId,
+                depId:this.carParkInfo.depId||JSON.parse(sessionStorage.getItem('carParkInfo')).depId,
                 pageNo:this.pageNo,
                 pageSize:this.pageSize
             }
