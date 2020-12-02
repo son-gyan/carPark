@@ -85,6 +85,7 @@
                 />
             <van-popup v-model="showPickerStartTime" position="bottom">
                 <van-datetime-picker
+                    v-model="currentStartDate"
                     type="date"
                     @confirm="onConfirmStartTime"
                     @cancel="showPickerStartTime = false"
@@ -102,6 +103,7 @@
                 />
             <van-popup v-model="showPickerEndTime" position="bottom">
                 <van-datetime-picker
+                    v-model="currentEndDate"
                     type="date"
                     @confirm="onConfirmEndTime"
                     @cancel="showPickerEndTime = false"
@@ -194,7 +196,9 @@ export default {
                     value:3,
                 }
             ],
-            packageStatus:true
+            packageStatus:true,
+            currentStartDate:new Date(),
+            currentEndDate: new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1)
         };
     },
     computed: {

@@ -75,6 +75,7 @@
         </div>
         <van-popup v-model="showPickerEndTime" position="bottom">
             <van-datetime-picker
+                v-model="currentDate"
                 type="datetime"
                 @confirm="onConfirmEndTime"
                 @cancel="showPickerEndTime = false"
@@ -112,7 +113,8 @@ export default {
                 deadline:'',
                 memo:""
             },
-            showPickerEndTime:false
+            showPickerEndTime:false,
+            currentDate:new Date()
         }
     },
     computed: {
