@@ -1,15 +1,15 @@
 <template>
     <div class="pages">
-        <el-form class="formWrap" ref="form" :model="form" label-width="80px">
-            <el-form-item label="账号：">
-                <el-input v-model="form.username"></el-input>
-            </el-form-item>
-            <el-form-item label="密码：">
-                <el-input v-model="form.password" type="password"></el-input>
+        <el-form class="formWrap" ref="form" :model="form" label-width="0px">
+            <el-form-item>
+                <h3 class="center">快捷登录</h3>
             </el-form-item>
             <el-form-item>
-                <van-button block type="info"  @click.prevent="onSubmit">
-                登录
+                <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <van-button block type="info"  @click.prevent="onNext">
+                下一步
                 </van-button>
             </el-form-item>
             <!-- <el-form-item style="text-align:center">
@@ -25,28 +25,22 @@ export default {
     data() {
         return {
             form:{                
-                username: '',
-                password: '',
-                openId:'',
-                type:1
+                phone: ''
             }
         };
     },
     methods: {
-        onSubmit() {
-            this.$api.login.login(this.form).then((res) => {
-                if(res.code == 200){
-                    this.$store.dispatch('setDepId', res.result.merInfo.depId)
-                    this.$store.dispatch('setUser', res.result.userInfo)
-                    //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
-                    sessionStorage.setItem('token',res.result.token)
-                    this.$router.push('/indexOwner')
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
-            });
+        onNext() {
+            const reg=/^1[3456789]\d{9}$/;
+            if(this.form.phone == ""){
+                this.$toast("手机号不能为空");
+                return
+            }else if(!reg.test(this.form.phone)){
+                this.$toast("手机号格式不正确");
+                return
+            }else{
+                this.$router.push('/indexOwner')
+            }
         }
             
     }
@@ -58,6 +52,9 @@ export default {
         padding:4.5rem 0.5rem;
         background: #eee;
         box-sizing: border-box;
+        .center{
+            text-align: center;
+        }
         .wxIcon{
             width:60px ;
             height:60px;
