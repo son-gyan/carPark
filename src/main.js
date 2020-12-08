@@ -13,12 +13,12 @@ import './assets/iconfont/iconfont.css'
 
 Es6Promise.polyfill()
 
-/* import 'element-ui/lib/theme-chalk/index.css'; 
+import 'element-ui/lib/theme-chalk/index.css'; 
 import element from './element/index'
-Vue.use(element)*/
-/* import 'vant/lib/index.css';
+Vue.use(element)
+import 'vant/lib/index.css';
 import vant from './vant/index'
-Vue.use(vant)  */
+Vue.use(vant) 
 /* import VConsole from 'vconsole'
 let vConsole = new VConsole()
 Vue.use(vConsole) */

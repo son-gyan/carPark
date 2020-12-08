@@ -300,7 +300,8 @@ export default {
           
         } */
         let plateLicense
-        plateLicense = this.plate_license_1
+        plateLicense = this.plate_license_2
+        //debugger
         plateLicense = this.palindrome(plateLicense)
         /* if (plateLicense.length < 7) {
             this.$toast('请输入正确的车牌号')
@@ -309,7 +310,7 @@ export default {
         this.$emit('getPlateLicense',plateLicense)
         if (this.activeKeyWordIndex > 7) {
           this.keyBoardStatus = false
-          this.finishedHandle()
+          //this.finishedHandle()
         }
       }
     },
