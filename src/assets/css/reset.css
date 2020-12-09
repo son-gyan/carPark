@@ -3,6 +3,8 @@
 }
 .navBar.van-nav-bar .van-icon {
   color: #fff;
+  vertical-align: middle;
+  margin-left: 3px;
 }
 .navBar.van-nav-bar .van-nav-bar__title {
   color: #fff;

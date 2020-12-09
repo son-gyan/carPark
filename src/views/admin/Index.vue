@@ -3,7 +3,7 @@
         <van-nav-bar class="navBar" title="首页"  >
             <template #right>
                 <span class="span">{{user.username}}</span>
-                <span class="span" @click="logout" style="margin-left:10px;">切换账号</span>
+                <span class="span" @click="logout" style="margin-left:10px;">切换账号<van-icon :name="require('../../assets/images/changeAccout.png')" /></span>
             </template>
         </van-nav-bar>
         <el-container v-loading="loading">
