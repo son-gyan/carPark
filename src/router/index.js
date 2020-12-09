@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import {GetQueryByString} from '@/utils'
+import config from "@/api/config";
 
 //管理员路径
 const Login = () => import("@/views/admin/Login") 
@@ -199,8 +200,8 @@ function wxLogin(path){
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${snsapi_scope}&state=STATUS#wechat_redirect`
     }
     if(path == '/loading'){        
-        wxLoginJump('wx653ad587382d8bf5', 'http://gzh.52tingche.com/Blankpage')
+        wxLoginJump(config.appID, config.pageUrl+'/Blankpage')
     }else if(path == '/loadingShop'){
-        wxLoginJump('wx653ad587382d8bf5', 'http://gzh.52tingche.com/BlankpageShop')
+        wxLoginJump(config.appID, config.pageUrl+'/BlankpageShop')
     }
 }
