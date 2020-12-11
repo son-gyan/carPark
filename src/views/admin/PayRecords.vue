@@ -27,6 +27,7 @@
                             <span v-if="item.payType==4">储值扣费</span>
                             <span v-if="item.payType==5">二维码支付</span>
                             <span v-if="item.payType==6">预交费付款</span>
+                            <span v-if="item.payType==99">免费</span>
                         </p>
                         <p >入场：{{item.inTime}}</p>
                         <p >出场：{{item.outTime}}</p>
