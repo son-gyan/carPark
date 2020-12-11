@@ -49,6 +49,9 @@ export default {
                     this.$store.dispatch('setUser', res.result.userInfo)
                     this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                     sessionStorage.setItem('token',res.result.token)
+                    if(res.result.depart){                        
+                        sessionStorage.setItem('departName',res.result.depart.departName)
+                    }
                     this.$router.push('/index')
                 }else{
                     this.$toast(res.message);

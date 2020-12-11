@@ -16,6 +16,11 @@ const Statistical = () => import("@/views/admin/Statistical")
 const addCar = () => import("@/components/admin/addCar") 
 const Loading = () => import("@/views/admin/Loading")
 const Order = () => import("@/views/admin/Order") 
+const Refund = () => import("@/views/admin/Refund") 
+const InOut = () => import("@/views/admin/InOut") 
+const PayRecords = () => import("@/views/admin/PayRecords") 
+const Member = () => import("@/views/admin/Member") 
+const Examine = () => import("@/views/admin/Examine") 
 //商户路径
 const LoadingShop = () => import("@/views/business/LoadingShop")
 const BlankpageShop = () => import("@/views/business/BlankpageShop") 
@@ -107,6 +112,31 @@ const router = new Router({
             name: "order",
             component: Order,
             meta: {keepAlive: false}
+        },
+        {
+            path:"/refund",
+            name: "refund",
+            component: Refund
+        },
+        {
+            path:"/inOut",
+            name: "inOut",
+            component: InOut
+        },
+        {
+            path:"/payRecords",
+            name: "payRecords",
+            component: PayRecords
+        },
+        {
+            path:"/member",
+            name: "member",
+            component: Member
+        },
+        {
+            path:"/examine",
+            name: "examine",
+            component: Examine
         },
         //商户路由
         {

@@ -37,9 +37,13 @@ html,body {
     height:100%;
     .pages{
         height:100%; 
+        background: #f2f2f2;
     }
     .van-nav-bar__text{
         color:#fff
+    }
+    .vanList{
+        margin-top:46px;
     }
 }
 </style>

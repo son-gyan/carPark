@@ -25,6 +25,7 @@
                     <van-col span="12">在场临时车：{{list.curlsNum}}</van-col>
                 </van-row>
                 <van-card
+                    class="vanCard"
                     v-for="(item,index) in presentCarList"  :key="index"
                     :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
                     @click-thumb="imgPreview(item.imgUrl)"

@@ -248,3 +248,30 @@ export const delOrderCar = (data) => {
         headers: header 
     })
 }
+
+// 预付退款列表
+export const getRefundList = (params) => {
+    return axios({
+        url: '/park/zyb/zybRefund/list',
+        method: 'get',
+        params
+    })
+}
+
+// 收费记录列表
+export const getPayList = (params) => {
+    return axios({
+        url: '/park/zyb/data/payList',
+        method: 'get',
+        params
+    })
+}
+
+// 车辆进出场记录列表
+export const getInOutList = (params) => {
+    return axios({
+        url: '/park/zyb/data/recordList',
+        method: 'get',
+        params
+    })
+}
