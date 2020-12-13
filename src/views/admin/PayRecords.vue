@@ -10,11 +10,20 @@
                 @load="onLoad"
                 :offset="10"
                 >
+                <van-search
+                    v-model="searchVal"
+                    placeholder="请输入车牌号"
+                    @search="onSearch"
+                    show-action
+                    background="#dcdfe6"
+                    >
+                    <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
+                </van-search>
                 <van-card
                     class="vanCard"
                     v-for="(item,index) in payList"  :key="index"
                     :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
-                    @click-thumb="imgPreview(item.imgUrl)"
+                    @click-thumb="imgPreview(item)"
                     >
                     <template #title>
                         <p >车牌号码：{{item.carNum}}</p>
@@ -50,10 +59,12 @@ export default {
     },
     data(){
         return {
+            searchVal:"",
             finished: false,
             loading: false,
             payList:[],
             params:{
+                carNum:"",
                 depId:'',
                 pageNo:1,
                 pageSize:10 
@@ -71,6 +82,14 @@ export default {
         this.init()
     },
     methods:{
+        onSearch(){
+            this.params.carNum = this.searchVal
+            this.payList=[]
+            this.pageNo = 1
+            this.loading = true
+            this.finished = false;
+            this.init()
+        },
         //返回
         onClickLeft(){
             this.$router.go(-1)
@@ -108,10 +127,15 @@ export default {
                 this.loading = false;
             });
         },
-        imgPreview(url){
+        imgPreview(item){
+            let url = []
+            url.push(item.imgUrl)
+            if(item.outTime){                
+                url.push(item.outImgUrl)
+            }
             ImagePreview({
-                images: [url],
-                showIndex:false,
+                images: url,
+                showIndex:true,
                 closeable: true,
             });
         }

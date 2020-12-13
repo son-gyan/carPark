@@ -199,7 +199,8 @@ export default router
 
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
-    if(!token){
+    debugger
+    if(!token &&to.path !== '/indexOwner'){
         const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
         let isURL = window.location.href.indexOf('code=') === -1
@@ -212,9 +213,19 @@ router.beforeEach((to, from, next) => {
         sessionStorage.clear()
         next();
     } else {
-        if (token === 'null' || token === '') {
-            next('/login');
-        } else {
+        if(to.path === '/index'){
+            if (token === 'null' || token === '') {
+                next('/login');
+            } else {
+                next();
+            }
+        }else if(to.path === '/indexShop'){
+            if (token === 'null' || token === '') {
+                next('/loginShop');
+            } else {
+                next();
+            }
+        }else{
             next();
         }
     }
