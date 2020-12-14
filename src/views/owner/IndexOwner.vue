@@ -55,18 +55,18 @@
             </el-main>
             <el-main class="elMain">
                 <van-grid :gutter="0" :column-num="4" class="gridGroup" :border="false">
-                    <van-grid-item  text="设备管理" @click='jumpTo(1)'  :icon="require('../../assets/images/device.png')"/>
-                    <van-grid-item  text="车辆管理" @click='jumpTo(2)'  :icon="require('../../assets/images/carManager.png')"/>
-                    <van-grid-item  text="预付退款" @click='jumpTo(8)'  :icon="require('../../assets/images/refund.png')"/>
-                    <van-grid-item  text="滞留盘点" @click='jumpTo(4)'  :icon="require('../../assets/images/detentionInventory.png')"/>
-                    <van-grid-item  text="在场车辆" @click='jumpTo(3)'  :icon="require('../../assets/images/presentCar.png')"/>
-                    <van-grid-item  text="进出场记录" @click='jumpTo(9)'  :icon="require('../../assets/images/inOut.png')"/>
-                    <van-grid-item  text="支付记录" @click='jumpTo(10)'  :icon="require('../../assets/images/payRecords.png')"/>
-                    <van-grid-item  text="预约车场" @click='jumpTo(7)'  :icon="require('../../assets/images/orderCar.png')"/>
-                    <van-grid-item  text="黑名单"   @click='jumpTo(5)'  :icon="require('../../assets/images/blacklist.png')"/>
-                    <van-grid-item  text="统计报表" @click='jumpTo(6)'  :icon="require('../../assets/images/statistical.png')"/>
-                    <van-grid-item  text="会员管理(集团)" @click='jumpTo(11)'  :icon="require('../../assets/images/member.png')"/>
-                    <van-grid-item  text="月租审核" @click='jumpTo(12)'  :icon="require('../../assets/images/examine.png')"/>
+                    <van-grid-item  text="我的车辆" @click='jumpTo(1)'  :icon="require('../../assets/images/owner/myCar.png')"/>
+                    <van-grid-item  text="无感支付" @click='jumpTo(2)'  :icon="require('../../assets/images/owner/payment.png')"/>
+                    <van-grid-item  text="附近车场" @click='jumpTo(8)'  :icon="require('../../assets/images/owner/carPark.png')"/>
+                    <van-grid-item  text="停车账单" @click='jumpTo(4)'  :icon="require('../../assets/images/owner/bill.png')"/>
+                    <van-grid-item  text="我的月租车" @click='jumpTo(3)'  :icon="require('../../assets/images/owner/monthlyCar.png')"/>
+                    <van-grid-item  text="电子发票" @click='jumpTo(9)'  :icon="require('../../assets/images/owner/invoice.png')"/>
+                    <van-grid-item  text="补缴停车费" @click='jumpTo(10)'  :icon="require('../../assets/images/owner/afterPayment.png')"/>
+                    <van-grid-item  text="会员充值" @click='jumpTo(7)'  :icon="require('../../assets/images/owner/member.png')"/>
+                    <van-grid-item  text="临停缴费"   @click='jumpTo(5)'  :icon="require('../../assets/images/owner/temporaryStop.png')"/>
+                    <van-grid-item  text="代人缴费" @click='jumpTo(6)'  :icon="require('../../assets/images/owner/payTasaday.png')"/>
+                    <van-grid-item  text="广告投放" @click='jumpTo(11)'  :icon="require('../../assets/images/owner/advert.png')"/>
+                    <van-grid-item  text="联系我们" @click='jumpTo(12)'  :icon="require('../../assets/images/owner/contactUs.png')"/>
                 </van-grid>
             </el-main>
         </el-container>
@@ -152,13 +152,13 @@ export default {
             }
         },
         jumpTo(type){
-            if(this.form.carPark == ''){
+            /* if(this.form.carPark == ''){
                 this.$toast('请选择车场');
                 return
-            }else{
+            }else{ */
                 switch (type) {
                     case 1:
-                        this.$router.push('/deviceManage')
+                        this.$router.push('/myCar')
                         break;
                     case 2:
                         this.$router.push('/carManage')
@@ -196,7 +196,7 @@ export default {
                     default:
                         break;
                 }
-            }
+            /* } */
 
         },
         logout(){

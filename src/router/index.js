@@ -32,6 +32,7 @@ const LoadingOwner = () => import("@/views/owner/LoadingOwner")
 const BlankpageOwner = () => import("@/views/owner/BlankpageOwner") 
 const LoginOwner = () => import("@/views/owner/LoginOwner")
 const IndexOwner = () => import("@/views/owner/IndexOwner")
+const myCar = () => import("@/views/owner/myCar")
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -190,6 +191,11 @@ const router = new Router({
             path: "/indexOwner",
             name: "indexOwner",
             component: IndexOwner
+        },
+        {
+            path: "/myCar",
+            name: "myCar",
+            component: myCar
         }
     ]
 });
