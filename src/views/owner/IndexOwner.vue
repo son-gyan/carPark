@@ -17,26 +17,43 @@
                             src="https://img.yzcdn.cn/vant/cat.jpeg"
                             />
                     </van-col>
-                    <van-col span="12">                        
-                        <van-col span="12">{{user.phone}}</van-col>
-                        <van-col span="12" class="center">{{departName}}</van-col>
-                        <van-col span="12">{{user.username}}</van-col>
-                        <van-col span="12" class="center">管理员</van-col>
+                    <van-col span="16">                        
+                        <van-col span="24">13045687912</van-col>
+                        <van-col span="24">微信号：wxy1234567895</van-col>
+                        <van-col span="24">已绑车辆：鄂E88888 鄂E88888 鄂E88888 鄂E88888 鄂E88888</van-col>
                     </van-col>
                 </van-row>
-                <el-form ref="form" :model="form" label-width="120px" size="mini" class="elForm">
-                    <el-form-item label="当前项目：">
-                    </el-form-item>
-                    <el-form-item label="车场切换：">
+                <el-form ref="form" :model="form" label-width="0" size="mini" class="elForm">
+                    <el-form-item>
+                        <div class="info">
+                            <p class="p1">我的VIP特权</p>
+                            <p class="p2"><van-icon class="memberIcon" :name="require('@/assets/images/icon-member.png')" />智泊云停车会员</p>
+                            <p class="p3"><el-progress :percentage="50" color="#fff" :text-inside="true"></el-progress></p>
+                            <p class="p1">会员余额：123.00元 <span class="fr">加入日期：2019.01.01</span></p>
+                        </div>
                     </el-form-item>
                 </el-form>
             </el-header>
-            <el-main class="elMain">
+            <el-main class="elMain elMainHead">
                 <van-grid  :column-num="3" class="gridGroup">
-                    <van-grid-item  text="黑名单"   @click='jumpTo(5)' to="" />
-                    <van-grid-item  text="统计报表" @click='jumpTo(6)' to="" />
-                    <van-grid-item  text="预约车场" @click='jumpTo(7)' to="" />
+                    <van-grid-item  text="月卡" @click='jumpTo(5)' >
+                        <template slot="icon">
+                            <div>1</div>
+                        </template>
+                    </van-grid-item>
+                    <van-grid-item  text="积分" @click='jumpTo(6)' >
+                        <template slot="icon">
+                            <div>100</div>
+                        </template>
+                    </van-grid-item>
+                    <van-grid-item  text="优惠券" @click='jumpTo(7)' >
+                        <template slot="icon">
+                            <div>0</div>
+                        </template>
+                    </van-grid-item>
                 </van-grid>
+            </el-main>
+            <el-main class="elMain">
                 <van-grid :gutter="0" :column-num="4" class="gridGroup" :border="false">
                     <van-grid-item  text="设备管理" @click='jumpTo(1)'  :icon="require('../../assets/images/device.png')"/>
                     <van-grid-item  text="车辆管理" @click='jumpTo(2)'  :icon="require('../../assets/images/carManager.png')"/>
@@ -184,7 +201,7 @@ export default {
         },
         logout(){
             window.location.replace(
-                window.location.origin + "/login?openid="+this.user.openid
+                window.location.origin + "/loginOwner?openid="+this.user.openid
             );
         }
     },
@@ -202,10 +219,27 @@ export default {
     #app .pages{
         height:auto;
         /deep/ .el-header{
-            height:auto !important;
+            height:150px !important;
             padding: 0;            
             padding-top:0.5rem;
             border-bottom: 1px solid #eee;
+        }
+        .elHead .elForm{
+            margin-top: 20px;
+            .info{
+                .p1{
+                    font-size: .2rem;
+                }                
+                .memberIcon{
+                    vertical-align: middle;
+                }
+                /deep/ .el-progress-bar__outer{
+                    background-color: #ccc;
+                }
+                .fr{
+                    float: right;
+                }
+            }
         }
         .elMain{            
             width: 93%;
@@ -214,6 +248,10 @@ export default {
             background: #fff;
             border-radius: 5px;
             box-sizing: border-box;
+            &.elMainHead{
+                margin: 90px auto 10px;;
+                padding: 0;
+            }
             .tit{
                 font-size: .35rem;
                 padding: 10px 0;

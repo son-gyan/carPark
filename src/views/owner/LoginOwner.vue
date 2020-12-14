@@ -97,7 +97,7 @@ export default {
             align-self: flex-end;
         }
         /deep/ .el-divider__text{
-            font-size: 20px;
+            font-size: .4rem;
         }
     }
 </style>
