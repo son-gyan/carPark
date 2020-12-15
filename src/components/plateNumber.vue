@@ -243,26 +243,28 @@ export default {
         depId:this.$store.getters.depId||sessionStorage.getItem('depId')
       }
       console.log(params)
-      this.$api.home.queryByDepId(params).then(res=>{
-          if(res.code == 200){
-              //   预设车牌城市选择
-              if (res.result.setLicensePlate) {
-                this.formData.num0 = res.result.setLicensePlate.substr(0, 1)
-              } else {
-                this.formData.num0 = ''
-              }
-              //   预设车牌ABC选择
-              if (res.result.setLicensePlate) {
-                this.formData.num1 = res.result.setLicensePlate.substr(1, 1)
-              } else {
-                this.formData.num1 = ''
-              }
-          }else{
-              this.$toast(res.message);
-          }
-      }).catch((res) => {
-          this.loading = false;
-      });
+      if(params.depId){
+        this.$api.home.queryByDepId(params).then(res=>{
+            if(res.code == 200){
+                //   预设车牌城市选择
+                if (res.result.setLicensePlate) {
+                  this.formData.num0 = res.result.setLicensePlate.substr(0, 1)
+                } else {
+                  this.formData.num0 = ''
+                }
+                //   预设车牌ABC选择
+                if (res.result.setLicensePlate) {
+                  this.formData.num1 = res.result.setLicensePlate.substr(1, 1)
+                } else {
+                  this.formData.num1 = ''
+                }
+            }else{
+                this.$toast(res.message);
+            }
+        }).catch((res) => {
+            this.loading = false;
+        });
+      }
     },
     clickFirstWrap () {
       // 点击第一个输入框

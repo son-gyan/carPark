@@ -2,6 +2,9 @@
     <div>
         <van-nav-bar class="navBar" title="我的车辆" left-text="返回" left-arrow @click-left="onClickLeft" />
         <div class="mainWrap">
+            <div class="addCar" @click="addCar">
+                <van-icon name="plus" />添加车辆
+            </div>
             <van-list
                 :finished="finished"
                 :immediate-check="false"
@@ -13,26 +16,18 @@
                 <van-card
                     class="vanCard"
                     v-for="(item,index) in myCarList"  :key="index"
-                    :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
-                    @click-thumb="imgPreview(item.imgUrl)"
+                    :thumb="require('../../assets/images/defaultImg.png')"
                     >
-                    <template #title>
-                        <p v-if="item.carType==1">月租车</p> 
-                        <p v-if="item.carType==2">储值车</p> 
-                        <p v-if="item.carType==3">免费车</p> 
-                        <p v-if="item.carType==4">临时车</p> 
-                        <p v-if="item.carType==5">时段限制月租</p> 
-                    </template>
                     <template #desc>
                         <p >车牌：{{item.carNum}}</p>
                         
-                        <p >入场：{{item.inTime}}</p>
+                        <p >车辆颜色：{{item.colour}}</p>
                     </template>
                     <template #footer>
-                        <van-button type="info" size="mini" @click="updatePresentCar(item)">修改</van-button>
+                        <van-button type="info" size="mini" @click="delMyCar(item)">删除</van-button>
                     </template>
                 </van-card>
-                <div class="noSearch" v-if="myCarList.length === 0">暂无查询数据</div>
+                <div class="noSearch" v-if="myCarList.length==0">暂无查询数据</div>
             </van-list>
         </div>
         <!-- 弹框 -->
@@ -40,31 +35,25 @@
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main>
+                    <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
                     <van-form @submit="saveData" class="formWrap" :key="+new Date()">
                         <van-field
-                            v-if="!form.id||form.id==''"
                             readonly
                             clickable
-                            name="inTime"
-                            :value="form.inTime"
+                            name="colour"
+                            :value="form.colour"
                             label="车辆颜色"
                             placeholder="点击选择车辆颜色"
                             @click.stop.prevent="showPickerColor = true"
                             />
+                            <footer>
+                                <button @click="saveData">保存</button>
+                                <button @click="cancelDialog">取消</button>
+                            </footer>
                     </van-form>
-                    <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
-                    <footer>
-                        <button @click="saveData">保存</button>
-                        <button @click="cancelDialog">取消</button>
-                    </footer>
+                    
                 </main>
                 <van-popup v-model="showPickerColor" position="bottom">
-                    <!-- <van-datetime-picker
-                        v-model="currentDate"
-                        type="datetime"
-                        @confirm="onConfirmEndTime"
-                        @cancel="showPickerColor = false"
-                    /> -->
                     <van-picker
                         show-toolbar
                         :columns="columns"
@@ -77,12 +66,17 @@
     </div>
 </template>
 <script>
+import { mapGetters } from "vuex"
 import { ImagePreview } from 'vant';
+import ClickOutside from 'element-ui/src/utils/clickoutside'
 import plateNumber from '@/components/plateNumber'
 export default {
     components: {
         [ImagePreview.Component.name]: ImagePreview.Component,
         plateNumber
+    },
+    computed: {
+        ...mapGetters(['user'])
     },
     data(){
         return {
@@ -90,10 +84,7 @@ export default {
             loading: false,
             myCarList:[],
             params:{
-                carNum:'',
-                depId:'',
-                pageNo:1,
-                pageSize:10 
+                userId:""
             },
             pageNo: 1,//请求第几页
             pageSize: 10,//每页请求的数量
@@ -102,16 +93,17 @@ export default {
             dialogTit:"新增我的车辆",
             showPickerColor:false,
             form:{
-                depId:'',
+                userId:'',
                 carNum:'',
-                inTime:'',
-                serialNum:"",
-                parkId:""
+                colour:''
             },
             columns:['红色','绿色','白色','橙色']
         }
     },
+    directives: { ClickOutside },
     created() {
+        this.params.userId = this.user.id
+        this.form.userId  = this.user.id
         this.initData();
     },
     methods: {
@@ -131,10 +123,62 @@ export default {
         },
         //初始化
         initData(){
-
+            this.$api.owner.getMyCarList(this.params).then(res=>{
+                if(res.code == 200){
+                    if(res.result&&res.result.length>0){
+                        let rows = res.result; //请求返回当页的列表
+                        this.myCarList = rows
+                    }                    
+                }else{
+                    this.$toast(res.message);
+                }
+                this.loading = false;
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
-        onConfirmColor(){
-
+        addCar(){
+            this.dialogShow = true
+        },
+        onConfirmColor(val){
+            this.form.colour = val
+            this.showPickerColor = false
+        },
+        saveData(){
+            if(this.form.carNum == ''){
+                this.$toast('请输入车牌号')
+                return
+            }else if(this.form.carNum.length < 7){
+                this.$toast('请输入正确的车牌号')
+                return
+            }else if(this.form.colour==""){
+                this.$toast('请选择车辆颜色')
+                return
+            }
+            let formData = new FormData();
+                formData.append('userId',this.form.userId)
+                formData.append('carNum',this.form.carNum)
+                formData.append('colour',this.form.colour)
+            this.$api.owner.addMyCar(formData).then(res=>{
+                if(res.code == 200){
+                    this.cancelDialog();
+                    this.$toast(res.message);
+                    this.loading = true
+                    this.initData();
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+        },
+        cancelDialog(){
+            this.dialogShow = false
+            this.form.colour = ""
+            this.form.carNum = ""
+        },
+        delMyCar(item){
+            
         }
     },
 }
@@ -144,6 +188,13 @@ export default {
         margin-right:15px
     }
     .mainWrap{
+        .addCar{
+            width: 90%;
+            padding: .3rem 0;
+            margin:.1rem auto;
+            text-align: center;
+            border:1px dashed #666;
+        }
         .title{
             padding: .3rem 0;
             text-align: center;

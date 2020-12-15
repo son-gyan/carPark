@@ -1,10 +1,9 @@
 <template>
     <div class="pages">
-        <van-nav-bar class="navBar" title="首页"  >
-            <template #right>
-                <!-- <span class="span">{{user.username}}</span> -->
-                <span class="span" @click="logout" style="margin-left:10px;">切换账号<van-icon :name="require('../../assets/images/changeAccout.png')" /></span>
-            </template>
+        <van-nav-bar  title="首页"  > <!-- class="navBar" -->
+            <!-- <template #right> -->
+                <!-- <span class="span" @click="logout" style="margin-left:10px;">切换账号<van-icon :name="require('../../assets/images/changeAccout.png')" /></span>
+            </template> -->
         </van-nav-bar>
         <el-container v-loading="loading">
             <el-header class="elHead">
@@ -18,7 +17,7 @@
                             />
                     </van-col>
                     <van-col span="16">                        
-                        <van-col span="24">13045687912</van-col>
+                        <van-col span="24">{{user.phone}}</van-col>
                         <van-col span="24">微信号：wxy1234567895</van-col>
                         <van-col span="24">已绑车辆：鄂E88888 鄂E88888 鄂E88888 鄂E88888 鄂E88888</van-col>
                     </van-col>
@@ -83,74 +82,16 @@ export default {
                 carPark:''
             },
             projectLst:[],
-            carParkLst:[],
-            departName:sessionStorage.getItem('departName')
+            carParkLst:[]
         }
     },
     computed: {
-        ...mapGetters(["orgCategory",'depId','user'])
+        ...mapGetters(['user'])
     },
     created() {
         //this.getProject()
     },
     methods: {
-        //获取当前项目
-        getProject(){
-            this.loading = true;
-            let params = {
-                orgCategory:this.orgCategory||sessionStorage.getItem('orgCategory'),
-                pageNo:1,
-                pageSize:999
-            }
-            this.$api.home.getProject().then(res=>{
-                if(res.code == 200){
-                    this.projectLst = res.result
-                    if(this.projectLst.length>0){
-                        this.form.curProject = this.projectLst[0].id
-                        this.changeProject(this.projectLst[0].id)
-                    }                    
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
-            });
-        },
-        //当前项目切换
-        changeProject(val){
-            let pram = {
-                depId:val,
-                pageNo:1,
-                pageSize:999
-            }            
-            this.$store.dispatch('setDepId', val)
-            this.$api.home.getCarPark(pram).then(res=>{
-                if(res.code == 200){
-                    this.loading = false;
-                    this.carParkLst = res.result.records
-                    if(this.carParkLst.length>0){                        
-                        this.form.carPark = this.carParkLst[0].id
-                    }else{
-                        this.form.carPark = '';
-                    }
-                    this.changeCarPark(this.form.carPark)
-                    console.log(this.form.carPark,'form.carPark')
-                }else{                    
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
-            });
-        },
-        //车场切换
-        changeCarPark(id){
-            for (let i = 0; i < this.carParkLst.length; i++) {
-                const item = this.carParkLst[i];
-                if(id==item.id){             
-                    this.$store.dispatch('setCarParkInfo', item)
-                }
-            }
-        },
         jumpTo(type){
             /* if(this.form.carPark == ''){
                 this.$toast('请选择车场');

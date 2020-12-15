@@ -310,15 +310,18 @@ router.beforeEach((to, from, next) => {
 
 function wxLogin(path){
     console.log(path,"path");
-    const wxLoginJump = (appid, url) => {
-        let redirect_uri = encodeURIComponent(url) 
-        let snsapi_scope = "snsapi_base"               
+    let snsapiScope = "snsapi_base" 
+    const wxLoginJump = (appid, url,snsapi_scope) => {
+        let redirect_uri = encodeURIComponent(url)              
         //this.$toast(redirect_uri);
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${snsapi_scope}&state=STATUS#wechat_redirect`
     }
     if(path == '/loading'){        
-        wxLoginJump(config.appID, config.pageUrl+'/Blankpage')
+        wxLoginJump(config.appID, config.pageUrl+'/Blankpage',snsapiScope)
     }else if(path == '/loadingShop'){
-        wxLoginJump(config.appID, config.pageUrl+'/BlankpageShop')
+        wxLoginJump(config.appID, config.pageUrl+'/BlankpageShop',snsapiScope)
+    }else if(path == '/loadingOwner'){
+        snsapiScope="snsapi_userinfo"
+        wxLoginJump(config.appID, config.pageUrl+'/BlankpageOwner',snsapiScope)
     }
 }

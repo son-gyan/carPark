@@ -19,6 +19,40 @@ export default {
         window.addEventListener("beforeunload",()=>{ 
             sessionStorage.setItem("store",JSON.stringify(this.$store.state)) 
         }) 
+
+        if(localhost){
+            this.wxLogin()
+        }
+    },
+    methods: {
+        wxLogin(){
+            let userInfoTest = {
+              createBy: null,
+              createTime: "2020-12-15 20:58:04",
+              delFlag: "0",
+              depId: null,
+              departName: null,
+              id: "1338830684261158913",
+              lastLoginTime: null,
+              memo: null,
+              merId: "0",
+              openid: "oJ9ce6AReY92_NKr7fGyBKoAwNUU",
+              phone: "18602701015",
+              realname: null,
+              roleId: null,
+              roleName: null,
+              status: 1,
+              type: 2,
+              updateBy: null,
+              updateTime: null,
+              username: "18602701015"
+            },
+            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDgwNDU0MDAsInVzZXJuYW1lIjoiMTg2MDI3MDEwMTUifQ.GSReUlqvKI3wCTCN927yMJcTsw0bXRKjt2nf94mdCW4";
+            this.$store.dispatch('setUser', userInfoTest)                           
+            sessionStorage.setItem('userId',userInfoTest.id)
+            sessionStorage.setItem('token',tokenTest)
+            this.$router.push('/indexOwner')
+        }
     }
 }
 </script>

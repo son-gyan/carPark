@@ -3,6 +3,16 @@ const header = {
     "Content-Type": "multipart/form-data;charset=utf-8"
 }
 
+// 车主微信登录
+export const wxlogin = (data) => {
+    return axios({
+        url: '/park/sys/czwxLogin',
+        method: 'post',
+        data,
+        headers: header
+    })
+}
+
 //获取短信验证码 /park/sys/czwxRegister
 export const getPhoneCode = (data) => {
     return axios({
@@ -18,6 +28,24 @@ export const register = (data) => {
     return axios({
         url: '/park/sys/czwxRegister',
         method: 'POST',
+        data,
+        headers: header
+    })
+}
+
+// 我的车辆列表
+export const getMyCarList = (params) => {
+    return axios({
+        url: '/park/zyb/zybCarOwner/myCarlist',
+        method: 'get',
+        params
+    })
+}
+// 新增我的车辆
+export const addMyCar = (data) => {
+    return axios({
+        url: '/park/zyb/zybCarOwner/addCar',
+        method: 'post',
         data,
         headers: header
     })
