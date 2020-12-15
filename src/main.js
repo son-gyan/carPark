@@ -23,7 +23,7 @@ Vue.use(vant)
 let vConsole = new VConsole()
 Vue.use(vConsole) */
 
-
+Vue.config.ignoredElements = ['wx-open-launch-weapp']
 Vue.use(api)
 Vue.config.productionTip = false
 

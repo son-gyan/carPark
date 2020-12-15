@@ -57,14 +57,14 @@
                 <van-grid :gutter="0" :column-num="4" class="gridGroup" :border="false">
                     <van-grid-item  text="我的车辆" @click='jumpTo(1)'  :icon="require('../../assets/images/owner/myCar.png')"/>
                     <van-grid-item  text="无感支付" @click='jumpTo(2)'  :icon="require('../../assets/images/owner/payment.png')"/>
-                    <van-grid-item  text="附近车场" @click='jumpTo(8)'  :icon="require('../../assets/images/owner/carPark.png')"/>
+                    <van-grid-item  text="附近车场" @click='jumpTo(3)'  :icon="require('../../assets/images/owner/carPark.png')"/>
                     <van-grid-item  text="停车账单" @click='jumpTo(4)'  :icon="require('../../assets/images/owner/bill.png')"/>
-                    <van-grid-item  text="我的月租车" @click='jumpTo(3)'  :icon="require('../../assets/images/owner/monthlyCar.png')"/>
-                    <van-grid-item  text="电子发票" @click='jumpTo(9)'  :icon="require('../../assets/images/owner/invoice.png')"/>
-                    <van-grid-item  text="补缴停车费" @click='jumpTo(10)'  :icon="require('../../assets/images/owner/afterPayment.png')"/>
-                    <van-grid-item  text="会员充值" @click='jumpTo(7)'  :icon="require('../../assets/images/owner/member.png')"/>
-                    <van-grid-item  text="临停缴费"   @click='jumpTo(5)'  :icon="require('../../assets/images/owner/temporaryStop.png')"/>
-                    <van-grid-item  text="代人缴费" @click='jumpTo(6)'  :icon="require('../../assets/images/owner/payTasaday.png')"/>
+                    <van-grid-item  text="我的月租车" @click='jumpTo(5)'  :icon="require('../../assets/images/owner/monthlyCar.png')"/>
+                    <van-grid-item  text="电子发票" @click='jumpTo(6)'  :icon="require('../../assets/images/owner/invoice.png')"/>
+                    <van-grid-item  text="补缴停车费" @click='jumpTo(7)'  :icon="require('../../assets/images/owner/afterPayment.png')"/>
+                    <van-grid-item  text="会员充值" @click='jumpTo(8)'  :icon="require('../../assets/images/owner/member.png')"/>
+                    <van-grid-item  text="临停缴费"   @click='jumpTo(9)'  :icon="require('../../assets/images/owner/temporaryStop.png')"/>
+                    <van-grid-item  text="代人缴费" @click='jumpTo(10)'  :icon="require('../../assets/images/owner/payTasaday.png')"/>
                     <van-grid-item  text="广告投放" @click='jumpTo(11)'  :icon="require('../../assets/images/owner/advert.png')"/>
                     <van-grid-item  text="联系我们" @click='jumpTo(12)'  :icon="require('../../assets/images/owner/contactUs.png')"/>
                 </van-grid>
@@ -161,37 +161,37 @@ export default {
                         this.$router.push('/myCar')
                         break;
                     case 2:
-                        this.$router.push('/carManage')
+                        this.$router.push('/payment')
                         break;
                     case 3:
-                        this.$router.push('/presentCar')
+                        this.$router.push('/carPark')
                         break;
                     case 4:
-                        this.$router.push('/detentionInventory')
+                        this.$router.push('/bill')
                         break;
                     case 5:
-                        this.$router.push('/blacklist')
+                        this.$router.push('/monthlyCar')
                         break;
                     case 6:
-                        this.$router.push('/statistical')
+                        this.$router.push('/invoice')
                         break;                
                     case 7:
-                        this.$router.push('/order')
+                        this.$router.push('/afterPayment')
                         break;                
                     case 8:
-                        this.$router.push('/refund')
-                        break;                
-                    case 9:
-                        this.$router.push('/inOut')
-                        break;                
-                    case 10:
-                        this.$router.push('/payRecords')
-                        break;                
-                    case 11:
                         this.$router.push('/member')
                         break;                
+                    case 9:
+                        this.$router.push('/temporaryStop')
+                        break;                
+                    case 10:
+                        this.$router.push('/payTasaday')
+                        break;                
+                    case 11:
+                        this.$router.push('/advert')
+                        break;                
                     case 12:
-                        this.$router.push('/examine')
+                        this.$router.push('/contactUs')
                         break;                
                     default:
                         break;

@@ -33,6 +33,17 @@ const BlankpageOwner = () => import("@/views/owner/BlankpageOwner")
 const LoginOwner = () => import("@/views/owner/LoginOwner")
 const IndexOwner = () => import("@/views/owner/IndexOwner")
 const myCar = () => import("@/views/owner/myCar")
+const payment = () => import("@/views/owner/payment")
+const carPark = () => import("@/views/owner/carPark")
+const bill = () => import("@/views/owner/bill")
+const monthlyCar = () => import("@/views/owner/monthlyCar")
+const invoice = () => import("@/views/owner/invoice")
+const afterPayment = () => import("@/views/owner/afterPayment")
+const member = () => import("@/views/owner/member")
+const temporaryStop = () => import("@/views/owner/temporaryStop")
+const payTasaday = () => import("@/views/owner/payTasaday")
+const advert = () => import("@/views/owner/advert")
+const contactUs = () => import("@/views/owner/contactUs")
 
 const originalPush = Router.prototype.push;
 Router.prototype.push = function push(location) {
@@ -196,6 +207,61 @@ const router = new Router({
             path: "/myCar",
             name: "myCar",
             component: myCar
+        },
+        {
+            path: "/payment",
+            name: "payment",
+            component: payment
+        },
+        {
+            path: "/carPark",
+            name: "carPark",
+            component: carPark
+        },
+        {
+            path: "/bill",
+            name: "bill",
+            component: bill
+        },
+        {
+            path: "/monthlyCar",
+            name: "monthlyCar",
+            component: monthlyCar
+        },
+        {
+            path: "/invoice",
+            name: "invoice",
+            component: invoice
+        },
+        {
+            path: "/afterPayment",
+            name: "afterPayment",
+            component: afterPayment
+        },
+        {
+            path: "/member",
+            name: "member",
+            component: member
+        },
+        {
+            path: "/temporaryStop",
+            name: "temporaryStop",
+            component: temporaryStop
+        },
+        {
+            path: "/payTasaday",
+            name: "payTasaday",
+            component: payTasaday
+        },
+        {
+            path: "/advert",
+            name: "advert",
+            component: advert
+        },
+        {
+            path: "/contactUs",
+            name: "contactUs",
+            component: contactUs
         }
     ]
 });
@@ -206,7 +272,7 @@ export default router
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem("token");
     //debugger
-    if(!token &&to.path !== '/indexOwner'){
+    if(!token){  /*  &&to.path.indexOf('Owner')==-1 */
         const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
         let isURL = window.location.href.indexOf('code=') === -1
@@ -219,20 +285,24 @@ router.beforeEach((to, from, next) => {
         sessionStorage.clear()
         next();
     } else {
-        if(to.path === '/index'){
-            if (token === 'null' || token === '') {
-                next('/login');
-            } else {
-                next();
-            }
-        }else if(to.path === '/indexShop'){
+        if(to.path.indexOf('Shop')>-1){
             if (token === 'null' || token === '') {
                 next('/loginShop');
             } else {
                 next();
             }
+        }else if(to.path.indexOf('Owner')==-1){  /* to.path === '/indexShop' */
+            if (token === 'null' || token === '') {
+                next('/loginOwner');
+            } else {
+                next();
+            }
         }else{
-            next();
+            if (token === 'null' || token === '') {
+                next('/login');
+            } else {
+                next();
+            }
         }
     }
     next()

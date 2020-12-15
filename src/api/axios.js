@@ -98,7 +98,7 @@ export default function $axios(options) {
                     }
                 }else if(err.message !=""){
                     // 重定向到登录页面
-                    router.push("/login");
+                    //router.push("/login");
                 }
                 return Promise.reject(err); // 返回接口返回的错误信息
             }
