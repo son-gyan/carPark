@@ -1,6 +1,6 @@
 <template>
     <div class="pages">
-        <van-nav-bar  title="首页"  > <!-- class="navBar" -->
+        <van-nav-bar class="navBar" title="首页"  > <!--  -->
             <!-- <template #right> -->
                 <!-- <span class="span" @click="logout" style="margin-left:10px;">切换账号<van-icon :name="require('../../assets/images/changeAccout.png')" /></span>
             </template> -->
@@ -238,13 +238,4 @@ export default {
             }
         }
     }
-</style>
-<style lang="scss" scoped>
-.pages{
-    .navBar{
-       /deep/ .van-ellipsis{
-           margin-left: 1rem;
-        }
-    }
-}
 </style>

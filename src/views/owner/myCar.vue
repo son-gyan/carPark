@@ -5,30 +5,22 @@
             <div class="addCar" @click="addCar">
                 <van-icon name="plus" />添加车辆
             </div>
-            <van-list
-                :finished="finished"
-                :immediate-check="false"
-                v-model="loading"
-                finished-text="没有更多了"
-                @load="onLoad"
-                :offset="10"
+            <van-card
+                class="vanCard"
+                v-for="(item,index) in myCarList"  :key="index"
+                :thumb="require('../../assets/images/defaultImg.png')"
                 >
-                <van-card
-                    class="vanCard"
-                    v-for="(item,index) in myCarList"  :key="index"
-                    :thumb="require('../../assets/images/defaultImg.png')"
-                    >
-                    <template #desc>
-                        <p >车牌：{{item.carNum}}</p>
-                        
-                        <p >车辆颜色：{{item.colour}}</p>
-                    </template>
-                    <template #footer>
+                <template #desc>
+                    <p >车牌：{{item.carNum}}</p>
+                    <p >车辆颜色：{{item.colour}}</p>
+                    <p class="pFooter">
                         <van-button type="info" size="mini" @click="delMyCar(item)">删除</van-button>
-                    </template>
-                </van-card>
-                <div class="noSearch" v-if="myCarList.length==0">暂无查询数据</div>
-            </van-list>
+                    </p>
+                </template>
+                <template #footer>
+                </template>
+            </van-card>
+            <div class="noSearch" v-if="myCarList.length==0">暂无查询数据</div>
         </div>
         <!-- 弹框 -->
         <div class="covers mycarDialog" v-show="dialogShow">
@@ -36,7 +28,7 @@
                 <header>{{dialogTit}}</header>
                 <main>
                     <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
-                    <van-form @submit="saveData" class="formWrap" :key="+new Date()">
+                    <van-form class="formWrap" :key="+new Date()">
                         <van-field
                             readonly
                             clickable
@@ -114,13 +106,6 @@ export default {
         onClickLeft(){
             this.$router.go(-1)
         },
-        // 下拉加载
-        onLoad () {
-            if (!this.loading) {
-                return false
-            }            
-            this.initData();
-        },
         //初始化
         initData(){
             this.$api.owner.getMyCarList(this.params).then(res=>{
@@ -178,7 +163,20 @@ export default {
             this.form.carNum = ""
         },
         delMyCar(item){
-            
+            let formData = new FormData();
+                formData.append('id',item.id)
+            this.$api.owner.delMyCar(formData).then(res=>{
+                if(res.code == 200){
+                    this.cancelDialog();
+                    this.$toast(res.message);
+                    this.loading = true
+                    this.initData();
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         }
     },
 }
@@ -243,6 +241,9 @@ export default {
         .van-card{
             p{
                 font-size: .3rem;
+            }
+            .pFooter{
+                text-align: right;
             }
         }
     }

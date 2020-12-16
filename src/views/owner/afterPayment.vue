@@ -2,18 +2,10 @@
     <div>
         <van-nav-bar class="navBar" title="补缴停车费" left-text="返回" left-arrow @click-left="onClickLeft" />
         <div class="mainWrap">
-            <van-list
-                :finished="finished"
-                :immediate-check="false"
-                v-model="loading"
-                finished-text="没有更多了"
-                @load="onLoad"
-                :offset="10"
-                >
-                <van-card
+                <van-card class="vanCard"
                     v-for="(item,index) in afterPaymentList"  :key="index"
                     :thumb="item.imgUrl"
-                    @click-thumb="imgPreview(item.imgUrl)"
+                    @click-thumb="imgPreview(item)"
                     >
                     <template #title>
                         <p v-if="item.carType==1">月租车</p> 
@@ -24,12 +16,15 @@
                     </template>
                     <template #desc>
                         <p >车牌：{{item.carNum}}</p>
-                        
                         <p >入场：{{item.inTime}}</p>
+                        <p >出场：{{item.outTime}}</p>
+                        <p v-if="item.payMoney">收费金额：{{item.payMoney}}</p>
+                        <p class="pFooter">
+                            <van-button type="info" size="mini" @click="payBack(item)">补缴</van-button>
+                        </p>
                     </template>
                 </van-card>
                 <div class="noSearch" v-if="afterPaymentList.length === 0">暂无查询数据</div>
-            </van-list>
         </div>
     </div>
 </template>
@@ -47,10 +42,7 @@ export default {
             loading: false,
             afterPaymentList:[],
             params:{
-                carNum:"",
-                depId:'',
-                pageNo:1,
-                pageSize:10 
+                userId:""
             },
             pageNo: 1,//请求第几页
             pageSize: 10,//每页请求的数量
@@ -58,10 +50,10 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['carParkInfo'])
+        ...mapGetters(['user'])
     },
     created(){
-        this.params.depId = this.carParkInfo.depId||sessionStorage.getItem('depId')
+        this.params.userId = this.user.id
         this.init()
     },
     methods:{
@@ -69,32 +61,13 @@ export default {
         onClickLeft(){
             this.$router.go(-1)
         },
-        // 下拉加载
-        onLoad () {
-            if (!this.loading) {
-                return false
-            }            
-            this.init();
-        },
         init(){
-            this.params.pageNo = this.pageNo
-            this.params.pageSize = this.pageSize
             this.$api.owner.getAfterPaymentList(this.params).then(res=>{
                 if(res.code == 200){
-                    this.loading = false;
-                    this.total = res.result.total
-                    let rows = res.result.records; //请求返回当页的列表
-                    if (rows == null || rows.length === 0) {
-                        // 加载结束
-                        this.finished = true;
-                        return;
+                    if(res.result&&res.result.length>0){
+                        let rows = res.result; //请求返回当页的列表
+                        this.afterPaymentList = rows
                     }
-                    this.afterPaymentList = this.afterPaymentList.concat(rows)
-                    //如果列表数据条数>=总条数，不再触发滚动加载
-                    if (this.afterPaymentList.length >= this.total) {
-                        this.finished = true;
-                    }                    
-                    this.pageNo++;
                 }else{
                     this.$toast(res.message);
                 }
@@ -113,7 +86,17 @@ export default {
                 showIndex:true,
                 closeable: true,
             });
+        },
+        payBack(item){
+
         }
     }
 }
 </script>
+<style lang="less" scoped>
+.van-card{
+    .pFooter{
+        text-align: right;
+    }
+}
+</style>

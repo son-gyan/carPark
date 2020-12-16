@@ -50,11 +50,20 @@ export const addMyCar = (data) => {
         headers: header
     })
 }
+// 删除我的车辆
+export const delMyCar = (data) => {
+    return axios({
+        url: '/park/zyb/zybCarOwner/deleteCar',
+        method: 'DELETE',
+        data,
+        headers: header
+    })
+}
 
 // 停车账单列表
 export const getBillList = (params) => {
     return axios({
-        url: '/park/zyb/data/payList',
+        url: '/park/zyb/data/myCarRecordlist',
         method: 'get',
         params
     })
@@ -63,7 +72,7 @@ export const getBillList = (params) => {
 // 补缴停车费列表
 export const getAfterPaymentList = (params) => {
     return axios({
-        url: '/park/zyb/data/payList',
+        url: '/park/zyb/data/myCarNeedRepairPaylist',
         method: 'get',
         params
     })
@@ -72,7 +81,16 @@ export const getAfterPaymentList = (params) => {
 // 临停缴费列表
 export const getTemporaryStopList = (params) => {
     return axios({
-        url: '/park/zyb/data/payList',
+        url: '/park/zyb/data/myCarNeedPaylist',
+        method: 'get',
+        params
+    })
+}
+
+// 代人缴费列表
+export const getPayTasadayList = (params) => {
+    return axios({
+        url: '/park/zyb/data/helpPaylist',
         method: 'get',
         params
     })
