@@ -30,7 +30,8 @@
                     <p v-if="item.remarks">优惠信息：{{item.remarks}}</p>
                     <p v-if="item.payMoney">收费金额：{{item.payMoney}}</p>
                     <p class="pFooter"  >
-                        <van-button type="info" size="mini" @click="payBack(item)">{{item.outTime?'支付':'预付'}}</van-button>
+                        <van-button type="info" size="mini" @click="payBack(item)" v-if="item.outTime">支付</van-button>
+                        <van-button type="info" size="mini" @click="advancePay(item)" v-else>预付</van-button>
                     </p>
                 </template>
             </van-card>
@@ -98,6 +99,56 @@ export default {
                 showIndex:true,
                 closeable: true,
             });
+        },
+        //支付
+        payBack(item){
+            let domT = ''
+            //   let ua = navigator.userAgent.toLowerCase()
+            if (/MicroMessenger/.test(window.navigator.userAgent)) {
+                domT = 'weixin'
+            }
+            if (/AlipayClient/.test(window.navigator.userAgent)) {
+                domT = 'alipay'
+            }
+            let that = this
+            let data = {
+                channel: domT, 
+                recordId: item.id
+            }
+            this.$api.owner.getpayadress(data).then(res => {
+                if (+res.code === 200) {
+                    window.location.href = res.result
+                } else {
+                    this.$toast('提示', `${res.message}`)
+                }
+            }).catch(error => {
+                this.$toast('提示', `${error}`)
+            })
+        },
+        //预付
+        advancePay(item){
+            let domT = ''
+            //   let ua = navigator.userAgent.toLowerCase()
+            if (/MicroMessenger/.test(window.navigator.userAgent)) {
+                domT = 'weixin'
+            }
+            if (/AlipayClient/.test(window.navigator.userAgent)) {
+                domT = 'alipay'
+            }
+            let that = this
+            let data = {
+                channel: domT, 
+                recordId: item.id
+            }
+            this.$api.owner.getAdvancePay(data).then(res => {
+                if (+res.code === 200) {
+                    window.location.href = res.result
+                } else {
+                    this.$toast('提示', `${res.message}`)
+                }
+            }).catch(error => {
+                this.$toast('提示', `${error}`)
+            })
         }
     }
 }

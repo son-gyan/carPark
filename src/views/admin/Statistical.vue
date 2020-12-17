@@ -1,8 +1,8 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="统计报表" left-text="返回" left-arrow @click-left="onClickLeft" >
+        <van-nav-bar class="navBar" title="统计报表" left-text="返回" left-arrow @click-left="onClickLeft" fixed>
         </van-nav-bar>
-        <div class="searchGroup">
+        <div class="searchGroup fixedMain"> 
             <div class="formInline">
                 <el-date-picker
                     class="elFormItem"

@@ -1,65 +1,67 @@
 <template>
     <div class="refund">
-        <van-nav-bar class="navBar" title="预付退款" left-text="返回" left-arrow @click-left="onClickLeft" />
-        <van-list 
-            :finished="finished"
-            :immediate-check="false"
-            v-model="loading"
-            finished-text="没有更多了"
-            @load="onLoad"
-            :offset="10"
-            >
-            <van-search
-                v-model="searchVal"
-                placeholder="请输入车牌号"
-                @search="onSearch"
-                show-action
-                background="#dcdfe6"
+        <van-nav-bar class="navBar" title="预付退款" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
+        <div class="mainWrap fixedMain">
+            <van-list 
+                :finished="finished"
+                :immediate-check="false"
+                v-model="loading"
+                finished-text="没有更多了"
+                @load="onLoad"
+                :offset="10"
                 >
-                <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
-            </van-search>
-            <div class="list">
-                <el-table
-                    size="mini"
-                    :data="tableData"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="carNum"
-                        label="手机号"
-                        width="95"
-                        align="center">
-                    </el-table-column>
-                    <el-table-column
-                        prop="inTime"
-                        label="进场时间"
-                        width="135"
-                        align="center">
-                    </el-table-column>
-                    <el-table-column
-                        prop="outTime"
-                        label="出场时间"
-                        width="135"
-                        align="center">
-                    </el-table-column>
-                    <el-table-column
-                        prop="needPay"
-                        label="预付金额"
-                        align="center">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.needPay?scope.row.needPay:0}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="walletMoney"
-                        label="退款金额"
-                        align="center">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.walletMoney?scope.row.walletMoney:0}}</span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-        </van-list>
+                <van-search
+                    v-model="searchVal"
+                    placeholder="请输入车牌号"
+                    @search="onSearch"
+                    show-action
+                    background="#dcdfe6"
+                    >
+                    <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
+                </van-search>
+                <div class="list">
+                    <el-table
+                        size="mini"
+                        :data="tableData"
+                        style="width: 100%">
+                        <el-table-column
+                            prop="carNum"
+                            label="手机号"
+                            width="95"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="inTime"
+                            label="进场时间"
+                            width="135"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="outTime"
+                            label="出场时间"
+                            width="135"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="needPay"
+                            label="预付金额"
+                            align="center">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.needPay?scope.row.needPay:0}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="walletMoney"
+                            label="退款金额"
+                            align="center">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.walletMoney?scope.row.walletMoney:0}}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </van-list>
+        </div>
     </div>
 </template>
 <script>

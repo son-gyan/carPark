@@ -104,3 +104,21 @@ export const getMonthlyCarList = (params) => {
         params
     })
 }
+
+// 支付
+export const getpayadress = (data) => {
+    return axios({
+        url: '/park/zyb/pay/outCodePay',
+        method: 'post',
+        data
+    })
+}
+
+//预付  getAdvancePay
+export const getAdvancePay = (data) => {
+    return axios({
+        url: '/park/zyb/pay/preInPay',
+        method: 'post',
+        data
+    })
+}

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="滞留盘点" left-text="返回" left-arrow @click-left="onClickLeft" />
-        <div class="mainWrap">
+        <van-nav-bar class="navBar" title="滞留盘点" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
+        <div class="mainWrap fixedMain">
             <van-list
                 :finished="finished"
                 :immediate-check="false"

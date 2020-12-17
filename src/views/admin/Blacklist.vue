@@ -1,10 +1,10 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="黑名单" left-text="返回"  right-text="添加"
+        <van-nav-bar class="navBar" title="黑名单" left-text="返回"  right-text="添加" fixed
             left-arrow @click-left="onClickLeft" 
             @click-right="addBlacklist">
         </van-nav-bar>
-        <div class="mainWrap">
+        <div class="mainWrap fixedMain">
             <van-list
                 :finished="finished"
                 :immediate-check="false"

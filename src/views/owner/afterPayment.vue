@@ -88,7 +88,28 @@ export default {
             });
         },
         payBack(item){
-
+            let domT = ''
+            //   let ua = navigator.userAgent.toLowerCase()
+            if (/MicroMessenger/.test(window.navigator.userAgent)) {
+                domT = 'weixin'
+            }
+            if (/AlipayClient/.test(window.navigator.userAgent)) {
+                domT = 'alipay'
+            }
+            let that = this
+            let data = {
+                channel: domT, 
+                recordId: item.id
+            }
+            this.$api.owner.getpayadress(data).then(res => {
+                if (+res.code === 200) {
+                    window.location.href = res.result
+                } else {
+                    this.$toast('提示', `${res.message}`)
+                }
+            }).catch(error => {
+                this.$toast('提示', `${error}`)
+            })
         }
     }
 }

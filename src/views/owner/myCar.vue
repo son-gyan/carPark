@@ -47,6 +47,8 @@
                 </main>
                 <van-popup v-model="showPickerColor" position="bottom">
                     <van-picker
+                        item-height='45'
+                        visible-item-count='4'
                         show-toolbar
                         :columns="columns"
                         @confirm="onConfirmColor"
@@ -108,6 +110,7 @@ export default {
         },
         //初始化
         initData(){
+            this.myCarList = []
             this.$api.owner.getMyCarList(this.params).then(res=>{
                 if(res.code == 200){
                     if(res.result&&res.result.length>0){
@@ -170,6 +173,7 @@ export default {
                     this.cancelDialog();
                     this.$toast(res.message);
                     this.loading = true
+                    this.myCarList = []
                     this.initData();
                 }else{
                     this.$toast(res.message);
