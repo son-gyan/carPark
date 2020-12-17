@@ -21,7 +21,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item class="linkFormItem">
-                <el-link class="linkBtn" @click.prevent="regainCode"  :underline="false" >{{regain}}</el-link>
+                <el-link class="linkBtn" @click.prevent="regainCode"  :underline="false"   :disabled="disabled">{{regain}}</el-link>
             </el-form-item>
             <el-form-item>
                 <van-button block type="info"  @click.prevent="onLogin">
@@ -76,10 +76,12 @@ export default {
                 this.$api.owner.getPhoneCode(formData).then((res) => {
                     if(res.code == 200){
                         this.disabled=true;
+                        this.regain = this.time+"秒"
                         let auth_timer = setInterval(()=>{  //定时器设置每秒递减
                             this.time--;        //递减时间
                             if(this.time<=0){  
                                 this.disabled=false;   //60s时间结束还原v-show状态并清除定时器
+                                this.regain = "获取验证码"
                                 clearInterval(auth_timer)
                             }
                         },1000)
@@ -93,7 +95,40 @@ export default {
             }
         },
         regainCode(){
-
+            const reg=/^1[3456789]\d{9}$/;
+            if(this.form.phone == ""){
+                this.$toast("手机号不能为空");
+                return
+            }else if(!reg.test(this.form.phone)){
+                this.$toast("手机号格式不正确");
+                return
+            }else{
+                let params = {
+                    openId:this.form.openId,
+                    phone:this.form.phone
+                }
+                let formData = new FormData();
+                formData.append('phone',params.phone)
+                this.$api.owner.getPhoneCode(formData).then((res) => {
+                    if(res.code == 200){
+                        this.disabled=true;
+                        this.getCode = this.time+"秒"
+                        let auth_timer = setInterval(()=>{  //定时器设置每秒递减
+                            this.time--;        //递减时间
+                            if(this.time<=0){  
+                                this.disabled=false;   //60s时间结束还原v-show状态并清除定时器
+                                this.getCode = "重新获取"
+                                clearInterval(auth_timer)
+                            }
+                        },1000)
+                        this.$toast("验证码已发送,请注意查收");
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    console.log(res)
+                });
+            }
         },
         onLogin() {
             const reg=/^1[3456789]\d{9}$/;
