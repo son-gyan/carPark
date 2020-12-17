@@ -11,11 +11,10 @@
     <script src="https://cdn.jsdelivr.net/npm/vant@2.10/lib/vant.min.js"></script> -->
     <script src="https://cdn.bootcss.com/echarts/4.8.0/echarts.min.js"></script>
     <script>
-        let flag = 'localhost' // 'dev'  // 'prod'  // 
+        let flag = 'dev'  // 'prod'  // 'localhost' // 
         let baseUrl = "",
             pageUrl = "",
-            appID = "",
-            localhost = false;
+            appID = "";
         if(flag == 'prod'){
             baseUrl = "http://52tingche.com"
             pageUrl = "http://gzh.52tingche.com"
@@ -28,7 +27,6 @@
             baseUrl = "http://beta.52tingche.com" 
             pageUrl = "http://gzh1.52tingche.com"
             appID = "wx09a13be6962ab9a8"
-            localhost = true
         }
     </script>
   </head>

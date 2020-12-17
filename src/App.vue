@@ -20,7 +20,7 @@ export default {
             sessionStorage.setItem("store",JSON.stringify(this.$store.state)) 
         }) 
 
-        if(localhost){
+        if(flag == 'localhost'){
             this.wxLogin()
         }
     },
