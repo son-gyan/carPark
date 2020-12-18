@@ -1,7 +1,7 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="临停缴费" left-text="返回" left-arrow @click-left="onClickLeft" />
-        <div class="mainWrap">
+        <van-nav-bar class="navBar" title="临停缴费" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
+        <div class="mainWrap fixedMain">
             <van-card class="vanCard"
                 v-for="(item,index) in temporaryStopList"  :key="index"
                 :thumb="item.imgUrl"

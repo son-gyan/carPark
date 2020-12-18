@@ -53,6 +53,13 @@ Router.prototype.push = function push(location) {
 Vue.use(Router);
 
 const router = new Router({
+    scrollBehavior (to, from, savedPosition) {
+        if (savedPosition) {
+          return savedPosition
+        } else {
+          return { x: 0, y: 0 }
+        }
+    },
     mode: 'history',
     routes: [
         {
@@ -265,7 +272,6 @@ const router = new Router({
         }
     ]
 });
-
 
 export default router
 

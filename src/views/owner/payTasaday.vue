@@ -1,7 +1,7 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="代人缴费" left-text="返回" left-arrow @click-left="onClickLeft" />
-        <div class="mainWrap">
+        <van-nav-bar class="navBar" title="代人缴费" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
+        <div class="mainWrap fixedMain">
             <van-search
                 v-model="params.carNum"
                 placeholder="搜索车牌"

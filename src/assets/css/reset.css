@@ -65,6 +65,11 @@
 .mainWrap .vanCard .van-card__content p {
   padding-bottom: 0.1rem;
 }
+.mainWrap .searchWrap {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+}
 .fixedMain {
   margin-top: 48px;
 }

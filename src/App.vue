@@ -21,7 +21,7 @@ export default {
         }) 
 
         if(flag == 'localhost'){
-            //debugger
+            debugger
             this.wxLogin()
         }
     },

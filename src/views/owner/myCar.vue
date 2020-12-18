@@ -1,7 +1,7 @@
 <template>
     <div>
-        <van-nav-bar class="navBar" title="我的车辆" left-text="返回" left-arrow @click-left="onClickLeft" />
-        <div class="mainWrap">
+        <van-nav-bar class="navBar" title="我的车辆" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
+        <div class="mainWrap fixedMain">
             <div class="addCar" @click="addCar">
                 <van-icon name="plus" />添加车辆
             </div>
@@ -26,35 +26,22 @@
         <div class="covers mycarDialog" v-show="dialogShow">
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
-                <main>
-                    <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
-                    <van-form class="formWrap" :key="+new Date()">
-                        <van-field
-                            readonly
-                            clickable
-                            name="colour"
-                            :value="form.colour"
-                            label="车辆颜色"
-                            placeholder="点击选择车辆颜色"
-                            @click.stop.prevent="showPickerColor = true"
-                            />
-                            <footer>
-                                <button @click="saveData">保存</button>
-                                <button @click="cancelDialog">取消</button>
-                            </footer>
-                    </van-form>
-                    
+                <main class="dialogMain">
+                    <el-form ref="form" :model="form" label-width="100px" size="mini">
+                        <el-form-item label="车辆颜色：">
+                            <el-select v-model="form.colour" placeholder="请选择车辆颜色">
+                                <el-option :label="item" :value="item" v-for="item in columns" :key="item"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <div class="carNum">
+                            <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
+                        </div>                        
+                        <el-form-item>
+                            <el-button type="primary" @click="saveData">保存</el-button>
+                            <el-button @click="cancelDialog">取消</el-button>
+                        </el-form-item>
+                    </el-form>
                 </main>
-                <van-popup v-model="showPickerColor" position="bottom">
-                    <van-picker
-                        item-height='45'
-                        visible-item-count='4'
-                        show-toolbar
-                        :columns="columns"
-                        @confirm="onConfirmColor"
-                        @cancel="showPickerColor = false"
-                    />
-                </van-popup>
             </div>
         </div>
     </div>
@@ -128,10 +115,6 @@ export default {
         addCar(){
             this.dialogShow = true
         },
-        onConfirmColor(val){
-            this.form.colour = val
-            this.showPickerColor = false
-        },
         saveData(){
             if(this.form.carNum == ''){
                 this.$toast('请输入车牌号')
@@ -186,6 +169,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .dialogMain{
+        padding: .3rem 0;
+        /deep/ .wrap{
+            .card-header{
+                margin-right:0
+            }
+        }
+    }
     .searchBtn{
         margin-right:15px
     }
@@ -258,4 +249,6 @@ export default {
         width: 7.3rem;
         margin-bottom: 5rem;
     }
+
+    
 </style>

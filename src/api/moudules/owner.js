@@ -99,7 +99,7 @@ export const getPayTasadayList = (params) => {
 // 我的月租车列表
 export const getMonthlyCarList = (params) => {
     return axios({
-        url: '/park/zyb/data/payList',
+        url: '/park/zyb/zybVehicle/myMonthCarlist',
         method: 'get',
         params
     })
