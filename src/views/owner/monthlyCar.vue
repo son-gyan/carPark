@@ -78,16 +78,14 @@
                             <el-upload
                                 class="avatar-uploader"
                                 action="string"
-                                http-request="uploadfile"
                                 :show-file-list="false"
-                                :on-success="handleSuccess"
-                                :before-upload="beforeUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar" @click="handlePictureCardPreview">
+                                :before-upload="beforeUpload"
+                                :on-change="handleChange"
+                                :on-preview="handlePictureCardPreview"
+                                :auto-upload="false">
+                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
-                            <el-dialog :visible.sync="dialogVisible">
-                                <img width="100%" :src="imageUrl" alt="">
-                            </el-dialog>
                         </div>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -124,11 +122,13 @@ export default {
             dialogShow:false,
             dialogTit:"月租申请",
             form:{
+                depId:"",
                 park:"",
                 carNum:"",
                 name:"",
                 address:"",
-                phone:""
+                phone:"",
+                file:''
             },
             imageUrl:"",
             dialogVisible:false
@@ -141,6 +141,7 @@ export default {
     created(){
         this.params.userId = this.user.id
         this.init()
+        this.getCarList()
     },
     methods:{
         getPlateLicense(data){
@@ -149,6 +150,19 @@ export default {
         //返回
         onClickLeft(){
             this.$router.go(-1)
+        },
+        getCarList(){
+            this.$api.owner.getCarList().then(res=>{
+                if(res.code == 200){
+                    debugger
+                    let rows = res.result; //请求返回当页的列表
+                    this.monthlyCarList = rows
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
         init(){
             this.$api.owner.getMonthlyCarList(this.params).then(res=>{
@@ -189,8 +203,9 @@ export default {
                 this.$toast('提示', `${error}`)
             })
         },
-        handleSuccess(res, file){
+        handleChange(file, fileList){
             this.imageUrl = URL.createObjectURL(file.raw);
+            this.form.file = file
         },
         beforeUpload(file){
             const isJPG = file.type === 'image/jpeg';
@@ -203,17 +218,26 @@ export default {
             }
             return isJPG && isLt2M;
         },
-        handlePictureCardPreview(){
-            this.dialogVisible = true
-        },
-        uploadfile(){
-
-        },
         onSubmit(){
-
+            let formData = new FormData()
+                formData.append('depId',this.form.depId)
+                formData.append('carNum',this.form.carNum)
+                formData.append('name',this.form.name)
+                formData.append('address',this.form.address)
+                formData.append('phone',this.form.phone)
+                formData.append('file',this.form.file)
         },
         cancleHandle(){
             this.dialogShow = false
+            this.form = {
+                depId:"",
+                park:"",
+                carNum:"",
+                name:"",
+                address:"",
+                phone:"",
+                file:''
+            }
         }
     }
 }

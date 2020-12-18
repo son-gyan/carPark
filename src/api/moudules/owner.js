@@ -105,6 +105,13 @@ export const getMonthlyCarList = (params) => {
     })
 }
 
+// 月租车 获取车场列表 /park/zyb/zybParkInfo/myMonthCarlist
+export const getCarList = () => {
+    return axios({
+        url: '/park/zyb/zybParkInfo/myMonthCarlist',
+        method: 'get'
+    })
+}
 // 支付
 export const getpayadress = (data) => {
     return axios({
