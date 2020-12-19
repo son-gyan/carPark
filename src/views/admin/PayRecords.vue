@@ -22,7 +22,7 @@
                 <div class="list">
                     <el-table
                         size="mini"
-                        :data="inOutList"
+                        :data="payList"
                         @row-click="viewDetail"
                         style="width: 100%">
                         <el-table-column

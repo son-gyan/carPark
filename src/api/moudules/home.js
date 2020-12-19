@@ -275,3 +275,12 @@ export const getInOutList = (params) => {
         params
     })
 }
+
+// 月租审核列表
+export const getExamineList = (params) => {
+    return axios({
+        url: '/park/zyb/apply/applyList',
+        method: 'get',
+        params
+    })
+}
