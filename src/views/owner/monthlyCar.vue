@@ -57,19 +57,18 @@
                 <main class="dialogMain">
                     <el-form ref="form" :model="form" label-width="70px" size="mini">
                         <el-form-item label="车场：">
-                            <el-select v-model="form.park" placeholder="请选择活动区域">
-                                <el-option label="皇家卫浴停车场" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
+                            <el-select v-model="form.depId" placeholder="请选择车场">
+                                <el-option :label="item.name" :value="item.depId" v-for="item in carParkList" :key="item.depId"></el-option>
                             </el-select>
                         </el-form-item>
                         <div class="carNum">
                             <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
                         </div>
                         <el-form-item label="姓名：">
-                            <el-input v-model="form.name"></el-input>
+                            <el-input v-model="form.userName"></el-input>
                         </el-form-item>
                         <el-form-item label="住址：">
-                            <el-input v-model="form.address"></el-input>
+                            <el-input v-model="form.userAddress"></el-input>
                         </el-form-item>
                         <el-form-item label="电话：">
                             <el-input v-model="form.phone"></el-input>
@@ -112,6 +111,7 @@ export default {
             searchVal:"",
             finished: false,
             loading: false,
+            carParkList:[],
             monthlyCarList:[],
             params:{
                 userId:""
@@ -123,10 +123,9 @@ export default {
             dialogTit:"月租申请",
             form:{
                 depId:"",
-                park:"",
                 carNum:"",
-                name:"",
-                address:"",
+                userName:"",
+                userAddress:"",
                 phone:"",
                 file:''
             },
@@ -154,9 +153,9 @@ export default {
         getCarList(){
             this.$api.owner.getCarList().then(res=>{
                 if(res.code == 200){
-                    debugger
+                    //debugger
                     let rows = res.result; //请求返回当页的列表
-                    this.monthlyCarList = rows
+                    this.carParkList = rows
                 }else{
                     this.$toast(res.message);
                 }
@@ -194,7 +193,7 @@ export default {
                 recordId: item.id
             }
             this.$api.owner.getpayadress(data).then(res => {
-                if (+res.code === 200) {
+                if (res.code === 200) {
                     window.location.href = res.result
                 } else {
                     this.$toast('提示', `${res.message}`)
@@ -222,16 +221,27 @@ export default {
             let formData = new FormData()
                 formData.append('depId',this.form.depId)
                 formData.append('carNum',this.form.carNum)
-                formData.append('name',this.form.name)
-                formData.append('address',this.form.address)
+                formData.append('userId',this.params.userId)
+                formData.append('userName',this.form.userName)
+                formData.append('userAddress',this.form.userAddress)
                 formData.append('phone',this.form.phone)
-                formData.append('file',this.form.file)
+                formData.append('file',this.form.file.raw)
+            this.$api.owner.applyMonthCar(formData).then(res=>{
+                if (res.code === 200) {
+                    debugger
+                    this.cancleHandle()
+                    this.init()
+                } else {
+                    this.$toast('提示', `${res.message}`)
+                }
+            }).catch(error => {
+                this.$toast('提示', `${error}`)
+            })
         },
         cancleHandle(){
             this.dialogShow = false
             this.form = {
                 depId:"",
-                park:"",
                 carNum:"",
                 name:"",
                 address:"",

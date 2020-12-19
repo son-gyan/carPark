@@ -8,7 +8,7 @@
                 v-model="loading"
                 finished-text="没有更多了"
                 @load="onLoad"
-                :offset="10"
+                :offset="0"
                 >
                 <van-search
                     v-model="searchVal"
@@ -19,33 +19,45 @@
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
                 </van-search>
-                <van-card
-                    class="vanCard"
-                    v-for="(item,index) in payList"  :key="index"
-                    :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
-                    @click-thumb="imgPreview(item)"
-                    >
-                    <template #title>
-                        <p >车牌号码：{{item.carNum}}</p>
-                    </template>
-                    <template #desc>
-                        <p >收款类型: 
-                            <span v-if="item.payType==1">现金</span>
-                            <span v-if="item.payType==2">移动支付</span>
-                            <span v-if="item.payType==3">无感支付</span>
-                            <span v-if="item.payType==4">储值扣费</span>
-                            <span v-if="item.payType==5">二维码支付</span>
-                            <span v-if="item.payType==6">预交费付款</span>
-                            <span v-if="item.payType==99">免费</span>
-                        </p>
-                        <p >入场：{{item.inTime}}</p>
-                        <p >出场：{{item.outTime}}</p>
-                        <p >总金额：{{item.orderMoney}}元</p>
-                        <p >收费金额：{{item.payMoney}}元</p>
-                        <p >备注：{{item.remarks}}</p>
-                    </template>
-                </van-card>
-                <div class="noSearch" v-if="payList.length === 0">暂无查询数据</div>
+                <div class="list">
+                    <el-table
+                        size="mini"
+                        :data="inOutList"
+                        @row-click="viewDetail"
+                        style="width: 100%">
+                        <el-table-column
+                            prop="carNum"
+                            label="车牌"
+                            width="95"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="inTime"
+                            label="进场时间"
+                            width="135"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="outTime"
+                            label="出场时间"
+                            width="135"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="stayTime"
+                            label="停留时间"
+                            align="center">
+                        </el-table-column>
+                        <el-table-column
+                            prop="needPay"
+                            label="收费金额"
+                            align="center">
+                            <template slot-scope="scope">
+                                <span>{{scope.row.needPay?scope.row.needPay:0}}</span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
             </van-list>
         </div>
     </div>
@@ -106,7 +118,6 @@ export default {
             this.params.pageSize = this.pageSize
             this.$api.home.getPayList(this.params).then(res=>{
                 if(res.code == 200){
-                    this.loading = false;
                     this.total = res.result.total
                     let rows = res.result.records; //请求返回当页的列表
                     if (rows == null || rows.length === 0) {
@@ -123,21 +134,20 @@ export default {
                 }else{
                     this.$toast(res.message);
                 }
+                this.loading = false;
             }).catch((res) => {
                 this.loading = false;
             });
         },
-        imgPreview(item){
-            let url = []
-            url.push(item.imgUrl)
-            if(item.outTime){                
-                url.push(item.outImgUrl)
-            }
-            ImagePreview({
-                images: url,
-                showIndex:true,
-                closeable: true,
-            });
+        viewDetail(row){
+            this.$router.push({
+                path:'/detail',
+                query:{
+                    title:"支付记录",
+                    row:row,
+                    type:1
+                }
+            })
         }
     }
 }

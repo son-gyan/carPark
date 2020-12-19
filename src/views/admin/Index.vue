@@ -239,8 +239,8 @@ export default {
                     font-size: 1rem;
                 }
                 .van-grid-item__text{
-                    font-size: .2rem;
-                    font-weight: 600;
+                    font-size: .3rem;
+                    font-weight: bold;
                     text-align: center;
                 }
                 .van-grid-item__content{

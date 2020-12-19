@@ -8,7 +8,7 @@
                 v-model="loading"
                 finished-text="没有更多了"
                 @load="onLoad"
-                :offset="10"
+                :offset="0"
                 >
                 <van-search
                     v-model="searchVal"
@@ -23,6 +23,7 @@
                     <el-table
                         size="mini"
                         :data="tableData"
+                        @row-click="viewDetail"
                         style="width: 100%">
                         <el-table-column
                             prop="carNum"
@@ -116,7 +117,6 @@ export default {
             this.params.pageSize = this.pageSize
             this.$api.home.getRefundList(this.params).then(res=>{
                 if(res.code == 200){
-                    this.loading = false;
                     this.total = res.result.total
                     let rows = res.result.records; //请求返回当页的列表
                     if (rows == null || rows.length === 0) {
@@ -133,9 +133,20 @@ export default {
                 }else{
                     this.$toast(res.message);
                 }
+                this.loading = false;
             }).catch((res) => {
                 this.loading = false;
             });
+        },
+        viewDetail(row){
+            this.$router.push({
+                path:'/detail',
+                query:{
+                    title:"退款金额",
+                    row:row,
+                    type:3
+                }
+            })
         }
     }
 }

@@ -112,6 +112,16 @@ export const getCarList = () => {
         method: 'get'
     })
 }
+
+// 月租车 月租申请
+export const applyMonthCar = (data) => {
+    return axios({
+        url: '/park/zyb/apply/applyMonthCar',
+        method: 'POST',
+        data,
+        headers: header
+    })
+}
 // 支付
 export const getpayadress = (data) => {
     return axios({

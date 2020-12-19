@@ -17,6 +17,7 @@ const addCar = () => import("@/components/admin/addCar")
 const Loading = () => import("@/views/admin/Loading")
 const Order = () => import("@/views/admin/Order") 
 const Refund = () => import("@/views/admin/Refund") 
+const Detail = () => import("@/views/admin/Detail") 
 const InOut = () => import("@/views/admin/InOut") 
 const PayRecords = () => import("@/views/admin/PayRecords") 
 const Member = () => import("@/views/admin/Member") 
@@ -136,6 +137,11 @@ const router = new Router({
             path:"/refund",
             name: "refund",
             component: Refund
+        },
+        {
+            path:"/detail",
+            name: "detail",
+            component: Detail
         },
         {
             path:"/inOut",
