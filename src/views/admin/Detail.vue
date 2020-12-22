@@ -38,7 +38,7 @@
                             <van-col span="12" class="vanCol" v-if="type==3">
                                 <div>退款金额:{{info.walletMoney-info.orderMoney}}元</div></van-col>
                             <van-col span="12" class="vanCol" v-if="type==3">
-                                <van-button type="info" size="mini" @click="refund" >退款</van-button>
+                                <van-button type="info" size="mini" @click="refund(info)">退款</van-button>
                             </van-col>
                         </van-col>
                     </van-row>
@@ -55,6 +55,16 @@
                 </template>
             </van-card>
         </div>
+        <van-dialog v-model="show" title="退款原因" show-cancel-button @confirm="onConfirm" @cancel="onCancel">
+            <van-field
+                v-model="message"
+                rows="1"
+                autosize
+                label="留言"
+                type="textarea"
+                placeholder="请输入退款原因"
+                />
+        </van-dialog>
     </div>
 </template>
 <script>
@@ -67,7 +77,11 @@ export default {
         return {
             title:"",
             info:{},
-            type:-1
+            type:-1,
+            show:false,
+            message:"",
+            recordId:"",
+            refundMoney:""
         }
     },
     created(){
@@ -87,8 +101,35 @@ export default {
                 closeable: true,
             });
         },
-        refund(){
-
+        refund(info){
+            this.recordId = info.id
+            this.refundMoney = info.walletMoney-info.orderMoney
+            this.show = true
+        },
+        onConfirm(){
+            /* let params = {
+                recordId:this.recordId,
+                refundMoney:this.refundMoney,
+                reason:this.message
+            } */
+            let formData = new FormData()
+            formData.append("recordId",this.recordId)
+            formData.append("refundMoney",this.refundMoney)
+            formData.append("reason",this.message)
+            this.$api.home.refund(formData).then(res=>{
+                if(res.code == 200){
+                    debugger
+                }else{
+                    this.$toast(res.message);
+                }
+                this.loading = false;
+            }).catch((res) => {
+                this.loading = false;
+            });
+        },
+        onCancel(){
+            this.show = false
+            this.message = ""
         }
     }
 }

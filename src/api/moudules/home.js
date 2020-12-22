@@ -284,3 +284,13 @@ export const getExamineList = (params) => {
         params
     })
 }
+
+// 月租审核列表
+export const refund = (data) => {
+    return axios({
+        url: '/park/zyb/zybRefund/refund',
+        method: 'POST',
+        data
+    })
+}
+
