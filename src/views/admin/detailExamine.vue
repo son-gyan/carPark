@@ -20,8 +20,7 @@
                 </el-form-item>
                 <el-form-item label="部门">
                     <el-select v-model="examineForm.groupId" placeholder="请选择部门" class="fullWidth">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                        <el-option :label="item.name" :value="item.id" v-for="(item,index) in groupList" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="车辆类型">
@@ -34,23 +33,26 @@
                 </el-form-item>
                 <el-form-item label="月卡套餐">
                     <el-checkbox-group v-model="examineForm.packIds">
-                        <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                        <el-checkbox label="地推活动" name="type"></el-checkbox>
+                        <el-checkbox :label="item.id" name="type" v-for="(item,index) in packageList" :key="index">{{item.name}}</el-checkbox>
+                        <!-- <el-checkbox label="地推活动" name="type"></el-checkbox>
                         <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                        <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
+                        <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox> -->
                     </el-checkbox-group>
                 </el-form-item>
                 <el-form-item label="收费标准">
-                    <el-select v-model="examineForm.freeId" placeholder="请选择部门" class="fullWidth">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
+                    <el-select v-model="examineForm.freeId" placeholder="请选择收费标准" class="fullWidth">
+                        <el-option :label="item.name" :value="item.id" v-for="(item,index) in feesList" :key="index"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="开始时间">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="examineForm.startTime" class="fullWidth"></el-date-picker>
+                    <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期" 
+                        v-model="examineForm.startTime" class="fullWidth">
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item label="结束时间">
-                    <el-date-picker type="date" placeholder="选择日期" v-model="examineForm.startTime" class="fullWidth"></el-date-picker>
+                    <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" type="datetime" placeholder="选择日期" 
+                        v-model="examineForm.endTime" class="fullWidth">
+                    </el-date-picker>
                 </el-form-item>
                 <el-form-item>
                     <el-image :src="examineForm.imgUrl" :fit="fit"  class="fullWidth"></el-image>
@@ -70,6 +72,9 @@ export default {
             depId:"",
             carParkName:"",
             info:{},
+            feesList:[],
+            packageList:[],
+            groupList:[],
             examineForm:{
                 userName:"",
                 phone:"",
@@ -80,8 +85,8 @@ export default {
                 carTyme:"",
                 packIds:[],
                 freeId:"",
-                startTime:"",
-                endTime:"",
+                startTime:new Date(),
+                endTime:new Date(),
                 imgUrl:""
             },
             params:{
@@ -110,13 +115,72 @@ export default {
         this.examineForm.carNum = this.info.carNum
         this.examineForm.carParkName = this.carParkInfo.name||sessionStorage.getItem('carParkInfo').name
         this.examineForm.userAddress = this.info.userAddress
-        this.examineForm.imgUrl = this.info.userAddress
+        this.examineForm.imgUrl = this.info.imgUrl
+        this.initData()
     },
     methods:{
         //返回
         onClickLeft(){
             this.$router.go(-1)
         },
+        initData(){
+            let params = {
+                depId:this.depId
+            }
+            this.$api.home.getZybFeesList(params).then(res=>{
+                if(res.code == 200){
+                    this.feesList = res.result.records                   
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+            this.$api.home.getPackageList(params).then(res=>{
+                if(res.code == 200){
+                    this.packageList = res.result.records                 
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+
+            let parm = {
+                depId:this.carParkInfo.depId||sessionStorage.getItem('depId'),
+            }
+            this.$api.home.getGroupList(parm).then(res=>{
+                if(res.code == 200){
+                    this.arrList = [];
+                    this.groupList = this.readNodes(JSON.parse(JSON.stringify(res.result)))
+                    console.log(this.groupList,'groupList')                 
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+        },
+        readNodes (treeData) {
+            let obj = {
+                id:"",
+                name:""
+            }
+            for (let item of treeData) {
+                obj = {
+                    id:item.id,
+                    name:item.name
+                }
+                this.arrList.push(obj)
+                if (item.childList && item.childList.length) {
+                    this.readNodes(item.childList)
+                }
+            }
+            return this.arrList
+        },
+        onSubmit(){
+            console.log(this.examineForm,"examineForm")
+        }
     }
 }
 </script>

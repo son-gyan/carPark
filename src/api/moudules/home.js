@@ -61,7 +61,7 @@ export const getCarList = (params) => {
         params
     })
 }
-// 获取机构列表
+// 获取机构列表 部门列表
 export const getGroupList = (params) => {
     return axios({
         url: '/park/zyb/zybGroup/list',
