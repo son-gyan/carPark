@@ -107,11 +107,6 @@ export default {
             this.show = true
         },
         onConfirm(){
-            /* let params = {
-                recordId:this.recordId,
-                refundMoney:this.refundMoney,
-                reason:this.message
-            } */
             let formData = new FormData()
             formData.append("recordId",this.recordId)
             formData.append("refundMoney",this.refundMoney)
