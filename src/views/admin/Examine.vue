@@ -2,15 +2,8 @@
     <div>
         <van-nav-bar class="navBar" title="月租审核" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
-            <van-list
-                :finished="finished"
-                :immediate-check="false"
-                v-model="loading"
-                finished-text="没有更多了"
-                @load="onLoad"
-                :offset="0"
-                >
-                <van-search
+            <van-list>
+                <!-- <van-search
                     v-model="searchVal"
                     placeholder="请输入车牌号"
                     @search="onSearch"
@@ -18,45 +11,23 @@
                     background="#dcdfe6"
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
-                </van-search>
+                </van-search> -->
                 <div class="list">
-                    <el-table
-                        size="mini"
-                        :data="examineList"
-                        @row-click="viewDetail"
-                        style="width: 100%">
-                        <el-table-column
-                            prop="carNum"
-                            label="车牌"
-                            width="95"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="inTime"
-                            label="进场时间"
-                            width="135"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="outTime"
-                            label="出场时间"
-                            width="135"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="stayTime"
-                            label="停留时间"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="needPay"
-                            label="收费金额"
-                            align="center">
-                            <template slot-scope="scope">
-                                <span>{{scope.row.needPay?scope.row.needPay:0}}</span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                    <van-card  class="vanCard" v-for="(item,index) in examineList" :key="index">
+                        <template #title>
+                            <van-row type="flex" >
+                                <van-col span="24">
+                                    <van-col span="12" class="vanCol">车牌号码:{{item.carNum}}</van-col>
+                                    <van-col span="12" class="vanCol">手机号:{{item.phone}}</van-col>
+                                    <van-col span="16" class="vanCol">申请时间:{{item.createTime}}</van-col>
+                                    <van-col span="8" class="vanCol btnWrap">
+                                        <van-button type="info" size="mini" @click="examine(item)">审核</van-button>
+                                        <van-button type="info" size="mini" @click="del(item)">删除</van-button>
+                                    </van-col>
+                                </van-col>
+                            </van-row>
+                        </template>
+                    </van-card>
                 </div>
             </van-list>
         </div>
@@ -79,7 +50,7 @@ export default {
                 carNum:"",
                 depId:'',
                 pageNo:1,
-                pageSize:10 
+                pageSize:1000 
             },
             pageNo: 1,//请求第几页
             pageSize: 10,//每页请求的数量
@@ -96,7 +67,7 @@ export default {
     methods:{
         onSearch(){
             this.params.carNum = this.searchVal
-            this.payList=[]
+            this.examineList=[]
             this.pageNo = 1
             this.loading = true
             this.finished = false;
@@ -106,31 +77,14 @@ export default {
         onClickLeft(){
             this.$router.go(-1)
         },
-        // 下拉加载
-        onLoad () {
-            if (!this.loading) {
-                return false
-            }            
-            this.init();
-        },
         init(){
             this.params.pageNo = this.pageNo
             this.params.pageSize = this.pageSize
             this.$api.home.getExamineList(this.params).then(res=>{
                 if(res.code == 200){
-                    this.total = res.result.total
-                    let rows = res.result.records; //请求返回当页的列表
-                    if (rows == null || rows.length === 0) {
-                        // 加载结束
-                        this.finished = true;
-                        return;
+                    if(res.result&&res.result.length>0){
+                        this.examineList = res.result
                     }
-                    this.examineList = this.examineList.concat(rows)
-                    //如果列表数据条数>=总条数，不再触发滚动加载
-                    if (this.examineList.length >= this.total) {
-                        this.finished = true;
-                    }                    
-                    this.pageNo++;
                 }else{
                     this.$toast(res.message);
                 }
@@ -139,7 +93,7 @@ export default {
                 this.loading = false;
             });
         },
-        viewDetail(row){
+        examine(row){
             this.$router.push({
                 path:'/detailExamine',
                 query:{

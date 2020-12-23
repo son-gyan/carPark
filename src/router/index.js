@@ -22,6 +22,13 @@ const InOut = () => import("@/views/admin/InOut")
 const PayRecords = () => import("@/views/admin/PayRecords") 
 const Member = () => import("@/views/admin/Member") 
 const Examine = () => import("@/views/admin/Examine") 
+const detailExamine = () => import("@/views/admin/detailExamine") 
+const setMeal = () => import("@/views/admin/member/setMeal") 
+const user = () => import("@/views/admin/member/user") 
+const consume = () => import("@/views/admin/member/consume") 
+const recharge = () => import("@/views/admin/member/recharge") 
+const dues = () => import("@/views/admin/member/dues") 
+const project = () => import("@/views/admin/member/project") 
 //商户路径
 const LoadingShop = () => import("@/views/business/LoadingShop")
 const BlankpageShop = () => import("@/views/business/BlankpageShop") 
@@ -40,7 +47,7 @@ const bill = () => import("@/views/owner/bill")
 const monthlyCar = () => import("@/views/owner/monthlyCar")
 const invoice = () => import("@/views/owner/invoice")
 const afterPayment = () => import("@/views/owner/afterPayment")
-const member = () => import("@/views/owner/member")
+const memberRecharge = () => import("@/views/owner/member")
 const temporaryStop = () => import("@/views/owner/temporaryStop")
 const payTasaday = () => import("@/views/owner/payTasaday")
 const advert = () => import("@/views/owner/advert")
@@ -63,219 +70,55 @@ const router = new Router({
     },
     mode: 'history',
     routes: [
-        {
-            path: "/",
-            //redirect: '/loading'
-            redirect: '/login'
-        },
-        {
-            path: '/loading',
-            name: 'loading',
-            component: Loading,
-            meta: {keepAlive: false}
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login,
-            meta: {keepAlive: false}
-        },
-        
-        {
-            path: "/index",
-            name: "index",
-            component: Index,
-            meta: {keepAlive: true}
-        },
-        {
-            path: "/deviceManage",
-            name: "deviceManage",
-            component: DeviceManage
-        },
-        {
-            path: "/carManage",
-            name: "carManage",
-            component: CarManage
-        },
-        {
-            path: "/presentCar",
-            name: "presentCar",
-            component: PresentCar
-        },
-        {
-            path: "/detentionInventory",
-            name: "detentionInventory",
-            component: DetentionInventory
-        },
-        {
-            path: "/blacklist",
-            name: "blacklist",
-            component: Blacklist
-        },
-        {
-            path: "/blankpage",
-            name: "blankpage",
-            component: Blankpage
-        },
-        {
-            path: "/statistical",
-            name: "statistical",
-            component: Statistical
-        },
-        {
-            path: "/addCar",
-            name: "addCar",
-            component: addCar
-        },
-        {
-            path:"/order",
-            name: "order",
-            component: Order,
-            meta: {keepAlive: false}
-        },
-        {
-            path:"/refund",
-            name: "refund",
-            component: Refund
-        },
-        {
-            path:"/detail",
-            name: "detail",
-            component: Detail
-        },
-        {
-            path:"/inOut",
-            name: "inOut",
-            component: InOut
-        },
-        {
-            path:"/payRecords",
-            name: "payRecords",
-            component: PayRecords
-        },
-        {
-            path:"/member",
-            name: "member",
-            component: Member
-        },
-        {
-            path:"/examine",
-            name: "examine",
-            component: Examine
-        },
+        { path: "/",redirect: '/login' },//redirect: '/loading'
+        { path: '/loading',name: 'loading',component: Loading,meta: {keepAlive: false} },
+        { path: '/login', name: 'login',component: Login,meta: {keepAlive: false} },
+        { path: "/index", name: "index",component: Index,meta: {keepAlive: true} },
+        { path: "/deviceManage", name: "deviceManage",component: DeviceManage },
+        { path: "/carManage",name: "carManage",component: CarManage },
+        { path: "/presentCar",name: "presentCar",component: PresentCar },
+        { path: "/detentionInventory", name: "detentionInventory",component: DetentionInventory },
+        { path: "/blacklist",name: "blacklist",component: Blacklist },
+        { path: "/blankpage", name: "blankpage",component: Blankpage },
+        { path: "/statistical",name: "statistical",component: Statistical },
+        { path: "/addCar",name: "addCar",component: addCar },
+        { path:"/order",name: "order",component: Order,meta: {keepAlive: false} },
+        { path:"/refund",name: "refund",component: Refund },
+        { path:"/detail",name: "detail",component: Detail },
+        { path:"/inOut",name: "inOut",component: InOut },
+        { path:"/payRecords",name: "payRecords",component: PayRecords },
+        { path:"/member",name: "member",component: Member },
+        { path:"/examine",name: "examine",component: Examine },
+        { path:"/detailExamine",name: "detailExamine",component: detailExamine },
+        { path:"/setMeal",name: "setMeal",component: setMeal },
+        { path:"/user", name: "user",component: user },
+        { path:"/consume",name: "consume",component: consume },
+        { path:"/recharge",name: "recharge",component: recharge },
+        { path:"/dues", name: "dues", component: dues },
+        { path:"/project",name: "project",component: project },
         //商户路由
-        {
-            path: '/loadingShop',
-            name: 'loadingShop',
-            component: LoadingShop,
-            meta: {keepAlive: false}
-        },
-        {
-            path: "/blankpageShop",
-            name: "blankpageShop",
-            component: BlankpageShop
-        },        
-        {
-            path: '/loginShop',
-            name: 'loginShop',
-            component: LoginShop,
-            meta: {keepAlive: false}
-        },
-        {
-            path: "/indexShop",
-            name: "indexShop",
-            component: IndexShop,
-            meta: {keepAlive: true}
-        },
-        {
-            path:"/orderShop",
-            name: "orderShop",
-            component: OrderShop,
-            meta: {keepAlive: false}
-        },
+        { path: '/loadingShop', name: 'loadingShop', component: LoadingShop,meta: {keepAlive: false} },
+        { path: "/blankpageShop",name: "blankpageShop",component: BlankpageShop },        
+        { path: '/loginShop',name: 'loginShop',component: LoginShop, meta: {keepAlive: false} },
+        { path: "/indexShop",name: "indexShop", component: IndexShop,meta: {keepAlive: true} },
+        { path:"/orderShop", name: "orderShop",component: OrderShop,meta: {keepAlive: false} },
         // 车主路由
-        {
-            path: '/loadingOwner',
-            name: 'loadingOwner',
-            component: LoadingOwner,
-            meta: {keepAlive: false}
-        },
-        {
-            path: "/blankpageOwner",
-            name: "blankpageOwner",
-            component: BlankpageOwner
-        },        
-        {
-            path: '/loginOwner',
-            name: 'loginOwner',
-            component: LoginOwner,
-            meta: {keepAlive: false}
-        },
-        {
-            path: "/indexOwner",
-            name: "indexOwner",
-            component: IndexOwner
-        },
-        {
-            path: "/myCar",
-            name: "myCar",
-            component: myCar
-        },
-        {
-            path: "/payment",
-            name: "payment",
-            component: payment
-        },
-        {
-            path: "/carPark",
-            name: "carPark",
-            component: carPark
-        },
-        {
-            path: "/bill",
-            name: "bill",
-            component: bill
-        },
-        {
-            path: "/monthlyCar",
-            name: "monthlyCar",
-            component: monthlyCar
-        },
-        {
-            path: "/invoice",
-            name: "invoice",
-            component: invoice
-        },
-        {
-            path: "/afterPayment",
-            name: "afterPayment",
-            component: afterPayment
-        },
-        {
-            path: "/member",
-            name: "member",
-            component: member
-        },
-        {
-            path: "/temporaryStop",
-            name: "temporaryStop",
-            component: temporaryStop
-        },
-        {
-            path: "/payTasaday",
-            name: "payTasaday",
-            component: payTasaday
-        },
-        {
-            path: "/advert",
-            name: "advert",
-            component: advert
-        },
-        {
-            path: "/contactUs",
-            name: "contactUs",
-            component: contactUs
-        }
+        { path: '/loadingOwner',name: 'loadingOwner',component: LoadingOwner,meta: {keepAlive: false} },
+        { path: "/blankpageOwner",name: "blankpageOwner",component: BlankpageOwner },        
+        { path: '/loginOwner',name: 'loginOwner',component: LoginOwner,meta: {keepAlive: false} },
+        { path: "/indexOwner",name: "indexOwner",component: IndexOwner },
+        { path: "/myCar",name: "myCar",component: myCar },
+        { path: "/payment",name: "payment",component: payment },
+        { path: "/carPark",name: "carPark",component: carPark },
+        { path: "/bill",name: "bill",component: bill },
+        { path: "/monthlyCar",name: "monthlyCar",component: monthlyCar },
+        { path: "/invoice",name: "invoice",component: invoice },
+        { path: "/afterPayment",name: "afterPayment",component: afterPayment },
+        { path: "/memberRecharge",name: "memberRecharge",component: memberRecharge },
+        { path: "/temporaryStop", name: "temporaryStop",component: temporaryStop },
+        { path: "/payTasaday", name: "payTasaday", component: payTasaday },
+        { path: "/advert",name: "advert",component: advert },
+        { path: "/contactUs", name: "contactUs",component: contactUs }
     ]
 });
 

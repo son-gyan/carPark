@@ -53,7 +53,7 @@
                     <van-grid-item  text="预付退款" @click='jumpTo(8)'  :icon="require('../../assets/images/refund.png')"/>
                     <van-grid-item  text="滞留盘点" @click='jumpTo(4)'  :icon="require('../../assets/images/detentionInventory.png')"/>
                     <van-grid-item  text="在场车辆" @click='jumpTo(3)'  :icon="require('../../assets/images/presentCar.png')"/>
-                    <van-grid-item  text="进出场记录" @click='jumpTo(9)'  :icon="require('../../assets/images/inOut.png')"/>
+                    <van-grid-item  text="进出记录" @click='jumpTo(9)'  :icon="require('../../assets/images/inOut.png')"/>
                     <van-grid-item  text="支付记录" @click='jumpTo(10)'  :icon="require('../../assets/images/payRecords.png')"/>
                     <van-grid-item  text="预约车场" @click='jumpTo(7)'  :icon="require('../../assets/images/orderCar.png')"/>
                     <van-grid-item  text="黑名单"   @click='jumpTo(5)'  :icon="require('../../assets/images/blacklist.png')"/>

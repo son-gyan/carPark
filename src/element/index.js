@@ -4,7 +4,7 @@ import { Select, Option, OptionGroup, Input, Tree, Dialog, Row, Col , Form, Form
     TimeSelect,
     TimePicker,
     Button,Table,
-    TableColumn,} from 'element-ui'
+    TableColumn,InfiniteScroll} from 'element-ui'
 const element = {
   install: function (Vue) {
     Vue.use(Select)
@@ -27,6 +27,7 @@ const element = {
     Vue.use(Button)
     Vue.use(Table)
     Vue.use(TableColumn)
+    Vue.use(InfiniteScroll)
   }
 }
 export default element

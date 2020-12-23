@@ -71,7 +71,23 @@
   padding: 8px;
 }
 .fixedMain {
-  margin-top: 48px;
+  padding-top: 46px;
+}
+.fixedMain .vanSearch {
+  position: fixed;
+  top: 46px;
+  width: 100%;
+  z-index: 10;
+}
+.fixedMain .list {
+  padding-top: 1px;
+}
+.fixedMain .list .btnWrap {
+  text-align: right;
+}
+.fixedMain .cardList {
+  margin-top: 56px;
+  padding-top: 1px;
 }
 .covers {
   display: flex;

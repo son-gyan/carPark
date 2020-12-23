@@ -10,7 +10,7 @@
                 @load="onLoad"
                 :offset="0"
                 >
-                <van-search
+                <van-search class="vanSearch"
                     v-model="searchVal"
                     placeholder="请输入车牌号"
                     @search="onSearch"
@@ -19,44 +19,56 @@
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
                 </van-search>
-                <div class="list">
-                    <el-table
-                        size="mini"
-                        :data="payList"
-                        @row-click="viewDetail"
-                        style="width: 100%">
-                        <el-table-column
-                            prop="carNum"
-                            label="车牌"
-                            width="95"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="inTime"
-                            label="进场时间"
-                            width="135"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="outTime"
-                            label="出场时间"
-                            width="135"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="stayTime"
-                            label="停留时间"
-                            align="center">
-                        </el-table-column>
-                        <el-table-column
-                            prop="needPay"
-                            label="收费金额"
-                            align="center">
-                            <template slot-scope="scope">
-                                <span>{{scope.row.needPay?scope.row.needPay:0}}</span>
-                            </template>
-                        </el-table-column>
-                    </el-table>
+                <div class="list cardList">
+                    <van-card  class="vanCard" v-for="(item,index) in payList" :key="index">
+                        <template #title>
+                            <van-row type="flex" >
+                                <van-col span="24">
+                                    <van-col span="12" class="vanCol">车牌号码:{{item.carNum}}</van-col>
+                                    <van-col span="12" class="vanCol">
+                                        <div>
+                                            收款类型: 
+                                            <span v-if="item.payType==1">现金</span> 
+                                            <span v-else-if="item.payType==2">移动支付</span> 
+                                            <span v-else-if="item.payType==3">无感支付</span> 
+                                            <span v-else-if="item.payType==4">储值扣费</span> 
+                                            <span v-else-if="item.payType==5">二维码支付</span> 
+                                            <span v-else-if="item.payType==6">预交费付款</span> 
+                                            <span v-else-if="item.payType==99">免费</span>
+                                            <span v-else>无</span>
+                                        </div>  
+                                    </van-col>
+                                </van-col>
+                                <van-col span="24">
+                                    <van-col span="12" class="vanCol">入场:{{item.inTime}}</van-col>
+                                    <van-col span="12" class="vanCol"><div>出场:{{item.outTime?item.outTime:"无"}}</div></van-col>
+                                </van-col>
+                                <van-col span="24">
+                                    <van-col span="12" class="vanCol"><div>总金额:{{item.orderMoney?item.orderMoney:0}}元</div></van-col>
+                                    <van-col span="12" class="vanCol"><div>收费金额:{{item.payMoney?item.payMoney:0}}元</div></van-col>
+                                    <van-col span="12" class="vanCol"><div>优惠信息:{{item.remarks?item.remarks:"无"}}</div></van-col>
+                                    <van-col span="12" class="vanCol">车辆类型:
+                                        <span v-if="item.carType==1">月租车</span>
+                                        <span v-else-if="item.carType==2">储值车</span>
+                                        <span v-else-if="item.carType==3">免费车</span>
+                                        <span v-else-if="item.carType==4">临时车</span>
+                                        <span v-else-if="item.carType==5">时段限制月租</span>
+                                        <span v-else>无</span>
+                                    </van-col>
+                                </van-col>
+                            </van-row>
+                            <van-row type="flex" >
+                                <van-col span="12" class="vanCol">
+                                    <span class="photoLabel">进场照片：</span>
+                                    <img :src="item.imgUrl" alt="" srcset="" @click="imgPreview(item.imgUrl)">
+                                </van-col>
+                                <van-col span="12" class="vanCol" v-if="item.outTime">
+                                    <span class="photoLabel">出场照片：</span>
+                                    <img :src="item.outImgUrl" alt="" srcset="" @click="imgPreview(item.outImgUrl)">
+                                </van-col>
+                            </van-row>
+                        </template>
+                    </van-card>
                 </div>
             </van-list>
         </div>
@@ -139,16 +151,31 @@ export default {
                 this.loading = false;
             });
         },
-        viewDetail(row){
-            this.$router.push({
-                path:'/detail',
-                query:{
-                    title:"支付记录",
-                    row:row,
-                    type:1
-                }
-            })
+        imgPreview(url){
+            ImagePreview({
+                images: [url],
+                showIndex:false,
+                closeable: true,
+            });
         }
     }
 }
 </script>
+<style lang="less" scoped>
+    .mainWrap{
+        /deep/ .vanCard{
+            padding: 5px;
+                .vanCol{
+                padding-bottom:.1rem ;
+                img{
+                    max-width: 95%;
+                    max-height: 2rem;
+                }
+                .photoLabel{
+                    display: inline-block;
+                    margin-bottom: .1rem;
+                }
+            }
+        }
+    }
+</style>
