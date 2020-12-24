@@ -107,11 +107,20 @@ export default {
         del(item){
             let formData = new FormData()
                 formData.append('id',item.id)
-            this.$api.home.delApply(formData).then(res=>{
-
-            }).catch((res) => {
-
-            })
+            /* this.$dialog.confirm({
+                title:"删除",
+                message: "",
+            }).then(() => { */
+                this.$api.home.delApply(formData).then(res=>{
+                    this.$toast(res.message)
+                    this.init()
+                }).catch((res) => {
+                    console.log(res)
+                })
+            /* }).catch(() => {
+                // on cancel
+                this.$toast("已取消");
+            }); */
         }
     }
 }

@@ -65,7 +65,8 @@
                                 :before-upload="beforeUpload"
                                 :on-change="handleChange"
                                 :on-preview="handlePictureCardPreview"
-                                > <!-- :auto-upload="false" -->
+                                :auto-upload="false"
+                                > <!--  -->
                                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
@@ -85,7 +86,7 @@ import { mapGetters } from "vuex"
 import { ImagePreview } from 'vant';
 import ClickOutside from 'element-ui/src/utils/clickoutside'
 import plateNumber from '@/components/plateNumber'
-import {getDayNum} from '@/utils'
+import {getDayNum,compress } from '@/utils'
 import * as imageConversion from 'image-conversion';
 export default {
     components: {
@@ -203,9 +204,41 @@ export default {
             }
         },
         handleChange(file, fileList){
-            debugger
-            this.imageUrl = URL.createObjectURL(file.raw);
-            this.form.file = file
+            //debugger
+            let fileObj = file.raw
+            let that = this
+            /* return new Promise((resolve, reject) => {
+                let _URL = window.URL || window.webkitURL
+                let isLt2M = file.size / 1024 / 1024 < 5 // 判定图片大小是否小于4MB
+                // 这里需要计算出图片的长宽
+                let img = new Image()                                                     
+                // 需要把图片赋值
+                img.src = URL.createObjectURL(fileObj)
+                that.imageUrl = URL.createObjectURL(fileObj)
+                img.onload = function () {
+                    fileObj.width = img.width // 获取到width放在了file属性上
+                    fileObj.height = img.height // 获取到height放在了file属性上
+                    let valid = img.width > 2000 // 图片宽度大于2000
+                    // console.log(11, file)
+                    // 这里我只判断了图片的宽度,compressAccurately有多个参数时传入对象
+                    if (isLt2M) {
+                        imageConversion.compress(fileObj, {
+                            quality: 0.7,
+                            width: 500,
+                            type: "image/png", 
+                        }).then(res => { 
+                            console.log("压缩后图片", res)
+                            //debugger
+                            that.form.file = res;
+                            resolve(res)
+                        })
+                    } else {
+                        this.$message.error('上传头像图片大小不能超过 5MB!');
+                    }
+                }
+            }) */
+            this.imageUrl = URL.createObjectURL(fileObj);
+            this.form.file = fileObj
         },
         beforeUpload(file){
             const isLt2M = file.size / 1024 / 1024 < 1;
@@ -223,7 +256,7 @@ export default {
                 formData.append('userName',this.form.userName)
                 formData.append('userAddress',this.form.userAddress)
                 formData.append('phone',this.form.phone)
-                formData.append('file',this.form.file.raw)
+                formData.append('file',this.form.file)
             this.$api.owner.applyMonthCar(formData).then(res=>{
                 if (res.code === 200) {
                     //debugger
@@ -247,44 +280,6 @@ export default {
                 phone:"",
                 file:''
             }
-        },
-        /* 图片压缩方法-canvas压缩 */
-        compressUpload(image, file) {
-            let canvas = document.createElement('canvas')
-            let ctx = canvas.getContext('2d')
-            let initSize = image.src.length
-            let { width } = image, { height } = image
-            canvas. width = width
-            canvas.height = height
-            ctx.fillRect(0, 0, canvas.width, canvas.height)
-            ctx.drawImage(image, 0, 0, width, height)
-            
-            // 进行最小压缩0.1
-            let compressData = canvas.toDataURL(file.type || 'image/jpeg', 0.1)
-            
-            // 压缩后调用方法进行base64转Blob，方法写在下边
-            let blobImg = this.dataURItoBlob(compressData)
-            debugger
-            return blobImg
-        },
-        
-        /* base64转Blob对象 */
-        dataURItoBlob(data) {
-            let byteString;
-            if(data.split(',')[0].indexOf('base64') >= 0) {
-                byteString = atob(data.split(',')[1])
-            }else {
-                byteString = unescape(data.split(',')[1])
-            }
-            let mimeString = data
-                .split(',')[0]
-                .split(':')[1]
-                .split(';')[0];
-            let ia = new Uint8Array(byteString.length)
-            for( let i = 0; i < byteString.length; i += 1) {
-                ia[i] = byteString.charCodeAt(i)
-            }
-            return new Blob([ia], {type: mimeString})
         }
     }
 }
