@@ -73,6 +73,9 @@
 .fixedMain {
   padding-top: 46px;
 }
+.fixedMain .topBtnGroup {
+  padding: 0.3rem;
+}
 .fixedMain .vanSearch {
   position: fixed;
   top: 46px;

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="whiteBg">
         <van-nav-bar class="navBar" title="黑名单" left-text="返回"  right-text="添加" fixed
             left-arrow @click-left="onClickLeft" 
             @click-right="addBlacklist">

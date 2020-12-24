@@ -48,7 +48,7 @@ export default {
               updateTime: null,
               username: "18602701015"
             },
-            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg3MTY1MzEsInVzZXJuYW1lIjoib0o5Y2U2QVJlWTkyX05LcjdmR3lCS29Bd05VVSJ9.B4ZHLcA6jubWbdXPSUWZkyjuaaQjm8llpDANjUsM8ZE";
+            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg3ODkyNTYsInVzZXJuYW1lIjoib0o5Y2U2QVJlWTkyX05LcjdmR3lCS29Bd05VVSJ9.q4YEtYmTot1NHnqz46nY912JnsIRM3S7h3warju_B6c";
             this.$store.dispatch('setUser', userInfoTest)                           
             sessionStorage.setItem('userId',userInfoTest.id)
             sessionStorage.setItem('token',tokenTest)
@@ -71,6 +71,15 @@ html,body {
     width: 100%;
     height:100%;
     background: #f2f2f2;
+    .child-view{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+    }
+    .whiteBg{
+        height:100%; 
+        background: #fff;
+    }
     .pages{
         height:100%; 
         background: #f2f2f2;

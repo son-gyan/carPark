@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="whiteBg">
         <van-nav-bar class="navBar" title="设备管理" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
             <van-list
@@ -169,6 +169,15 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    body{
+        #app{
+            height:auto;
+            .child-view{
+                display: inline-block;
+                width: 100%;
+            }
+        }
+    }
     .mainWrap{
         .title{
             padding: .3rem 0;

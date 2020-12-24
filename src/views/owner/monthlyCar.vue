@@ -6,7 +6,7 @@
                 :finished="finished"
                 :immediate-check="false"
                 v-model="loading"
-                finished-text="没有更多了"
+                finished-text=""
                 @load="onLoad"
                 :offset="10"
                 >
@@ -24,24 +24,7 @@
                         </van-row>
                         <van-row type="flex" justify="center" >
                             <van-col span="14">到期时间：{{item.expireTime}}</van-col>
-                            <van-col span="7">剩余28天</van-col>
-                            <van-col span="3">
-                            </van-col>
-                        </van-row>
-                    </template>
-                </van-card>
-                <van-card  class="vanCard">
-                    <template #title>
-                        <van-row type="flex" justify="center" >
-                            <van-col span="14">皇家后宫车场</van-col>
-                            <van-col span="7">鄂e88888</van-col>
-                            <van-col span="3">
-                                <van-button type="info" size="mini" @click="pay">续费</van-button>
-                            </van-col>
-                        </van-row>
-                        <van-row type="flex" justify="center" >
-                            <van-col span="14">到期时间：2020-11-11</van-col>
-                            <van-col span="7">剩余28天</van-col>
+                            <van-col span="7">{{getDayNum(item.endTime)>0?'剩余'+getDayNum(item.endTime)+'天':"过期"}}</van-col>
                             <van-col span="3">
                             </van-col>
                         </van-row>
@@ -57,8 +40,8 @@
                 <main class="dialogMain">
                     <el-form ref="form" :model="form" label-width="70px" size="mini">
                         <el-form-item label="车场：">
-                            <el-select v-model="form.depId" placeholder="请选择车场">
-                                <el-option :label="item.name" :value="item.depId" v-for="item in carParkList" :key="item.depId"></el-option>
+                            <el-select v-model="form.parkId" placeholder="请选择车场" class="fullWidth" @change="onChangeSelect">
+                                <el-option :label="item.name" :value="item.id" v-for="item in carParkList" :key="item.id"></el-option>
                             </el-select>
                         </el-form-item>
                         <div class="carNum">
@@ -77,11 +60,12 @@
                             <el-upload
                                 class="avatar-uploader"
                                 action="string"
+                                accept="image/*"
                                 :show-file-list="false"
                                 :before-upload="beforeUpload"
                                 :on-change="handleChange"
                                 :on-preview="handlePictureCardPreview"
-                                :auto-upload="false">
+                                > <!-- :auto-upload="false" -->
                                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             </el-upload>
@@ -101,6 +85,8 @@ import { mapGetters } from "vuex"
 import { ImagePreview } from 'vant';
 import ClickOutside from 'element-ui/src/utils/clickoutside'
 import plateNumber from '@/components/plateNumber'
+import {getDayNum} from '@/utils'
+import * as imageConversion from 'image-conversion';
 export default {
     components: {
         [ImagePreview.Component.name]: ImagePreview.Component,
@@ -123,6 +109,7 @@ export default {
             dialogTit:"月租申请",
             form:{
                 depId:"",
+                parkId:"",
                 carNum:"",
                 userName:"",
                 userAddress:"",
@@ -141,8 +128,11 @@ export default {
         this.params.userId = this.user.id
         this.init()
         this.getCarList()
+        /* let dayNum = getDayNum("2020-12-24")
+        console.log(dayNum,"dayNum") */
     },
     methods:{
+        getDayNum:getDayNum,
         getPlateLicense(data){
             this.form.carNum = data
         },
@@ -153,7 +143,6 @@ export default {
         getCarList(){
             this.$api.owner.getCarList().then(res=>{
                 if(res.code == 200){
-                    //debugger
                     let rows = res.result; //请求返回当页的列表
                     this.carParkList = rows
                 }else{
@@ -166,8 +155,10 @@ export default {
         init(){
             this.$api.owner.getMonthlyCarList(this.params).then(res=>{
                 if(res.code == 200){
+                    //debugger
                     let rows = res.result; //请求返回当页的列表
                     this.monthlyCarList = rows
+                    this.finished = true
                 }else{
                     this.$toast(res.message);
                 }
@@ -202,24 +193,31 @@ export default {
                 this.$toast('提示', `${error}`)
             })
         },
+        onChangeSelect(val){
+            let array = this.carParkList
+            for (let i = 0; i < array.length; i++) {
+                const item = array[i];
+                if(item.id==val){
+                    this.form.depId = item.depId
+                }
+            }
+        },
         handleChange(file, fileList){
+            debugger
             this.imageUrl = URL.createObjectURL(file.raw);
             this.form.file = file
         },
         beforeUpload(file){
-            const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
-            /* if (!isJPG) {
-                this.$message.error('上传头像图片只能是 JPG 格式!');
-            } */
+            const isLt2M = file.size / 1024 / 1024 < 1;
             if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 2MB!');
+                this.$message.error('上传头像图片大小不能超过 1MB!');
             }
             return isJPG && isLt2M;
         },
         onSubmit(){
             let formData = new FormData()
                 formData.append('depId',this.form.depId)
+                formData.append('parkId',this.form.parkId)
                 formData.append('carNum',this.form.carNum)
                 formData.append('userId',this.params.userId)
                 formData.append('userName',this.form.userName)
@@ -228,7 +226,7 @@ export default {
                 formData.append('file',this.form.file.raw)
             this.$api.owner.applyMonthCar(formData).then(res=>{
                 if (res.code === 200) {
-                    debugger
+                    //debugger
                     this.cancleHandle()
                     this.init()
                 } else {
@@ -240,6 +238,7 @@ export default {
         },
         cancleHandle(){
             this.dialogShow = false
+            this.imageUrl = ""
             this.form = {
                 depId:"",
                 carNum:"",
@@ -248,6 +247,44 @@ export default {
                 phone:"",
                 file:''
             }
+        },
+        /* 图片压缩方法-canvas压缩 */
+        compressUpload(image, file) {
+            let canvas = document.createElement('canvas')
+            let ctx = canvas.getContext('2d')
+            let initSize = image.src.length
+            let { width } = image, { height } = image
+            canvas. width = width
+            canvas.height = height
+            ctx.fillRect(0, 0, canvas.width, canvas.height)
+            ctx.drawImage(image, 0, 0, width, height)
+            
+            // 进行最小压缩0.1
+            let compressData = canvas.toDataURL(file.type || 'image/jpeg', 0.1)
+            
+            // 压缩后调用方法进行base64转Blob，方法写在下边
+            let blobImg = this.dataURItoBlob(compressData)
+            debugger
+            return blobImg
+        },
+        
+        /* base64转Blob对象 */
+        dataURItoBlob(data) {
+            let byteString;
+            if(data.split(',')[0].indexOf('base64') >= 0) {
+                byteString = atob(data.split(',')[1])
+            }else {
+                byteString = unescape(data.split(',')[1])
+            }
+            let mimeString = data
+                .split(',')[0]
+                .split(':')[1]
+                .split(';')[0];
+            let ia = new Uint8Array(byteString.length)
+            for( let i = 0; i < byteString.length; i += 1) {
+                ia[i] = byteString.charCodeAt(i)
+            }
+            return new Blob([ia], {type: mimeString})
         }
     }
 }
@@ -307,5 +344,8 @@ export default {
                 display: block;
             }
         }
+    }
+    .fullWidth{
+        width: 100%;
     }
 </style>

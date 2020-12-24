@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="whiteBg">
         <van-nav-bar class="navBar" title="统计报表" left-text="返回" left-arrow @click-left="onClickLeft" fixed>
         </van-nav-bar>
         <div class="searchGroup fixedMain"> 

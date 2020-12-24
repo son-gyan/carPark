@@ -71,3 +71,11 @@ export const timeFormate = (timeStamp) => {
 	let ss =new Date(timeStamp).getSeconds() < 10? "0" + new Date(timeStamp).getSeconds(): new Date(timeStamp).getSeconds();
 	return year + "-" + month + "-" + date +" "+hh+":"+mm+':'+ss ;
 }
+
+
+/* 获取剩余天数 */
+export const getDayNum = (endTime) =>{
+	let day = new Date(endTime).getTime() - new Date().getTime();//日期转时间戳
+	let dayCount = Math.floor(day / 86400000)+1 ;//时间戳获取天数
+	return dayCount
+}

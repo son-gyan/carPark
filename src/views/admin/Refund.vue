@@ -1,5 +1,5 @@
 <template>
-    <div class="refund">
+    <div class="refund whiteBg">
         <van-nav-bar class="navBar" title="预付退款" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
             <van-list 
@@ -53,7 +53,8 @@
                                         <span v-else>无</span>
                                     </van-col>
                                     <van-col span="12" class="vanCol">
-                                        <div>退款金额:{{info.walletMoney-info.orderMoney}}元</div></van-col>
+                                        <div>退款金额:{{item.walletMoney-item.orderMoney}}元</div>
+                                    </van-col>
                                     <van-col span="12" class="vanCol">
                                         <van-button type="info" size="mini" @click="refund(item)">退款</van-button>
                                     </van-col>

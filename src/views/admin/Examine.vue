@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="whiteBg">
         <van-nav-bar class="navBar" title="月租审核" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
             <van-list>
@@ -17,9 +17,9 @@
                         <template #title>
                             <van-row type="flex" >
                                 <van-col span="24">
-                                    <van-col span="12" class="vanCol">车牌号码:{{item.carNum}}</van-col>
-                                    <van-col span="12" class="vanCol">手机号:{{item.phone}}</van-col>
-                                    <van-col span="16" class="vanCol">申请时间:{{item.createTime}}</van-col>
+                                    <van-col span="12" class="vanCol"><div class="colInfo">车牌号码:{{item.carNum}}</div></van-col>
+                                    <van-col span="12" class="vanCol"><div class="colInfo">手机号:{{item.phone}}</div></van-col>
+                                    <van-col span="16" class="vanCol"><div class="colInfo">申请时间:{{item.createTime}}</div></van-col>
                                     <van-col span="8" class="vanCol btnWrap">
                                         <van-button type="info" size="mini" @click="examine(item)">审核</van-button>
                                         <van-button type="info" size="mini" @click="del(item)">删除</van-button>
@@ -28,6 +28,7 @@
                             </van-row>
                         </template>
                     </van-card>
+                    <div class="noSearch" v-if="examineList.length === 0">暂无查询数据</div>
                 </div>
             </van-list>
         </div>
@@ -102,7 +103,24 @@ export default {
                     type:1
                 }
             })
+        },
+        del(item){
+            let formData = new FormData()
+                formData.append('id',item.id)
+            this.$api.home.delApply(formData).then(res=>{
+
+            }).catch((res) => {
+
+            })
         }
     }
 }
 </script>
+<style lang="less" scoped>
+    .vanCard{
+        .colInfo{
+            line-height: .5rem;
+        }
+    }
+    
+</style>

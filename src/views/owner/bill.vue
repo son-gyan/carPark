@@ -2,7 +2,7 @@
     <div>
         <van-nav-bar class="navBar" title="停车账单" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
-            <van-card class="vanCard"
+            <!-- <van-card class="vanCard"
                 v-for="(item,index) in billList"  :key="index"
                 :thumb="item.imgUrl"
                 @click-thumb="imgPreview(item)"
@@ -20,6 +20,42 @@
                     <p >出场：{{item.outTime}}</p>
                     <p v-if="item.remarks">优惠信息：{{item.remarks}}</p>
                     <p v-if="item.payMoney">收费金额：{{item.payMoney}}</p>
+                </template>
+            </van-card> -->
+            <van-card  class="vanCard" v-for="(item,index) in billList" :key="index">
+                <template #title>
+                    <van-row type="flex" >
+                        <van-col span="24">
+                            <van-col span="12" class="vanCol">
+                                <span v-if="item.carType==1">月租车</span>
+                                <span v-else-if="item.carType==2">储值车</span>
+                                <span v-else-if="item.carType==3">免费车</span>
+                                <span v-else-if="item.carType==4">临时车</span>
+                                <span v-else-if="item.carType==5">时段限制月租</span>
+                                <span v-else>无</span>
+                            </van-col>
+                            <van-col span="12" class="vanCol">车牌:{{item.carNum}}</van-col>
+                        </van-col>
+                        <van-col span="24">
+                            <van-col span="12" class="vanCol">入场:{{item.inTime}}</van-col>
+                            <van-col span="12" class="vanCol"><div>出场:{{item.outTime?item.outTime:"无"}}</div></van-col>
+                            <van-col span="24" class="vanCol"><div>优惠信息:{{item.stayTime?item.stayTime:0}}</div></van-col>
+                        </van-col>
+                        <van-col span="24">
+                            <van-col span="12" class="vanCol"><div>总金额:{{item.orderMoney?item.orderMoney:0}}元</div></van-col>
+                            <van-col span="12" class="vanCol"><div>收费金额:{{item.payMoney?item.payMoney:0}}元</div></van-col>
+                        </van-col>
+                    </van-row>
+                    <van-row type="flex" >
+                        <van-col span="12" class="vanCol">
+                            <span class="photoLabel">进场照片：</span>
+                            <img :src="item.imgUrl" alt="" srcset="" @click="imgPreview(item.imgUrl)">
+                        </van-col>
+                        <van-col span="12" class="vanCol" v-if="item.outTime">
+                            <span class="photoLabel">出场照片：</span>
+                            <img :src="item.outImgUrl" alt="" srcset="" @click="imgPreview(item.outImgUrl)">
+                        </van-col>
+                    </van-row>
                 </template>
             </van-card>
             <div class="noSearch" v-if="billList.length === 0">暂无查询数据</div>
@@ -71,15 +107,10 @@ export default {
                 this.loading = false;
             });
         },
-        imgPreview(item){
-            let url = []
-            url.push(item.imgUrl)
-            if(item.outTime){                
-                url.push(item.outImgUrl)
-            }
+        imgPreview(url){
             ImagePreview({
-                images: url,
-                showIndex:true,
+                images: [url],
+                showIndex:false,
                 closeable: true,
             });
         }

@@ -295,3 +295,23 @@ export const refund = (data) => {
     })
 }
 
+// 管理员月租审核
+export const reviewerMonthCar = (data) => {
+    return axios({
+        url: '/park/zyb/apply/reviewerMonthCar',
+        method: 'POST',
+        data,
+        headers: header
+    })
+}
+
+// 删除月租申请
+export const delApply = (data) => {
+    return axios({
+        url: '/park/zyb/apply/delete',
+        method: 'DELETE',
+        data,
+        headers: header
+    })
+}
+

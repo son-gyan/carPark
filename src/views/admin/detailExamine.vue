@@ -66,6 +66,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex"
+import {timeFormate} from '@/utils'
 export default {
     data(){
         return {
@@ -76,6 +77,7 @@ export default {
             packageList:[],
             groupList:[],
             examineForm:{
+                applyId:"",
                 userName:"",
                 phone:"",
                 carNum:"",
@@ -85,9 +87,10 @@ export default {
                 carTyme:"",
                 packIds:[],
                 freeId:"",
-                startTime:new Date(),
-                endTime:new Date(),
-                imgUrl:""
+                startTime:timeFormate(new Date()),
+                endTime:timeFormate(new Date()),
+                imgUrl:"",
+                status:2
             },
             params:{
                 applyId:"",
@@ -110,6 +113,7 @@ export default {
         this.carParkName = this.carParkInfo.name||sessionStorage.getItem('carParkInfo').name
         this.info = this.$route.query.row
         console.log(this.info,'this.info')
+        this.examineForm.applyId = this.info.id
         this.examineForm.userName = this.info.userName
         this.examineForm.phone = this.info.phone
         this.examineForm.carNum = this.info.carNum
@@ -180,11 +184,70 @@ export default {
         },
         onSubmit(){
             console.log(this.examineForm,"examineForm")
+            let formData = new FormData()
+                formData.append("applyId",this.examineForm.applyId)
+                formData.append("carTyme",this.examineForm.carTyme)
+                formData.append("freeId",this.examineForm.freeId)
+                formData.append("groupId",this.examineForm.groupId)
+                formData.append("packIds",this.examineForm.packIds.join(','))
+                formData.append("startTime",this.examineForm.startTime)
+                formData.append("endTime",this.examineForm.endTime)
+                formData.append("status",this.examineForm.status)
+                formData.append("addOneOwner",false)
+            this.$api.home.reviewerMonthCar(formData).then(res=>{
+                this.$dialog.confirm({
+                    message: res.message,
+                })
+                .then(() => {
+                    // on confirm
+                    let formData = new FormData()
+                        formData.append("applyId",this.examineForm.applyId)
+                        formData.append("carTyme",this.examineForm.carTyme)
+                        formData.append("freeId",this.examineForm.freeId)
+                        formData.append("groupId",this.examineForm.groupId)
+                        formData.append("packIds",this.examineForm.packIds.join(','))
+                        formData.append("startTime",this.examineForm.startTime)
+                        formData.append("endTime",this.examineForm.endTime)
+                        formData.append("status",this.examineForm.status)
+                        formData.append("addOneOwner",true)
+                    this.$api.home.reviewerMonthCar(formData).then(res=>{
+                        //debugger
+                        if(res.code == 200){
+                            this.$router.go(-1)
+                            this.$toast(res.message);               
+                        }else{
+                            this.$toast(res.message);
+                        }
+                    }).catch((res) => {
+
+                    });
+                })
+                .catch(() => {
+                    // on cancel
+                    this.$toast("已取消");
+                });
+            }).catch((res) => {
+
+            });
         }
     }
 }
 </script>
 <style lang="less" scoped>
+    body{
+        #app{
+            height:auto;
+            .child-view{
+                display: inline-block;
+                width: 100%;
+                .mainWrap{
+                    margin-bottom: 0;
+                    background-color: #f2f2f2;
+                }
+            }
+        }
+    }
+    
     .formWrap{
         display: inline-block;
         width: calc(100% - .6rem);

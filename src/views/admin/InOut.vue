@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="whiteBg">
         <van-nav-bar class="navBar" title="进出记录" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
             <van-list 
@@ -42,6 +42,7 @@
                                 <van-col span="24">
                                     <van-col span="12" class="vanCol">入场:{{item.inTime}}</van-col>
                                     <van-col span="12" class="vanCol"><div>出场:{{item.outTime?item.outTime:"无"}}</div></van-col>
+                                    <van-col span="12" class="vanCol"><div>停留时间:{{item.stayTime?item.stayTime:0}}</div></van-col>
                                 </van-col>
                                 <van-col span="24">
                                     <van-col span="12" class="vanCol"><div>总金额:{{item.orderMoney?item.orderMoney:0}}元</div></van-col>
