@@ -28,9 +28,16 @@ export default {
                                 this.$store.dispatch('setUser', res.result.userInfo)
                                 //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                                 sessionStorage.setItem('token',res.result.token)
-                                window.location.replace(
-                                    window.location.origin +"/indexShop"  //授权成功返回的页面
-                                );
+                                let merInfo = res.result.merInfo
+                                if(merInfo.type == 1){ 
+                                    window.location.replace(
+                                        window.location.origin +"/indexShop"  //授权成功返回的页面
+                                    );
+                                }else if(merInfo.type == 0){
+                                    window.location.replace(
+                                        window.location.origin +"/couponsIndex"  //授权成功返回的页面
+                                    );
+                                }
                             }else if(res.code == 201){
                                 window.location.replace(
                                     window.location.origin + "/loginShop?openid="+res.message

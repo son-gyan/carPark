@@ -49,7 +49,12 @@ export default {
                     this.$store.dispatch('setUser', res.result.userInfo)
                     //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                     sessionStorage.setItem('token',res.result.token)
-                    this.$router.push('/indexShop')
+                    let merInfo = res.result.merInfo
+                    if(merInfo.type == 1){                        
+                        this.$router.push('/indexShop')
+                    }else if(merInfo.type == 0){
+                        this.$router.push('/couponsIndex')
+                    }
                 }else{
                     this.$toast(res.message);
                 }

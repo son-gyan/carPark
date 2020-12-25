@@ -35,6 +35,14 @@ const BlankpageShop = () => import("@/views/business/BlankpageShop")
 const LoginShop = () => import("@/views/business/LoginShop") 
 const IndexShop = () => import("@/views/business/IndexShop") 
 const OrderShop = () => import("@/views/business/OrderShop") 
+const couponsIndex = () => import("@/views/business/coupons/index") 
+const stock = () => import("@/views/business/coupons/stock") 
+const stockDetail = () => import("@/views/business/coupons/stockDetail") 
+const rechargeRecord = () => import("@/views/business/coupons/rechargeRecord") 
+const grant = () => import("@/views/business/coupons/grant") 
+const usageRecord = () => import("@/views/business/coupons/usageRecord") 
+const returnRecord = () => import("@/views/business/coupons/returnRecord") 
+const inventoryRecharge = () => import("@/views/business/coupons/inventoryRecharge") 
 //车主路径
 const LoadingOwner = () => import("@/views/owner/LoadingOwner")
 const BlankpageOwner = () => import("@/views/owner/BlankpageOwner") 
@@ -102,6 +110,14 @@ const router = new Router({
         { path: '/loginShop',name: 'loginShop',component: LoginShop, meta: {keepAlive: false} },
         { path: "/indexShop",name: "indexShop", component: IndexShop,meta: {keepAlive: true} },
         { path:"/orderShop", name: "orderShop",component: OrderShop,meta: {keepAlive: false} },
+        { path:"/couponsIndex", name: "couponsIndex",component: couponsIndex },
+        { path:"/stock", name: "stock",component: stock },
+        { path:"/stockDetail", name: "stockDetail",component: stockDetail },
+        { path:"/rechargeRecord", name: "rechargeRecord",component: rechargeRecord },
+        { path:"/grant", name: "grant",component: grant },
+        { path:"/usageRecord", name: "usageRecord",component: usageRecord },
+        { path:"/returnRecord", name: "returnRecord",component: returnRecord },
+        { path:"/inventoryRecharge", name: "inventoryRecharge",component: inventoryRecharge },
         // 车主路由
         { path: '/loadingOwner',name: 'loadingOwner',component: LoadingOwner,meta: {keepAlive: false} },
         { path: "/blankpageOwner",name: "blankpageOwner",component: BlankpageOwner },        

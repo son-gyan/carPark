@@ -38,8 +38,21 @@
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
                 <header>{{dialogTit}}</header>
                 <main class="dialogMain">
-                    <el-form ref="form" :model="form" label-width="70px" size="mini">
-                        <el-form-item>
+                    <el-form ref="form" :model="form" label-width="90px" size="mini" class="elForm">
+                        <el-form-item label="套餐名称：">
+                            <el-input v-model="form.name"></el-input>
+                        </el-form-item>
+                        <el-form-item label="套餐金额：">
+                            <el-select>
+                                <el-option>200</el-option>
+                                <el-option>500</el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="赠送金额：">
+                            <el-select>
+                                <el-option>100</el-option>
+                                <el-option>200</el-option>
+                            </el-select>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -64,7 +77,10 @@ export default {
             pageSize: 10,//每页请求的数量
             total: 0,//总共的数据条数
             dialogShow:false,
-            dialogTit:"新增套餐"
+            dialogTit:"新增套餐",
+            form:{
+                name,
+            }
         }
     },
     methods:{
@@ -95,7 +111,7 @@ export default {
 
         },
         cancleHandle(){
-            
+            this.dialogShow = false
         }
     }
 }
@@ -106,5 +122,7 @@ export default {
             line-height: .5rem;
         }
     }
-    
+    .elForm{
+        margin: .3rem;
+    }
 </style>
