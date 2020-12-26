@@ -22,8 +22,8 @@
                             @click="selectMoney(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
                     </van-grid>
                 </el-form-item>
-                <el-form-item size="small" style="text-align:center">
-                    <el-button round type="primary" @click="onSubmit">确认</el-button>
+                <el-form-item size="small" style="text-align:center;margin-top:20px">
+                    <el-button round type="primary" @click="onSubmit" class="btnIssue">确认</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -109,6 +109,9 @@ export default {
                         color:#fff;
                     }
                 }
+            }
+            .btnIssue{
+                width: 3rem;
             }
         }
         /deep/ .wrap{
