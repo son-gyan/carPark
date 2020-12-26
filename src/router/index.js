@@ -36,6 +36,7 @@ const LoginShop = () => import("@/views/business/LoginShop")
 const IndexShop = () => import("@/views/business/IndexShop") 
 const OrderShop = () => import("@/views/business/OrderShop") 
 const couponsIndex = () => import("@/views/business/coupons/index") 
+const issueCoupons = () => import("@/views/business/coupons/issueCoupons") 
 const stock = () => import("@/views/business/coupons/stock") 
 const stockDetail = () => import("@/views/business/coupons/stockDetail") 
 const rechargeRecord = () => import("@/views/business/coupons/rechargeRecord") 
@@ -111,6 +112,7 @@ const router = new Router({
         { path: "/indexShop",name: "indexShop", component: IndexShop,meta: {keepAlive: true} },
         { path:"/orderShop", name: "orderShop",component: OrderShop,meta: {keepAlive: false} },
         { path:"/couponsIndex", name: "couponsIndex",component: couponsIndex },
+        { path:"/issueCoupons", name: "issueCoupons",component: issueCoupons },
         { path:"/stock", name: "stock",component: stock },
         { path:"/stockDetail", name: "stockDetail",component: stockDetail },
         { path:"/rechargeRecord", name: "rechargeRecord",component: rechargeRecord },

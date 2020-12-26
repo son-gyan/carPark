@@ -11,7 +11,7 @@
                                 <h3 class="h3">金额券</h3>
                                 <p class="p1">优惠券库存剩余：20元</p>
                             </div>
-                            <div class="rightSide">
+                            <div class="rightSide" @click="toIssueCoupons">
                                 去发券
                             </div>
                         </div>
@@ -72,6 +72,9 @@ export default {
         }
     },
     methods:{
+        toIssueCoupons(){
+            this.$router.push('/issueCoupons')
+        },
         jumpTo(type){
             switch (type) {
                 case 1:

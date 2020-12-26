@@ -2,7 +2,7 @@
   <div id="page">
     <div class="wrap">
       <div class="singleBlock">
-        <div class="card-header">车牌号：</div>
+        <div class="card-header" v-if="!noLabel">车牌号：</div>
         <div class="num-box">
           <div class="num0" @click="clickFirstWrap()">
               <span>{{formData.num0}}</span>
@@ -22,7 +22,7 @@
       </div> -->
     </div>
     <div class="first-word-wrap"
-      v-if="firstWrapStatus">
+      v-if="firstWrapStatus"  v-click-outside:dialog="handleDiaClickOutside">
       <div class="first-word"
         @click="selectFirstWord($event)">
         <div class="word">
@@ -132,7 +132,7 @@
         </div>
       </div>
     </div>
-    <div class="keyboard-wrap" v-if="keyBoardStatus === true">
+    <div class="keyboard-wrap" v-if="keyBoardStatus === true"  v-click-outside:dialog="handleDiaClickOutside">
       <!-- <div class="number-wrap"></div>
       <div class="letter-wrap"></div>
       <div class="cn-wrap"></div> -->
@@ -191,7 +191,12 @@
 </template>
 <script>
 import { mapGetters } from "vuex"
+import ClickOutside from 'element-ui/src/utils/clickoutside'
 export default {
+  directives: { ClickOutside },
+  props:{
+    noLabel:Boolean
+  },
   data () {
     return {
       formData: {
@@ -237,6 +242,11 @@ export default {
     this.getData()
   },
   methods: {
+    handleDiaClickOutside(){
+        /* this.firstWrapStatus = false
+        this.firstClickStatus = false 
+        this.keyBoardStatus = false*/
+    },
     //预设车牌
     getData(depId){
       let params = {
