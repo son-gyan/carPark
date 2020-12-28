@@ -39,3 +39,13 @@ export const delOrderCar = (data) => {
         headers: header 
     })
 }
+
+// 商户优惠券库存列表  /park/zyb/coupon/listMerDiscountStock
+export const listMerDiscountStock = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/listMerDiscountStock',
+        method: 'get',
+        params
+    })
+}
+

@@ -34,6 +34,23 @@
                 </el-form-item>
             </el-form>
         </div>
+        <!-- 弹框 -->
+        <div class="covers" v-show="dialogShow">
+            <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
+                <header>自定义金额</header>
+                <main>
+                    <el-form class="dialogForm">
+                        <el-form-item>
+                            <el-input placeholder="请输入金额" v-model="dialogForm.money"></el-input>
+                        </el-form-item>
+                        <el-form-item size="small" style="text-align:center;margin-top:20px">
+                            <el-button type="primary" @click="onSubmit">确认</el-button>
+                            <el-button type="default" @click="cancleHandle">取消</el-button>
+                        </el-form-item>
+                    </el-form>
+                </main>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -44,6 +61,7 @@ export default {
     },
     data(){
         return {
+            dialogShow:false,
             curSelectIndex:-1,
             moneyList:["10元","30元","50元","100元","300元","自定义"],
             timeList:['1小时','3小时','5小时','10小时','12小时','自定义'],
@@ -51,6 +69,9 @@ export default {
             form:{
                 licensePlate:"",
                 phone:"",
+            },
+            dialogForm:{
+                money:""
             }
         }
     },
@@ -67,8 +88,14 @@ export default {
             this.curSelectIndex=index
             //获取点击对象     
             let el = event.currentTarget;
-            this.options = el.innerHTML
+            this.options = el.innerText
+            if(this.options == "自定义"){
+                this.dialogShow = true
+            }
         },
+        cancleHandle(){
+            this.dialogShow = false
+        }
     }
 }
 </script>
@@ -130,5 +157,8 @@ export default {
                 width: 100%;
             }
         }
+    }
+    .dialogForm{
+        margin: .3rem;
     }
 </style>
