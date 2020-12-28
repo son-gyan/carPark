@@ -4,7 +4,7 @@
         <div class="mainWrap fixedMain">
             <el-form ref="form" :model="form" size="small" class="formWrap">
                 <el-form-item class="verticalShow">
-                    <div slot="label" class="formLabel">请输入车牌<span class="rLabel">金额券库存剩余20元</span></div>
+                    <div slot="label" class="formLabel">请输入车牌<span class="rLabel">金额券库存剩余20元</span><span class="rLabel">时长券库存剩余20时</span></div>
                     <plateNumber @getPlateLicense="getPlateLicense" :noLabel='true'></plateNumber>
                 </el-form-item>
                 <el-form-item class="elFormItem1">
@@ -19,6 +19,13 @@
                     <div slot="label" class="formLabel">请选择金额/元</div>
                     <van-grid :column-num="3" gutter="20" >
                         <van-grid-item  :text="item"  v-for="(item,index) in moneyList" :key="index" 
+                            @click="selectMoney(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
+                    </van-grid>
+                </el-form-item>
+                <el-form-item class="verticalShow">
+                    <div slot="label" class="formLabel">请选择时长/时</div>
+                    <van-grid :column-num="3" gutter="20" >
+                        <van-grid-item  :text="item"  v-for="(item,index) in timeList" :key="index" 
                             @click="selectMoney(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
                     </van-grid>
                 </el-form-item>
@@ -39,6 +46,7 @@ export default {
         return {
             curSelectIndex:-1,
             moneyList:["10元","30元","50元","100元","300元","自定义"],
+            timeList:['1小时','3小时','5小时','10小时','12小时','自定义'],
             options:"",
             form:{
                 licensePlate:"",
