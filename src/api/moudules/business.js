@@ -49,3 +49,21 @@ export const listMerDiscountStock = (params) => {
     })
 }
 
+
+//定额优惠券列表
+export const listDisQuota = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/listDisQuota',
+        method: 'get',
+        params
+    })
+}
+
+//商户充值记录
+export const listMerRechargeRecord = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/listMerRechargeRecord',
+        method: 'get',
+        params
+    })
+}

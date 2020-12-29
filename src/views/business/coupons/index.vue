@@ -1,15 +1,41 @@
 <template>
-    <div class="pages">
+    <div class="pages couponPage">
         <van-nav-bar class="navBar" title="发券"  ></van-nav-bar>
         <el-container v-loading="loading" direction="vertical">
             <!-- <el-header></el-header> -->
             <el-main>
                 <el-row  gutter="10">
+                    <el-col span="24" class="elCol" v-for="(item,index) in couponList" :key="index">
+                        <div class="cardCoupon" >
+                            <div class="leftSide" v-if="item.quotaType==1">
+                                <h3 class="h3">{{item.quotaName}}券</h3>
+                                <p class="p1">优惠券库存剩余：{{item.stockNum}}张</p>
+                            </div>
+                            <div class="leftSide" v-else-if="item.quotaType==2">
+                                <h3 class="h3">时长券</h3>
+                                <p class="p1">优惠券库存剩余：{{item.quotaData}}时</p>
+                            </div>
+                            <div class="leftSide" v-else-if="item.quotaType==3">
+                                <h3 class="h3">金额券</h3>
+                                <p class="p1">优惠券库存剩余：{{item.quotaData}}元</p>
+                            </div>
+                            <div class="leftSide" v-else-if="item.quotaType==4">
+                                <h3 class="h3">次券</h3>
+                                <p class="p1">优惠券库存剩余：{{item.stockNum}}张</p>
+                            </div>
+                            <div class="leftSide" v-else-if="item.quotaType==5">
+                                <h3 class="h3">住店车券</h3>
+                                <p class="p1">优惠券库存剩余：{{item.stockNum}}张</p>
+                            </div>
+                            <div class="rightSide" @click="toIssueCoupons(item)">
+                                去发券
+                            </div>
+                        </div>
+                    </el-col>
                     <el-col span="24" class="elCol">
                         <div class="cardCoupon">
                             <div class="leftSide">
-                                <h3 class="h3">金额券</h3>
-                                <p class="p1">优惠券库存剩余：20元</p>
+                                <h3 class="h3">宴会卷</h3>
                             </div>
                             <div class="rightSide" @click="toIssueCoupons">
                                 去发券
@@ -19,10 +45,9 @@
                     <el-col span="24" class="elCol">
                         <div class="cardCoupon">
                             <div class="leftSide">
-                                <h3 class="h3">金额券</h3>
-                                <p class="p1">优惠券库存剩余：20元</p>
+                                <h3 class="h3">纸质卷</h3>
                             </div>
-                            <div class="rightSide">
+                            <div class="rightSide" @click="toIssueCoupons">
                                 去发券
                             </div>
                         </div>
@@ -30,21 +55,9 @@
                     <el-col span="24" class="elCol">
                         <div class="cardCoupon">
                             <div class="leftSide">
-                                <h3 class="h3">金额券</h3>
-                                <p class="p1">优惠券库存剩余：20元</p>
+                                <h3 class="h3">动态卷</h3>
                             </div>
-                            <div class="rightSide">
-                                去发券
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col span="24">
-                        <div class="cardCoupon">
-                            <div class="leftSide">
-                                <h3 class="h3">金额券</h3>
-                                <p class="p1">优惠券库存剩余：20元</p>
-                            </div>
-                            <div class="rightSide">
+                            <div class="rightSide" @click="toIssueCoupons">
                                 去发券
                             </div>
                         </div>
@@ -74,10 +87,10 @@ export default {
             params:{
                 merId:'',
                 pageNo:1,
-                pageSize:10 
+                pageSize:1000 
             },
             pageNo: 1,//请求第几页
-            pageSize: 10,//每页请求的数量
+            pageSize: 1000,//每页请求的数量
             total: 0,//总共的数据条数
         }
     },
@@ -115,8 +128,25 @@ export default {
                 this.loading = false;
             });
         },
-        toIssueCoupons(){
-            this.$router.push('/issueCoupons')
+        toIssueCoupons(item){
+            if(item.quotaType==2||item.quotaType==3){
+                this.$router.push({
+                    path:"/issueCoupons",
+                    query:{
+                        quotaType:item.quotaType,
+                        quotaData:item.quotaData
+                    }
+                })
+            }else{
+                this.$router.push({
+                    path:"/issueCoupons",
+                    query:{
+                        quotaType:item.quotaType,
+                        stockNum:item.stockNum
+                    }
+                })
+            }
+            
         },
         jumpTo(type){
             switch (type) {
@@ -146,6 +176,9 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    #app .pages.couponPage{
+        height:auto;
+    }
     .elMain{            
         width: 93%;
         margin: 3px auto 20px;
@@ -172,7 +205,7 @@ export default {
     }
     .cardCoupon{
         display: flex;
-        height: 1.5rem;
+        height: 2rem;
         color: #fff;
         background: url('../../../assets/images/business/coupons/couponBg.png') center no-repeat;
         background-size: 100% 100%;
@@ -184,11 +217,13 @@ export default {
             flex-direction:column;
             justify-content:space-around;
             .h3{
-                font-size: .3rem;
+                font-size: 0.4rem;
+                text-align: center;
             }
             .p1{
                 font-size: .1rem;
-                color:#F7F55A
+                color:#F7F55A;
+                text-align: center;
             }
         }
         .rightSide{

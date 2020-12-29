@@ -4,7 +4,12 @@
         <div class="mainWrap fixedMain">
             <el-form ref="form" :model="form" size="small" class="formWrap">
                 <el-form-item class="verticalShow">
-                    <div slot="label" class="formLabel">请输入车牌<span class="rLabel">金额券库存剩余20元</span><span class="rLabel">时长券库存剩余20时</span></div>
+                    <div slot="label" class="formLabel">请输入车牌
+                        <span class="rLabel" v-if="quotaType==3">金额券库存剩余{{quotaData}}元</span>
+                        <span class="rLabel" v-if="quotaType==2">时长券库存剩余{{quotaData}}时</span>
+                        <span class="rLabel" v-if="quotaType==4">次券库存剩余{{stockNum}}张</span>
+                        <span class="rLabel" v-if="quotaType==1">定额券库存剩余{{stockNum}}张</span>
+                    </div>
                     <plateNumber @getPlateLicense="getPlateLicense" :noLabel='true'></plateNumber>
                 </el-form-item>
                 <el-form-item class="elFormItem1">
@@ -15,14 +20,14 @@
                         <template slot="prepend">请输入电话号码：</template>
                     </el-input>
                 </el-form-item>
-                <el-form-item class="verticalShow">
+                <el-form-item class="verticalShow" v-if="quotaType==3">
                     <div slot="label" class="formLabel">请选择金额/元</div>
                     <van-grid :column-num="3" gutter="20" >
                         <van-grid-item  :text="item"  v-for="(item,index) in moneyList" :key="index" 
                             @click="selectMoney(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
                     </van-grid>
                 </el-form-item>
-                <el-form-item class="verticalShow">
+                <el-form-item class="verticalShow" v-if="quotaType==2">
                     <div slot="label" class="formLabel">请选择时长/时</div>
                     <van-grid :column-num="3" gutter="20" >
                         <van-grid-item  :text="item"  v-for="(item,index) in timeList" :key="index" 
@@ -37,11 +42,14 @@
         <!-- 弹框 -->
         <div class="covers" v-show="dialogShow">
             <div class="dialog" v-click-outside:dialog="handleDiaClickOutside">
-                <header>自定义金额</header>
+                <header>{{quotaType==3?'自定义金额':'自定义时长'}}</header>
                 <main>
                     <el-form class="dialogForm">
-                        <el-form-item>
+                        <el-form-item v-if='quotaType==3'>
                             <el-input placeholder="请输入金额" v-model="dialogForm.money"></el-input>
+                        </el-form-item>
+                        <el-form-item v-if='quotaType==2'>
+                            <el-input placeholder="请输入时长" v-model="dialogForm.money"></el-input>
                         </el-form-item>
                         <el-form-item size="small" style="text-align:center;margin-top:20px">
                             <el-button type="primary" @click="onSubmit">确认</el-button>
@@ -72,8 +80,17 @@ export default {
             },
             dialogForm:{
                 money:""
-            }
+            },
+            quotaType:"",
+            stockNum:0,
+            quotaData:0
         }
+    },
+    created(){
+        this.quotaType = Number(this.$route.query.quotaType)
+        this.stockNum = Number(this.$route.query.stockNum)||0
+        this.quotaData = Number(this.$route.query.quotaData)||0
+        
     },
     methods: {
         getPlateLicense(data){
