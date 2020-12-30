@@ -13,24 +13,31 @@
                     <plateNumber @getPlateLicense="getPlateLicense" :noLabel='true'></plateNumber>
                 </el-form-item>
                 <el-form-item class="elFormItem1">
-                    <div class="formLabel">无车牌<span class="lLabel"><el-checkbox v-model="checked"></el-checkbox></span></div>
+                    <div class="formLabel">无车牌<span class="lLabel"><el-checkbox v-model="checked" @change="checkCarNum"></el-checkbox></span></div>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="请输入电话号码" v-model="form.phone">
+                    <el-input placeholder="请输入电话号码" v-model="form.phone" :disabled="noCarNumStatus" type="tel" maxlength="11">
                         <template slot="prepend">请输入电话号码：</template>
                     </el-input>
                 </el-form-item>
                 <el-form-item class="verticalShow" v-if="quotaType==3">
                     <div slot="label" class="formLabel">请选择金额/元</div>
                     <van-grid :column-num="3" gutter="20" >
-                        <van-grid-item  :text="item"  v-for="(item,index) in moneyList" :key="index" 
+                        <van-grid-item  :text="item=='自定义'?item:item+'元'"  v-for="(item,index) in moneyList" :key="index" :data-num="item"
                             @click="selectMoney(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
+                    </van-grid>
+                </el-form-item>
+                <el-form-item class="verticalShow" v-if="quotaType==1">
+                    <div slot="label" class="formLabel">请选择金额/元</div>
+                    <van-grid :column-num="3" gutter="20">
+                        <van-grid-item  :text="item.quotaName"  v-for="(item,index) in quotaList" :key="index" :data-num="item"
+                            @click="selectQuota(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
                     </van-grid>
                 </el-form-item>
                 <el-form-item class="verticalShow" v-if="quotaType==2">
                     <div slot="label" class="formLabel">请选择时长/时</div>
                     <van-grid :column-num="3" gutter="20" >
-                        <van-grid-item  :text="item"  v-for="(item,index) in timeList" :key="index" 
+                        <van-grid-item  :text="item=='自定义'?item:item+'小时'"  v-for="(item,index) in timeList" :key="index"
                             @click="selectMoney(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
                     </van-grid>
                 </el-form-item>
@@ -46,14 +53,14 @@
                 <main>
                     <el-form class="dialogForm">
                         <el-form-item v-if='quotaType==3'>
-                            <el-input placeholder="请输入金额" v-model="dialogForm.money"></el-input>
+                            <el-input placeholder="请输入金额" v-model="dialogForm.moneyTime"></el-input>
                         </el-form-item>
                         <el-form-item v-if='quotaType==2'>
-                            <el-input placeholder="请输入时长" v-model="dialogForm.money"></el-input>
+                            <el-input placeholder="请输入时长" v-model="dialogForm.moneyTime"></el-input>
                         </el-form-item>
                         <el-form-item size="small" style="text-align:center;margin-top:20px">
-                            <el-button type="primary" @click="onSubmit">确认</el-button>
-                            <el-button type="default" @click="cancleHandle">取消</el-button>
+                            <el-button type="primary" @click="onSubmitDialog">确认</el-button>
+                            <el-button type="default" @click="cancleHandle(quotaType)">取消</el-button>
                         </el-form-item>
                     </el-form>
                 </main>
@@ -63,6 +70,7 @@
 </template>
 <script>
 import plateNumber from '@/components/plateNumber'
+import { mapGetters } from "vuex"
 export default {
     components: {
         plateNumber
@@ -70,27 +78,50 @@ export default {
     data(){
         return {
             dialogShow:false,
-            curSelectIndex:-1,
-            moneyList:["10元","30元","50元","100元","300元","自定义"],
-            timeList:['1小时','3小时','5小时','10小时','12小时','自定义'],
+            curSelectIndex:0,
+            quotaList:[],
+            moneyList:[10,30,50,100,300,"自定义"],
+            timeList:[1,2,5,10,10,'自定义'],
             options:"",
             form:{
                 licensePlate:"",
                 phone:"",
             },
             dialogForm:{
-                money:""
+                moneyTime:""
             },
             quotaType:"",
             stockNum:0,
-            quotaData:0
+            quotaData:0,
+            noCarNumStatus:true,
+            params:{
+                carNum: "",
+                merchantsId: "",
+                quotData: "",
+                quotaName: "",
+                quotaNum: 1,
+                quotaType: ""
+            }
         }
+    },
+    computed: {
+        ...mapGetters(["user"])
     },
     created(){
         this.quotaType = Number(this.$route.query.quotaType)
         this.stockNum = Number(this.$route.query.stockNum)||0
         this.quotaData = Number(this.$route.query.quotaData)||0
-        
+        this.params.merchantsId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
+        this.params.quotaType = this.quotaType
+        if(this.quotaType==1){
+            this.quotaList = this.$route.query.quotaInfo
+            this.params.quotData = this.quotaList[0].quotaData
+            this.params.quotaName = this.quotaList[0].quotaName
+        }else if(this.quotaType==2){
+            this.params.quotData = this.timeList[0]
+        }else if(this.quotaType==3){
+            this.params.quotData = this.moneyList[0]
+        }
     },
     methods: {
         getPlateLicense(data){
@@ -106,12 +137,61 @@ export default {
             //获取点击对象     
             let el = event.currentTarget;
             this.options = el.innerText
+            if(this.quotaType==2){
+                this.params.quotData = this.timeList[index]
+            }else{
+                this.params.quotData = this.moneyList[index]
+            }
             if(this.options == "自定义"){
                 this.dialogShow = true
+                this.dialogForm.moneyTime = ""
             }
         },
-        cancleHandle(){
+        selectQuota(index,event){
+            this.curSelectIndex=index
+            //获取点击对象     
+            let el = event.currentTarget;
+            this.options = el.innerText
+            this.params.quotData = this.quotaList[index].quotaData
+            this.params.quotaName = this.options
+            //debugger
+        },
+        onSubmitDialog(quotaType){
+            this.params.quotData = this.dialogForm.moneyTime
             this.dialogShow = false
+        },
+        cancleHandle(){
+            this.dialogForm.moneyTime = ""
+            this.dialogShow = false
+        },
+        checkCarNum(val){
+            if(val){
+                this.noCarNumStatus = false
+            }else{
+                this.noCarNumStatus = true
+                this.form.phone = ""
+            }
+        },
+        onSubmit(){
+            if(this.noCarNumStatus){                
+                this.params.carNum = this.form.licensePlate
+            }else{
+                this.params.carNum = this.form.phone
+            }            
+            console.log(this.params,'this.params')
+            if(this.params.carNum==""){
+                this.$toast("请填写车牌号或手机号");
+                return
+            }
+            this.$api.business.addDirectionalQuota(this.params).then(res=>{
+                if(res.code == 200){
+                    this.$toast(res.message);
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         }
     }
 }

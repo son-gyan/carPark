@@ -5,13 +5,20 @@
             <!-- <el-header></el-header> -->
             <el-main>
                 <el-row  gutter="10">
-                    <el-col span="24" class="elCol" v-for="(item,index) in couponList" :key="index">
-                        <div class="cardCoupon" >
-                            <div class="leftSide" v-if="item.quotaType==1">
-                                <h3 class="h3">{{item.quotaName}}券</h3>
-                                <p class="p1">优惠券库存剩余：{{item.stockNum}}张</p>
+                    <el-col span="24" class="elCol">
+                        <div class="cardCoupon">
+                            <div class="leftSide">
+                                <h3 class="h3">定额券</h3>
+                                <p class="p1">优惠券库存剩余：{{totalSumAll}}张</p>
                             </div>
-                            <div class="leftSide" v-else-if="item.quotaType==2">
+                            <div class="rightSide" @click="toIssueCoupons(returnQuota)">
+                                去发券
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col span="24" class="elCol" v-for="(item,index) in couponList" :key="index" v-if="item.quotaType!=1">
+                        <div class="cardCoupon" >                            
+                            <div class="leftSide" v-if="item.quotaType==2">
                                 <h3 class="h3">时长券</h3>
                                 <p class="p1">优惠券库存剩余：{{item.quotaData}}时</p>
                             </div>
@@ -31,7 +38,7 @@
                                 去发券
                             </div>
                         </div>
-                    </el-col>
+                    </el-col>                    
                     <el-col span="24" class="elCol">
                         <div class="cardCoupon">
                             <div class="leftSide">
@@ -95,7 +102,20 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(["user"])
+        ...mapGetters(["user"]),
+        totalSumAll(){
+            let totalSumAll = 0;
+            this.couponList.map((item) => {if(item.quotaType==1&&!isNaN(item.stockNum)) totalSumAll += item.stockNum})
+            if(isNaN(totalSumAll)){
+                return 0
+            }
+            return totalSumAll
+        },
+        returnQuota(){
+            let element = []
+            this.couponList.map((item) => {if(item.quotaType==1) element.push(item)})
+            return element
+        }
     },
     created() {
         this.params.merId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
@@ -135,6 +155,15 @@ export default {
                     query:{
                         quotaType:item.quotaType,
                         quotaData:item.quotaData
+                    }
+                })
+            }else if(item instanceof Array&&item[0].quotaType==1){
+                this.$router.push({
+                    path:"/issueCoupons",
+                    query:{
+                        quotaType:item[0].quotaType,
+                        stockNum:this.totalSumAll,
+                        quotaInfo:item
                     }
                 })
             }else{

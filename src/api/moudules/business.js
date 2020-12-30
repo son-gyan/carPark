@@ -67,3 +67,29 @@ export const listMerRechargeRecord = (params) => {
         params
     })
 }
+//券发放记录
+export const quotaGrantList = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/quotaGrantList',
+        method: 'get',
+        params
+    })
+}
+
+//指定车牌发券
+export const addDirectionalQuota = (data) => {
+    return axios({
+        url: '/park/zyb/coupon/addDirectionalQuota',
+        method: 'POST',
+        data
+    })
+}
+
+//商户已绑套餐列表
+export const bindDisPacklist = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/bindDisPacklist',
+        method: 'get',
+        params
+    })
+}
