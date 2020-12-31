@@ -20,7 +20,7 @@
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
                 </van-search>
                 <div class="list cardList">
-                    <van-card  class="vanCard" v-for="(item,index) in tableData" :key="index"> <!--  -->
+                    <van-card  class="vanCard" v-for="(item,index) in tableData" :key="index">
                         <template #title>
                             <van-row type="flex" justify="center" >
                                 <van-col span="12" class="colInfo">时间：{{item.bindTime}}</van-col>

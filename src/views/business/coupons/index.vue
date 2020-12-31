@@ -1,7 +1,7 @@
 <template>
     <div class="pages couponPage">
-        <van-nav-bar class="navBar" title="发券"  ></van-nav-bar>
-        <el-container v-loading="loading" direction="vertical">
+        <van-nav-bar class="navBar" title="发券"  fixed></van-nav-bar>
+        <el-container v-loading="loading" direction="vertical" class="mainWrap fixedMain">
             <!-- <el-header></el-header> -->
             <el-main>
                 <el-row  gutter="10">
@@ -44,7 +44,7 @@
                             <div class="leftSide">
                                 <h3 class="h3">宴会卷</h3>
                             </div>
-                            <div class="rightSide" @click="toIssueCoupons">
+                            <div class="rightSide" @click="toBanquetCoupons">
                                 去发券
                             </div>
                         </div>
@@ -174,8 +174,13 @@ export default {
                         stockNum:item.stockNum
                     }
                 })
-            }
-            
+            } 
+        },
+        toBanquetCoupons(){
+            this.$router.push({
+                path:"/banquetCoupons",
+                query:{}
+            })
         },
         jumpTo(type){
             switch (type) {

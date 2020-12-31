@@ -44,6 +44,7 @@ const grant = () => import("@/views/business/coupons/grant")
 const usageRecord = () => import("@/views/business/coupons/usageRecord") 
 const returnRecord = () => import("@/views/business/coupons/returnRecord") 
 const inventoryRecharge = () => import("@/views/business/coupons/inventoryRecharge") 
+const banquetCoupons = () => import("@/views/business/coupons/banquetCoupons") 
 //车主路径
 const LoadingOwner = () => import("@/views/owner/LoadingOwner")
 const BlankpageOwner = () => import("@/views/owner/BlankpageOwner") 
@@ -120,6 +121,7 @@ const router = new Router({
         { path:"/usageRecord", name: "usageRecord",component: usageRecord },
         { path:"/returnRecord", name: "returnRecord",component: returnRecord },
         { path:"/inventoryRecharge", name: "inventoryRecharge",component: inventoryRecharge },
+        { path:"/banquetCoupons", name: "banquetCoupons",component: banquetCoupons },
         // 车主路由
         { path: '/loadingOwner',name: 'loadingOwner',component: LoadingOwner,meta: {keepAlive: false} },
         { path: "/blankpageOwner",name: "blankpageOwner",component: BlankpageOwner },        
