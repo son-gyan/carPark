@@ -59,6 +59,15 @@ export const listDisQuota = (params) => {
     })
 }
 
+//新增宴会券
+export const addBanquetQuota = (data) => {
+    return axios({
+        url: '/park/zyb/coupon/addBanquetQuota',
+        method: 'post',
+        data
+    })
+}
+
 //商户充值记录
 export const listMerRechargeRecord = (params) => {
     return axios({

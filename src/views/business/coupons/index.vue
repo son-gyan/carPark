@@ -40,31 +40,31 @@
                         </div>
                     </el-col>                    
                     <el-col span="24" class="elCol">
-                        <div class="cardCoupon">
+                        <div class="cardCoupon cardCoupon1">
                             <div class="leftSide">
                                 <h3 class="h3">宴会卷</h3>
                             </div>
-                            <div class="rightSide" @click="toBanquetCoupons">
+                            <div class="rightSide" @click="toBanquetCoupons(returnQuota,1)">
                                 去发券
                             </div>
                         </div>
                     </el-col>
                     <el-col span="24" class="elCol">
-                        <div class="cardCoupon">
+                        <div class="cardCoupon cardCoupon1">
                             <div class="leftSide">
                                 <h3 class="h3">纸质卷</h3>
                             </div>
-                            <div class="rightSide" @click="toIssueCoupons">
+                            <div class="rightSide" @click="toBanquetCoupons(returnQuota,2)">
                                 去发券
                             </div>
                         </div>
                     </el-col>
                     <el-col span="24" class="elCol">
-                        <div class="cardCoupon">
+                        <div class="cardCoupon cardCoupon1">
                             <div class="leftSide">
                                 <h3 class="h3">动态卷</h3>
                             </div>
-                            <div class="rightSide" @click="toIssueCoupons">
+                            <div class="rightSide" @click="toBanquetCoupons(returnQuota,3)">
                                 去发券
                             </div>
                         </div>
@@ -176,10 +176,13 @@ export default {
                 })
             } 
         },
-        toBanquetCoupons(){
+        toBanquetCoupons(item,type){
             this.$router.push({
                 path:"/banquetCoupons",
-                query:{}
+                query:{
+                    quotaInfo:item,
+                    type:type
+                }
             })
         },
         jumpTo(type){
@@ -244,6 +247,10 @@ export default {
         background: url('../../../assets/images/business/coupons/couponBg.png') center no-repeat;
         background-size: 100% 100%;
         border-radius: .1rem;
+        &.cardCoupon1{
+            background: url('../../../assets/images/business/coupons/couponBg1.png') center no-repeat;
+            background-size: 100% 100%;
+        }
         .leftSide{
             display: flex;
             flex:1;
