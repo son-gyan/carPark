@@ -68,6 +68,24 @@ export const addBanquetQuota = (data) => {
     })
 }
 
+//新增批次券
+export const addBatchQuota = (data) => {
+    return axios({
+        url: '/park/zyb/coupon/addBatchQuota',
+        method: 'post',
+        data
+    })
+}
+
+//新增动态发券
+export const addAutomaticQuota = (data) => {
+    return axios({
+        url: '/park/zyb/coupon/addAutomaticQuota',
+        method: 'post',
+        data
+    })
+}
+
 //商户充值记录
 export const listMerRechargeRecord = (params) => {
     return axios({

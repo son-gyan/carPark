@@ -65,7 +65,7 @@ export default {
             }
             // 异步更新数据
             setTimeout(() => {            
-                this.init();
+                this.initData();
             },500)
         },
         initData(){

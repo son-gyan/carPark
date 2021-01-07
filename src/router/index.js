@@ -45,6 +45,8 @@ const usageRecord = () => import("@/views/business/coupons/usageRecord")
 const returnRecord = () => import("@/views/business/coupons/returnRecord") 
 const inventoryRecharge = () => import("@/views/business/coupons/inventoryRecharge") 
 const banquetCoupons = () => import("@/views/business/coupons/banquetCoupons") 
+const dynamicCoupons = () => import("@/views/business/coupons/dynamicCoupons") 
+const showQrCode = () => import("@/views/business/coupons/showQrCode") 
 //车主路径
 const LoadingOwner = () => import("@/views/owner/LoadingOwner")
 const BlankpageOwner = () => import("@/views/owner/BlankpageOwner") 
@@ -122,6 +124,8 @@ const router = new Router({
         { path:"/returnRecord", name: "returnRecord",component: returnRecord },
         { path:"/inventoryRecharge", name: "inventoryRecharge",component: inventoryRecharge },
         { path:"/banquetCoupons", name: "banquetCoupons",component: banquetCoupons },
+        { path:"/dynamicCoupons", name: "dynamicCoupons",component: dynamicCoupons,meta: {keepAlive: true}  },
+        { path:"/showQrCode", name: "showQrCode",component: showQrCode },
         // 车主路由
         { path: '/loadingOwner',name: 'loadingOwner',component: LoadingOwner,meta: {keepAlive: false} },
         { path: "/blankpageOwner",name: "blankpageOwner",component: BlankpageOwner },        

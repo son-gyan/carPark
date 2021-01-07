@@ -64,7 +64,7 @@
                             <div class="leftSide">
                                 <h3 class="h3">动态卷</h3>
                             </div>
-                            <div class="rightSide" @click="toBanquetCoupons(returnQuota,3)">
+                            <div class="rightSide" @click="toDynamicCoupons">
                                 去发券
                             </div>
                         </div>
@@ -182,6 +182,14 @@ export default {
                 query:{
                     quotaInfo:item,
                     type:type
+                }
+            })
+        },
+        toDynamicCoupons(){
+            this.$router.push({
+                path:"/dynamicCoupons",
+                query:{
+                    quotaInfo:this.couponList
                 }
             })
         },

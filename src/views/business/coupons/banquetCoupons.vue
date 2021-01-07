@@ -4,7 +4,7 @@
         <div class="mainWrap fixedMain">
             <el-form ref="form" :model="form" size="small" class="formWrap">
                 <el-form-item label="券类型" :label-width="labelWidth">
-                    <el-select v-model="form.quotaType" placeholder="请选择券类型"  style="width: 100%;">
+                    <el-select v-model="form.quotaType" placeholder="请选择券类型"  style="width: 100%;" @change="changeType">
                         <el-option label="时长券" :value="2"></el-option>
                         <el-option label="金额券" :value="3"></el-option>
                         <el-option label="次券" :value="4"></el-option>
@@ -37,28 +37,36 @@
         </div>
         <el-dialog :title="dialogTit" :visible.sync="dialogVisible" class="dialog" center width="90%">
             <el-row  style="text-align:center">
-                <el-col :span="24" class="pH">时长优惠券</el-col>
-                <el-col :span="24"><van-image width="200" height="200" :src="require('@/assets/images/business/coupons/erWeiCode.png')" /></el-col>
-                <el-col :span="12">
+                <el-col :span="24" class="pH">
+                    <span v-if="dialogData.quotaType==1">定额优惠券</span>
+                    <span v-if="dialogData.quotaType==2">时长优惠券</span>
+                    <span v-if="dialogData.quotaType==3">金额优惠券</span>
+                    <span v-if="dialogData.quotaType==4">次券优惠券</span>
+                </el-col>
+                <el-col :span="24"><van-image width="200" height="200" :src="dialogData.qrCodePng" /></el-col>
+                <el-col :span="12" v-if="dialogData.quotaType==2">
                     <div class="grid-content bg-purple">
                         <p>优惠时间</p>
-                        <p><el-link type="primary">1小时</el-link></p>
+                        <p><el-link type="primary">{{dialogData.quotaData}}小时</el-link></p>
                     </div>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="12" v-if="dialogData.quotaType==1||dialogData.quotaType==3">
+                    <div class="grid-content bg-purple">
+                        <p>优惠金额</p>
+                        <p><el-link type="primary">{{dialogData.quotaData}}元</el-link></p>
+                    </div>
+                </el-col>
+                <el-col :span="dialogData.quotaType==4?24:12">
                     <div class="grid-content bg-purple-light">
                         <p>优惠券张数</p>
-                        <p><el-link type="primary">1张</el-link></p>
+                        <p><el-link type="primary">{{dialogData.quotaNum}}张</el-link></p>
                     </div>
                 </el-col>
                 <el-col :span="24">
                     <van-divider dashed style="color:#222;border-color:#222;"></van-divider>
                 </el-col>
-                <el-col :span="12">
-                    <el-button type="primary" size="mini">保存二维码</el-button>
-                </el-col>
-                <el-col :span="12">
-                    <el-button type="primary" size="mini">刷新二维码</el-button>
+                <el-col :span="24">
+                    <el-button type="primary" size="mini" @click="saveQrcode">保存二维码</el-button>
                 </el-col>
                 <el-col :span="24">
                     <p class="pF">领取说明:请使用微信扫一扫领取停车优惠券</p> 
@@ -87,6 +95,13 @@ export default {
             },
             dialogTit:"宴会券",
             dialogVisible:false,
+            dialogData:{
+                qrCodePng: "",
+                quotaData: "",
+                quotaName: "",
+                quotaNum: "",
+                quotaType: ""
+            }
         }
     },
     computed: {
@@ -109,6 +124,11 @@ export default {
         onClickLeft(){
             this.$router.go(-1)
         },
+        changeType(val){
+            this.form.quotaName = ""
+            this.form.quotData = ""
+            this.form.quotaNum = ""
+        },
         changeName(val){
             let element = []
             this.quotaList.map((item) => {
@@ -127,17 +147,48 @@ export default {
                 this.$toast("缺少数量");
                 return
             }
-            if(type==1){
+            if(this.type==1){
                 this.$api.business.addBanquetQuota(this.form).then(res=>{
+                    //debugger
                     if(res.code == 200){
-                        this.$toast(res.message);
+                        this.dialogData = res.result
+                        this.dialogData.qrCodePng = 'data:image/png;base64,'+res.result.qrCodePng
+                        //this.$toast(res.message);
                         this.dialogVisible = true
                     }else{
                         this.$toast(res.message);
                     }
                 })
+            }else if(this.type==2){
+                this.$api.business.addBatchQuota(this.form).then(res=>{
+                    if(res.code == 200){
+                        this.$toast(res.message);
+                    }else{
+                        this.$toast(res.message);
+                    }
+                })
             }
-            
+        },
+        dataURLtoBlob(dataurl) {
+            var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
+        },
+        saveQrcode(){
+            var myBlob = this.dataURLtoBlob(this.dialogData.qrCodePng)
+            var myUrl = URL.createObjectURL(myBlob)
+            this.downloadFile(myUrl)
+        },
+        downloadFile(url){
+            var a = document.createElement("a")
+            a.setAttribute("href",url)
+            a.setAttribute("target","_blank")
+            let clickEvent = document.createEvent("MouseEvents");
+            clickEvent.initEvent("click", true, true);
+            a.dispatchEvent(clickEvent);
         }
     }
 }
