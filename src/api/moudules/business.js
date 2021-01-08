@@ -102,6 +102,22 @@ export const quotaGrantList = (params) => {
         params
     })
 }
+//绑定领取记录
+export const quotaBindList = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/quotaBindList',
+        method: 'get',
+        params
+    })
+}
+//券使用记录
+export const quotaUseList = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/quotaUseList',
+        method: 'get',
+        params
+    })
+}
 
 //指定车牌发券
 export const addDirectionalQuota = (data) => {

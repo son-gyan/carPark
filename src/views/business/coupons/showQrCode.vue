@@ -66,7 +66,7 @@ export default {
         this.init()
         this.timer = setInterval(() => {
             this.init()
-        }, 30000);
+        }, 60000);
     },
     methods:{
         //返回
