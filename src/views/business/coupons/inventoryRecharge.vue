@@ -2,63 +2,124 @@
     <div>
         <van-nav-bar class="navBar" title="库存充值" left-text="返回" left-arrow @click-left="onClickLeft" fixed/>
         <div class="mainWrap fixedMain">
-            <el-form ref="form" :model="form" label-width="0px" size="mini" class="formWrap">
-                <el-form-item>
-                    <el-select v-model="form.type" placeholder="请选择券类型" class="fullWidth">
-                        <el-option label="月租车" :value="1"></el-option>
-                        <el-option label="储值车" :value="2"></el-option>
-                        <el-option label="免费车" :value="3"></el-option>
-                        <el-option label="临时车" :value="4"></el-option>
-                    </el-select>
+            <el-form ref="form" :model="form" label-width="1.6rem" size="mini" class="formWrap">
+                <el-form-item label-width="0.3rem">
+                    <van-radio-group v-model="form.id" direction="horizontal" >
+                        <van-radio :name="item.id" v-for="(item,index) in bindDisPacklist" :key="index" @click="radioClick(item)"> 
+                            {{item.packageName}}
+                            <span v-if="item.couponType==1">- 定额券</span> 
+                            <span v-if="item.couponType==2">- 时长券</span> 
+                            <span v-if="item.couponType==3">- 金额券</span> 
+                            <span v-if="item.couponType==4">- 次券</span> 
+                            <span v-if="item.couponType==5">- 住店车券</span> 
+                        </van-radio>
+                    </van-radio-group>
                 </el-form-item>
-                <el-form-item>
-                    <el-radio-group v-model="form.resource">
-                        <el-radio label="城市便捷酒店20元/张-定额券"></el-radio>
-                        <el-radio label="城市便捷酒店40券40元/张-定额券"></el-radio>
-                        <el-radio label="城市便捷酒店60券60元/张-定额券"></el-radio>
-                    </el-radio-group>
+                <el-form-item label="单价">
+                    <el-input v-model="form.unitPrice" disabled="true"></el-input>
                 </el-form-item>
-                <el-form-item size="mini" style="text-align:center">
-                    <el-button round type="primary" @click="onSubmit">支付7元</el-button>
+                <el-form-item label="充值总数">
+                    <el-input v-model="form.sum" @input="inputChange" type="number"></el-input>
+                </el-form-item>
+                <el-form-item size="mini" style="text-align:center" label-width="0">
+                    <el-button round type="primary" @click="handlePay">支付{{payMoney}}元</el-button>
                 </el-form-item>
             </el-form>
         </div>
     </div>
 </template>
 <script>
+import { mapGetters } from "vuex"
 export default {
     data(){
         return {
             finished: false,
             loading: false,
+            params:{
+                depId:"",
+                merId:""
+            },
+            bindDisPacklist:[],
             form:{
-                type:"",
-                resource:""
-            }
+                id:"",
+                unitPrice:"",
+                sum:""
+            },
+            couponType:"",
+            unitPrice:"",
+            sum:"",
+            payMoney:0
         }
     },
+    computed: {
+        ...mapGetters(["user",'depId'])
+    },
     created(){
+        this.params.merId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
+        this.params.depId = this.depId||sessionStorage.getItem('depId')
+        this.init()
     },
     methods:{
         //返回
         onClickLeft(){
             this.$router.go(-1)
         },
-        onSearch(){
-
-        },
-        // 下拉加载
-        onLoad () {
-            if (!this.loading) {
-                return false
-            }
-            // 异步更新数据
-            setTimeout(() => {            
-                this.init();
-            },500)
-        },
         init(){
-
+            this.$api.business.bindDisPacklist(this.params).then(res=>{
+                //debugger
+                if(res.code == 200){
+                    this.bindDisPacklist = res.result
+                }else{
+                    this.$toast(res.message);
+                }
+            })
+        },
+        radioClick(item){
+            this.payMoney = 0
+            //this.form.sum = ""
+            this.unitPrice = item.discounttaMoney
+            this.couponType = item.couponType
+            switch (item.couponType) {
+                case 1:
+                    this.form.unitPrice = item.discounttaMoney+"元/张"
+                    break;
+                case 2:
+                    this.form.unitPrice = item.discounttaMoney+"元/小时"
+                    break;
+                case 3:
+                    this.form.unitPrice = item.discounttaMoney+"折"
+                    break;
+                case 4:
+                    this.form.unitPrice = item.discounttaMoney+"元/张"
+                    break;
+                case 5:
+                    this.form.unitPrice = item.discounttaMoney+"元/张"
+                    break;
+            }
+            if(this.sum !=""){
+                if(this.couponType!=3){                
+                    this.payMoney = this.sum*this.unitPrice
+                }else{
+                    this.payMoney = this.sum*this.unitPrice/100
+                }
+            }
+        },
+        inputChange(val){
+            this.sum = val
+            if(this.couponType!=3){                
+                this.payMoney = val*this.unitPrice
+            }else{
+                this.payMoney = val*this.unitPrice/100
+            }
+        },
+        handlePay(){
+            if(this.couponType==""){
+                this.$toast("请选择套餐");
+                return
+            }else if(this.sum==""){
+                this.$toast("请输入充值总数");
+                return
+            }
         }
     }
 }
@@ -88,8 +149,9 @@ export default {
         .fullWidth{
             width: 100%;
         }
-        /deep/ .el-radio{
-            padding-bottom: .3rem;
+        /deep/ .van-radio{
+            flex: 1 1 45%;
+            margin-bottom: .3rem;
         }
     }
 </style>
