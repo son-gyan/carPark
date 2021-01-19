@@ -4,8 +4,8 @@
         <div class="mainWrap fixedMain">
             <el-form ref="form" :model="form" label-width="1.6rem" size="mini" class="formWrap">
                 <el-form-item label-width="0.3rem">
-                    <van-radio-group v-model="form.id" direction="horizontal" >
-                        <van-radio :name="item.id" v-for="(item,index) in bindDisPacklist" :key="index" @click="radioClick(item)"> 
+                    <van-radio-group v-model="form.packageName" direction="horizontal" >
+                        <van-radio :name="item.packageName" v-for="(item,index) in bindDisPacklist" :key="index" @click="radioClick(item)"> 
                             {{item.packageName}}
                             <span v-if="item.couponType==1">- 定额券</span> 
                             <span v-if="item.couponType==2">- 时长券</span> 
@@ -41,10 +41,11 @@ export default {
             },
             bindDisPacklist:[],
             form:{
-                id:"",
+                packageName:"",
                 unitPrice:"",
                 sum:""
             },
+            quotaData:0,
             couponType:"",
             unitPrice:"",
             sum:"",
@@ -77,6 +78,7 @@ export default {
         radioClick(item){
             this.payMoney = 0
             //this.form.sum = ""
+            this.quotaData = item.originalMoney
             this.unitPrice = item.discounttaMoney
             this.couponType = item.couponType
             switch (item.couponType) {
@@ -120,6 +122,29 @@ export default {
                 this.$toast("请输入充值总数");
                 return
             }
+            let params = {
+                data:this.sum,
+                merId:this.params.merId,
+                money:this.payMoney,
+                quotaData:this.quotaData,
+                quotaName:this.form.packageName,
+                type:this.couponType
+            }
+            let formData = new FormData();
+                formData.append('data',params.data)
+                formData.append('merId',params.merId)
+                formData.append('money',params.money)
+                formData.append('quotaData',params.quotaData)
+                formData.append('quotaName',params.quotaName)
+                formData.append('type',params.type)
+            this.$api.business.quotaPackagePay(formData).then(res=>{
+                debugger
+                if(res.code == 200){
+                    window.location.href = res.result
+                }else{
+                    this.$toast(res.message);
+                }
+            })
         }
     }
 }

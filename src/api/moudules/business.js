@@ -76,7 +76,14 @@ export const addBatchQuota = (data) => {
         data
     })
 }
-
+//查询在场车辆时长与金额
+export const checkCarMoney = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/checkCarMoney',
+        method: 'get',
+        params
+    })
+}
 //新增动态发券
 export const addAutomaticQuota = (data) => {
     return axios({
@@ -134,5 +141,15 @@ export const bindDisPacklist = (params) => {
         url: '/park/zyb/coupon/bindDisPacklist',
         method: 'get',
         params
+    })
+}
+
+//优惠券套餐下单
+export const quotaPackagePay = (data) => {
+    return axios({
+        url: '/park/zyb/pay/quotaPackagePay',
+        method: 'POST',
+        data,
+        headers: header 
     })
 }

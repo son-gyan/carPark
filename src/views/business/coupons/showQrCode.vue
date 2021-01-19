@@ -10,19 +10,19 @@
                     <span v-if="dialogData.quotaType==4">次券优惠券</span>
                 </el-col>
                 <el-col :span="24"><van-image width="200" height="200" :src="dialogData.qrCodePng" /></el-col>
-                <el-col :span="12" v-if="dialogData.quotaType==2">
+                <el-col :span="dialogData.quotaNum?12:24" v-if="dialogData.quotaType==2">
                     <div class="grid-content bg-purple">
                         <p>优惠时间</p>
                         <p><el-link type="primary">{{dialogData.quotaData}}小时</el-link></p>
                     </div>
                 </el-col>
-                <el-col :span="12" v-if="dialogData.quotaType==1||dialogData.quotaType==3">
+                <el-col :span="dialogData.quotaNum?12:24" v-if="dialogData.quotaType==1||dialogData.quotaType==3">
                     <div class="grid-content bg-purple">
                         <p>优惠金额</p>
                         <p><el-link type="primary">{{dialogData.quotaData}}元</el-link></p>
                     </div>
                 </el-col>
-                <el-col :span="dialogData.quotaType==4?24:12">
+                <el-col :span="dialogData.quotaType==4?24:12" v-if="dialogData.quotaNum">
                     <div class="grid-content bg-purple-light">
                         <p>剩余张数</p>
                         <p><el-link type="primary">{{dialogData.quotaNum}}张</el-link></p>

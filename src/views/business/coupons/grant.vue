@@ -231,7 +231,7 @@ export default {
             }
         }
     }
-    .list{
+    .fixedMain .cardList.list{
         position: relative;
         margin-top:0;
         /deep/ .van-sticky--fixed{

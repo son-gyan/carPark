@@ -19,7 +19,7 @@
                             <van-col span="14" v-if="item.quotaType==4">次券库存剩余：{{item.stockNum}}张</van-col>
                             <van-col span="14" v-if="item.quotaType==5">住店车券库存剩余：{{item.stockNum}}张</van-col>
                             <van-col span="3">
-                                <van-button type="info" size="mini" @click="detail(item.quotaType)">明细</van-button>
+                                <!-- <van-button type="info" size="mini" @click="detail(item.quotaType)">明细</van-button> -->
                             </van-col>
                         </van-row>
                     </template>

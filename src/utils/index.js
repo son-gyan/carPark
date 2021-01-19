@@ -48,7 +48,36 @@ export const GetQueryByString = (str,name) => {
 }
 
 
-
+export const dateCalculation = (second) => { //返回天、时、分
+	if (second > 0) {
+		var day = 0;
+		var hour = 0;
+		var minute = 0;
+		var data = {};
+		minute = Math.floor(second / (60*1000))
+		if (parseInt(minute) > 60) {
+			hour = parseInt(minute / 60);
+			minute %= 60; //算出有多分钟
+		}
+		if (parseInt(hour) > 24) {
+			day = parseInt(hour / 24);
+			hour %= 24; //算出有多分钟
+		}
+		data.day = day;
+		data.hour = hour;
+		data.minute = minute;
+		//debugger
+		let str = ""
+		if(data.day>0){
+			str = data.day+"天"+data.hour+"小时"+data.minute+"分"
+		}else if(data.day<1&&data.hour>0){
+			str = data.hour+"小时"+data.minute+"分"
+		}else{
+			str = data.minute+"分"
+		}
+		return str;
+	}
+}
 
 export const formatDate = (timeStamp) => {
 	let year = new Date(timeStamp).getFullYear();

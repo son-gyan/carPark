@@ -20,6 +20,10 @@
                         <template slot="prepend">请输入电话号码：</template>
                     </el-input>
                 </el-form-item>
+                <el-form-item class="verticalShow" >
+                    <div class="formLabel" v-if="showNote">停车时长：{{noteTime}} <span class="rLabel">应缴费：{{noteMoney}}元</span> </div>
+                    <div class="formLabel" v-else>车辆不在车场</div>
+                </el-form-item>
                 <el-form-item class="verticalShow" v-if="quotaType==3">
                     <div slot="label" class="formLabel">请选择金额/元</div>
                     <van-grid :column-num="3" gutter="20" >
@@ -71,6 +75,7 @@
 <script>
 import plateNumber from '@/components/plateNumber'
 import { mapGetters } from "vuex"
+import {dateCalculation} from '@/utils'
 export default {
     components: {
         plateNumber
@@ -101,7 +106,10 @@ export default {
                 quotaName: "",
                 quotaNum: 1,
                 quotaType: ""
-            }
+            },
+            showNote:false,
+            noteMoney:"",
+            noteTime:""
         }
     },
     computed: {
@@ -127,6 +135,25 @@ export default {
         getPlateLicense(data){
             console.log('组件传出的data',data)
             this.form.licensePlate = data
+            if(data.length>6){
+                let pram = {
+                    carNum:data,
+                    merId:this.params.merchantsId
+                }
+                this.$api.business.checkCarMoney(pram).then(res=>{
+                    //debugger
+                    if(res.code == 0){
+                        this.noteTime = dateCalculation(res.result.time)
+                        this.noteMoney = res.result.money
+                        this.showNote = true
+                        //this.$toast(res.message);
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            }
         },
         //返回
         onClickLeft(){
