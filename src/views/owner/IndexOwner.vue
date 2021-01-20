@@ -120,7 +120,7 @@ export default {
                         this.$router.push('/afterPayment')
                         break;                
                     case 8:
-                        this.$router.push('/member')
+                        this.$router.push('/memberRecharge')
                         break;                
                     case 9:
                         this.$router.push('/temporaryStop')

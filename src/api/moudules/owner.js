@@ -104,6 +104,15 @@ export const getMonthlyCarList = (params) => {
         params
     })
 }
+// 月租套餐下单
+export const packagePay = (data) => {
+    return axios({
+        url: '/park/zyb/pay/packagePay',
+        method: 'POST',
+        data,
+        headers: header
+    })
+}
 
 // 月租车 获取车场列表 /park/zyb/zybParkInfo/myMonthCarlist
 export const getCarList = () => {
