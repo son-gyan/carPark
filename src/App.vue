@@ -33,7 +33,7 @@ export default {
               delFlag: "0",
               depId: null,
               departName: null,
-              id: "1338830684261158913",
+              id: "1351718933899907074",
               lastLoginTime: null,
               memo: null,
               merId: "0",
@@ -48,7 +48,7 @@ export default {
               updateTime: null,
               username: "18602701015"
             },
-            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MDg4MjMwOTksInVzZXJuYW1lIjoib0o5Y2U2QVJlWTkyX05LcjdmR3lCS29Bd05VVSJ9.ymxJFqmYdr0Ai28fT_4D7HQMaFD6rw-jIMZLiHIohaQ";
+            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTExMjE3ODEsInVzZXJuYW1lIjoib0o5Y2U2QVJlWTkyX05LcjdmR3lCS29Bd05VVSJ9.3XeTbFeKxAizym9D8OB8ueVoTwMdYw2Jv4tA_lIdrO8";
             this.$store.dispatch('setUser', userInfoTest)                           
             sessionStorage.setItem('userId',userInfoTest.id)
             sessionStorage.setItem('token',tokenTest)

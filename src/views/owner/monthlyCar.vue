@@ -16,14 +16,14 @@
                 <van-card  class="vanCard" v-for="(item,index) in monthlyCarList" :key="index">
                     <template #title>
                         <van-row type="flex" justify="center" >
-                            <van-col span="14">皇家后宫车场</van-col>
+                            <van-col span="14">{{item.parkName}}</van-col>
                             <van-col span="7">{{item.licensePlate}}</van-col>
                             <van-col span="3">
-                                <van-button type="info" size="mini" @click="pay">续费</van-button>
+                                <van-button type="info" size="mini" @click="jumpPay(item)">续费</van-button>
                             </van-col>
                         </van-row>
                         <van-row type="flex" justify="center" >
-                            <van-col span="14">到期时间：{{item.expireTime}}</van-col>
+                            <van-col span="14">到期时间：{{item.endTime}}</van-col>
                             <van-col span="7">{{getDayNum(item.endTime)>0?'剩余'+getDayNum(item.endTime)+'天':"过期"}}</van-col>
                             <van-col span="3">
                             </van-col>
@@ -126,7 +126,7 @@ export default {
         ...mapGetters(['user'])
     },
     created(){
-        this.params.userId = this.user.id
+        this.params.userId = this.user.id||localStorage.getItem('userId')
         this.init()
         this.getCarList()
         /* let dayNum = getDayNum("2020-12-24")
@@ -169,6 +169,15 @@ export default {
         },
         apply(){
             this.dialogShow = true
+        },
+        jumpPay(item){
+            //debugger
+            this.$router.push({
+                path:"/renew",
+                query:{
+                    carInfo:item
+                }
+            })
         },
         pay(item){
             let domT = ''

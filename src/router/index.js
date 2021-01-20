@@ -57,6 +57,7 @@ const payment = () => import("@/views/owner/payment")
 const carPark = () => import("@/views/owner/carPark")
 const bill = () => import("@/views/owner/bill")
 const monthlyCar = () => import("@/views/owner/monthlyCar")
+const renew = () => import("@/views/owner/renew")
 const invoice = () => import("@/views/owner/invoice")
 const afterPayment = () => import("@/views/owner/afterPayment")
 const memberRecharge = () => import("@/views/owner/member")
@@ -136,6 +137,7 @@ const router = new Router({
         { path: "/carPark",name: "carPark",component: carPark },
         { path: "/bill",name: "bill",component: bill },
         { path: "/monthlyCar",name: "monthlyCar",component: monthlyCar },
+        { path: "/renew",name: "renew",component: renew },
         { path: "/invoice",name: "invoice",component: invoice },
         { path: "/afterPayment",name: "afterPayment",component: afterPayment },
         { path: "/memberRecharge",name: "memberRecharge",component: memberRecharge },

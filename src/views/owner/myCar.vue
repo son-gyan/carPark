@@ -83,8 +83,8 @@ export default {
     },
     directives: { ClickOutside },
     created() {
-        this.params.userId = this.user.id
-        this.form.userId  = this.user.id
+        this.params.userId = this.user.id||localStorage.getItem('userId')
+        this.form.userId  = this.user.id||localStorage.getItem('userId')
         this.initData();
     },
     methods: {
