@@ -270,7 +270,7 @@ export default {
                 text-align: center;
             }
             .p1{
-                font-size: .1rem;
+                font-size: .2rem;
                 color:#F7F55A;
                 text-align: center;
             }
