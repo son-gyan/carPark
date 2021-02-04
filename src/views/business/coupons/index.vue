@@ -1,6 +1,6 @@
 <template>
     <div class="pages couponPage">
-        <van-nav-bar class="navBar" title="发券"  fixed></van-nav-bar>
+        <van-nav-bar class="navBar" :title="title"  fixed></van-nav-bar>
         <el-container v-loading="loading" direction="vertical" class="mainWrap fixedMain">
             <!-- <el-header></el-header> -->
             <el-main>
@@ -89,6 +89,7 @@ import { mapGetters } from "vuex"
 export default {
     data(){
         return {
+            title:"",
             loading:false,
             couponList:[],
             params:{
@@ -119,6 +120,7 @@ export default {
     },
     created() {
         this.params.merId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
+        this.title = sessionStorage.getItem('shopName')
         this.initData();
     },
     methods:{
@@ -236,7 +238,7 @@ export default {
                 font-size: 1rem;
             }
             .van-grid-item__text{
-                font-size: .2rem;
+                font-size: .3rem;
                 font-weight: 600;
                 text-align: center;
             }

@@ -161,12 +161,16 @@ export default {
             let monthcarArry = []
             let temporaryArry = []
             let unlicensedArry = []
+            let incomeArry = [], refundArry=[],settlementArry=[]
             for (let i = 0; i < chartArry.length; i++) {
                 const item = chartArry[i];
                 daysArry.push(item.days)
                 monthcarArry.push(item.monthcar)
                 temporaryArry.push(item.temporary)
                 unlicensedArry.push(item.unlicensed)
+                incomeArry.push(item.income)
+                refundArry.push(item.refund)
+                settlementArry.push(item.settlement)
             }
             let option = {
                 tooltip: {
@@ -176,7 +180,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['月租充值', '临时车', '无牌预付']
+                    data: ['月租充值', '临时车', '无牌预付','总金额','退款金额','结算金额']
                 },
                 xAxis: {
                     type: 'category',
@@ -209,6 +213,36 @@ export default {
                     {
                         name: '无牌预付',
                         data: unlicensedArry,
+                        type: 'bar',
+                        stack: '总量',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
+                    },
+                    {
+                        name: '总金额',
+                        data: incomeArry,
+                        type: 'bar',
+                        stack: '总量',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
+                    },
+                    {
+                        name: '退款金额',
+                        data: refundArry,
+                        type: 'bar',
+                        stack: '总量',
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: 'rgba(220, 220, 220, 0.8)'
+                        }
+                    },
+                    {
+                        name: '结算金额',
+                        data: settlementArry,
                         type: 'bar',
                         stack: '总量',
                         showBackground: true,

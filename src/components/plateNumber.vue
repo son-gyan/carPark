@@ -195,7 +195,8 @@ import ClickOutside from 'element-ui/src/utils/clickoutside'
 export default {
   directives: { ClickOutside },
   props:{
-    noLabel:Boolean
+    noLabel:Boolean,
+    clickOutside:Boolean
   },
   data () {
     return {
@@ -243,9 +244,11 @@ export default {
   },
   methods: {
     handleDiaClickOutside(){
-        /* this.firstWrapStatus = false
+      if(this.clickOutside){
+        this.firstWrapStatus = false
         this.firstClickStatus = false 
-        this.keyBoardStatus = false*/
+        this.keyBoardStatus = false
+      }        
     },
     //预设车牌
     getData(depId){

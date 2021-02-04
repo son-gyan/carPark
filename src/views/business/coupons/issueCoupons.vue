@@ -10,7 +10,7 @@
                         <span class="rLabel" v-if="quotaType==4">次券库存剩余{{stockNum}}张</span>
                         <span class="rLabel" v-if="quotaType==1">定额券库存剩余{{stockNum}}张</span>
                     </div>
-                    <plateNumber @getPlateLicense="getPlateLicense" :noLabel='true'></plateNumber>
+                    <plateNumber @getPlateLicense="getPlateLicense" :noLabel='true' :clickOutside="true"></plateNumber>
                 </el-form-item>
                 <el-form-item class="elFormItem1">
                     <div class="formLabel">无车牌<span class="lLabel"><el-checkbox v-model="checked" @change="checkCarNum"></el-checkbox></span></div>
@@ -34,7 +34,7 @@
                 <el-form-item class="verticalShow" v-if="quotaType==1">
                     <div slot="label" class="formLabel">请选择金额/元</div>
                     <van-grid :column-num="3" gutter="20">
-                        <van-grid-item  :text="item.quotaName"  v-for="(item,index) in quotaList" :key="index" :data-num="item"
+                        <van-grid-item  :text="item.quotaData"  v-for="(item,index) in quotaList" :key="index" :data-num="item"
                             @click="selectQuota(index,$event)" :class="['vanGridItem',{selectedColor:index==curSelectIndex}]"/>
                     </van-grid>
                 </el-form-item>
@@ -86,7 +86,7 @@ export default {
             curSelectIndex:0,
             quotaList:[],
             moneyList:[10,30,50,100,300,"自定义"],
-            timeList:[1,2,5,10,10,'自定义'],
+            timeList:[1,2,5,10,12,'自定义'],
             options:"",
             form:{
                 licensePlate:"",

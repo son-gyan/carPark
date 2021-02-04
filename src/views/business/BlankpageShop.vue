@@ -29,6 +29,7 @@ export default {
                                 //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                                 sessionStorage.setItem('token',res.result.token)
                                 let merInfo = res.result.merInfo
+                                sessionStorage.setItem('shopName',merInfo.name)
                                 if(merInfo.type == 1){ 
                                     window.location.replace(
                                         window.location.origin +"/indexShop"  //授权成功返回的页面

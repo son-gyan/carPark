@@ -53,6 +53,12 @@
                 <header>延期处理</header>
                 <main>
                     <van-form @submit="saveData" class="formWrap">
+                        <van-field
+                            readonly
+                            name="datetimePicker"
+                            :value="form.dueTime"
+                            label="原到期时间"
+                            />                        
                         <van-field name="radio" label="延期类型">
                             <template #input>
                                 <van-radio-group v-model="radioVal" direction="horizontal" @change="changeRadio">
@@ -85,7 +91,7 @@
                             clickable
                             name="datetimePicker"
                             :value="form.endDateStr"
-                            label="到期时间"
+                            label="新到期时间"
                             placeholder="点击选择到期时间"
                             @click="showPickerEndTime = true"
                             />
@@ -102,7 +108,7 @@
                     </van-form>
                 </main>
                 <footer>
-                    <button @click="saveData">保存</button>
+                    <button @click="saveData">确认</button>
                     <button @click="cancelDialog">取消</button>
                 </footer>
             </div>
@@ -231,6 +237,7 @@ export default {
                     endDateStr:this.singlePacklist[0].updateTime,
                     memo:''
                 } */
+                this.form.dueTime = item.endTime
                 this.form.veId = item.id
                 this.form.packageId = this.singlePacklist[0].id
             }else{
@@ -256,22 +263,33 @@ export default {
         },
         //删除
         handleDel(id){
-            let formData = new FormData();
-            formData.append('id',id)
-            this.$api.home.delCar(formData).then(res=>{
-                if(res.code == 200){
-                    this.$toast(res.message);
-                    this.carList = []
-                    this.pageNo = 1
-                    this.loading = true
-                    this.finished = false;
-                    this.initData();
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
+            this.$dialog.confirm({
+                title: '删除',
+                message: '确认删除该车辆？',
+            })
+            .then(() => {
+                // on confirm
+                let formData = new FormData();
+                formData.append('id',id)
+                this.$api.home.delCar(formData).then(res=>{
+                    if(res.code == 200){
+                        this.$toast(res.message);
+                        this.carList = []
+                        this.pageNo = 1
+                        this.loading = true
+                        this.finished = false;
+                        this.initData();
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            })
+            .catch(() => {
+                // on cancel
             });
+            
         },
         //弹窗保存
         saveData(){

@@ -13,11 +13,11 @@
                 <van-card  class="vanCard" v-for="(item,index) in stockList" :key="index"> <!--   -->
                     <template #title>
                         <van-row type="flex" justify="space-between"  align="center">
-                            <van-col span="14" v-if="item.quotaType==1">{{item.quotaName}}券库存剩余：{{item.stockNum}}张</van-col>
-                            <van-col span="14" v-if="item.quotaType==2">时长券库存剩余：{{item.quotaData}}时</van-col>
-                            <van-col span="14" v-if="item.quotaType==3">金额券库存剩余：{{item.quotaData}}元</van-col>
-                            <van-col span="14" v-if="item.quotaType==4">次券库存剩余：{{item.stockNum}}张</van-col>
-                            <van-col span="14" v-if="item.quotaType==5">住店车券库存剩余：{{item.stockNum}}张</van-col>
+                            <van-col span="21" v-if="item.quotaType==1">{{item.quotaName}}券库存剩余：{{item.stockNum}}张</van-col>
+                            <van-col span="21" v-if="item.quotaType==2">时长券库存剩余：{{item.quotaData}}时</van-col>
+                            <van-col span="21" v-if="item.quotaType==3">金额券库存剩余：{{item.quotaData}}元</van-col>
+                            <van-col span="21" v-if="item.quotaType==4">次券库存剩余：{{item.stockNum}}张</van-col>
+                            <van-col span="21" v-if="item.quotaType==5">住店车券库存剩余：{{item.stockNum}}张</van-col>
                             <van-col span="3">
                                 <!-- <van-button type="info" size="mini" @click="detail(item.quotaType)">明细</van-button> -->
                             </van-col>
@@ -103,5 +103,8 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-    
+    .vanCard{
+        font-size:0.3rem;
+        padding: .25rem .2rem;
+    }
 </style>
