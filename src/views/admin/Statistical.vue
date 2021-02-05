@@ -180,7 +180,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['月租充值', '临时车', '无牌预付','总金额','退款金额','结算金额']
+                    data: ['月租充值', '临时车', '无牌预付','退款金额']
                 },
                 xAxis: {
                     type: 'category',
@@ -225,7 +225,7 @@ export default {
                         data: incomeArry,
                         type: 'bar',
                         stack: '总量',
-                        showBackground: true,
+                        showBackground: false,
                         backgroundStyle: {
                             color: 'rgba(220, 220, 220, 0.8)'
                         }
@@ -245,7 +245,7 @@ export default {
                         data: settlementArry,
                         type: 'bar',
                         stack: '总量',
-                        showBackground: true,
+                        showBackground: false,
                         backgroundStyle: {
                             color: 'rgba(220, 220, 220, 0.8)'
                         }
