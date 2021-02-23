@@ -20,9 +20,9 @@
                     <i slot="prefix" class="el-input__icon el-icon-unlock"></i>
                 </el-input>
             </el-form-item>
-            <el-form-item class="linkFormItem">
+            <!-- <el-form-item class="linkFormItem">
                 <el-link class="linkBtn" @click.prevent="regainCode"  :underline="false"   :disabled="disabled">{{regain}}</el-link>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item>
                 <van-button block type="info"  @click.prevent="onLogin">
                 快捷登录
@@ -75,13 +75,16 @@ export default {
                 formData.append('phone',params.phone)
                 this.$api.owner.getPhoneCode(formData).then((res) => {
                     if(res.code == 200){
-                        this.disabled=true;
-                        this.regain = this.time+"秒"
+                        this.disabled=true;                        
+                        this.getCode = this.time+"秒"
+                        //debugger
                         let auth_timer = setInterval(()=>{  //定时器设置每秒递减
-                            this.time--;        //递减时间
+                            this.time--;        //递减时间                            
+                            this.getCode = this.time+"秒"
                             if(this.time<=0){  
                                 this.disabled=false;   //60s时间结束还原v-show状态并清除定时器
-                                this.regain = "获取验证码"
+                                this.getCode = "获取验证码"
+                                this.time = 60
                                 clearInterval(auth_timer)
                             }
                         },1000)
@@ -110,6 +113,7 @@ export default {
                 let formData = new FormData();
                 formData.append('phone',params.phone)
                 this.$api.owner.getPhoneCode(formData).then((res) => {
+                    //debugger
                     if(res.code == 200){
                         this.disabled=true;
                         this.getCode = this.time+"秒"
@@ -195,6 +199,16 @@ export default {
         }
         /deep/ .el-divider__text{
             font-size: .4rem;
+        }
+        /deep/ .el-input-group__append{
+            color: #FFF;
+            background-color: #1989fa;
+            border-color: #1989fa;
+        }
+        .el-button--success.is-disabled{
+            color: #FFF;
+            background-color: #1989fa;
+            border-color: #1989fa;
         }
     }
 </style>
