@@ -21,8 +21,9 @@
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="addPresentCar">添加</van-button>
                 </van-search>
                 <van-row type="flex" justify="center" class="cardHeaderWrap" >
-                    <van-col span="12">在场月租车：{{list.curyzNum}}</van-col>
-                    <van-col span="12">在场临时车：{{list.curlsNum}}</van-col>
+                    <van-col span="8">在场月租车:{{list.curyzNum}}</van-col>
+                    <van-col span="7">在场临时车:{{list.curlsNum}}</van-col>
+                    <van-col span="9">剩余临停车位:{{list.surplus}}</van-col>
                 </van-row>
                 <van-card
                     class="vanCard"
@@ -110,7 +111,8 @@ export default {
             isShow:[],
             list:{
                 curlsNum:0,
-                curyzNum:0
+                curyzNum:0,
+                surplus:0
             },
             presentCarList:[],
             searchVal:'',
@@ -189,6 +191,7 @@ export default {
                     //debugger
                     this.list.curlsNum = res.result.temporary
                     this.list.curyzNum = res.result.month
+                    this.list.surplus = res.result.surplus
                 }else{
                     this.$toast(res.message);
                 }
