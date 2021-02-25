@@ -125,6 +125,14 @@ export const quotaUseList = (params) => {
         params
     })
 }
+//券返还记录
+export const quotaBackList = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/quotaBackList',
+        method: 'get',
+        params
+    })
+}
 
 //指定车牌发券
 export const addDirectionalQuota = (data) => {

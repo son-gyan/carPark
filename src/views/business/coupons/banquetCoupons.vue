@@ -149,7 +149,6 @@ export default {
             }
             if(this.type==1){
                 this.$api.business.addBanquetQuota(this.form).then(res=>{
-                    //debugger
                     if(res.code == 200){
                         this.dialogData = res.result
                         this.dialogData.qrCodePng = 'data:image/png;base64,'+res.result.qrCodePng
@@ -161,8 +160,10 @@ export default {
                 })
             }else if(this.type==2){
                 this.$api.business.addBatchQuota(this.form).then(res=>{
+                    debugger
                     if(res.code == 200){
                         this.$toast(res.message);
+                        window.location.href = res.result.pdfPath
                     }else{
                         this.$toast(res.message);
                     }
