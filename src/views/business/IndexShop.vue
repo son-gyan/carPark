@@ -61,9 +61,16 @@ export default {
         },
         logout(){
             sessionStorage.clear();
-            window.location.replace(
+            this.$router.push({
+                path:"/login",
+                query:{
+                    openid:this.user.openid,
+                    appId:config.appID
+                }
+            })
+            /* window.location.replace(
                 window.location.origin + "/loginShop?openid="+this.user.openid
-            );
+            ); */
         }
     },
     beforeRouteEnter  (to, from, next) {

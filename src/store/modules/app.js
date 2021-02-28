@@ -3,13 +3,15 @@ import {
     SET_ORGCATEGORY,
     SET_DEPID,
     SET_CARPARKINFO,
+    SET_DEPARTINFO
 } from '../type'
 export default {
     state: {
         user:'',
         orgCategory:'',
         depId:'',
-        carParkInfo:{}
+        carParkInfo:{},
+        departInfo:{}
     },
     getters: {
         user (state) {
@@ -23,6 +25,9 @@ export default {
         },
         carParkInfo(state) {
             return state.carParkInfo
+        },
+        departInfo(state) {
+            return state.departInfo
         },
     },
     mutations: {
@@ -42,6 +47,10 @@ export default {
             state.carParkInfo = carParkInfo
             sessionStorage.setItem('carParkInfo', JSON.stringify(carParkInfo))
         },
+        [SET_DEPARTINFO]: (state, departInfo) => {
+            state.departInfo = departInfo
+            sessionStorage.setItem('departInfo', JSON.stringify(departInfo))
+        },
     },
     actions: {
         setUser ({ commit }, user) {
@@ -55,6 +64,9 @@ export default {
         },
         setCarParkInfo ({ commit }, carParkInfo) {
             commit(SET_CARPARKINFO, carParkInfo)
+        },
+        setDepartInfo ({ commit }, departInfo) {
+            commit(SET_DEPARTINFO, departInfo)
         },
     }
 }

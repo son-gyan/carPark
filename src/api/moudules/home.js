@@ -315,3 +315,84 @@ export const delApply = (data) => {
     })
 }
 
+/* 
+ * 会员管理  start
+ */
+// 获取套餐管理列表
+export const getSetMealList = (params) => {
+    return axios({
+        url: '/park/yzb/vippackage/list',
+        method: 'get',
+        params
+    })
+}
+
+// 新增套餐
+export const addSetMeal = (data) => {
+    return axios({
+        url: '/park/yzb/vippackage/add',
+        method: 'post',
+        data
+    })
+}
+
+// 编辑套餐
+export const editSetMeal = (data) => {
+    return axios({
+        url: '/park/yzb/vippackage/edit',
+        method: 'put',
+        data
+    })
+}
+
+// 删除套餐
+export const delSetMeal = (data) => {
+    return axios({
+        url: '/park/yzb/vippackage/delete',
+        method: 'DELETE',
+        data,
+        headers: header 
+    })
+}
+
+// 获取用户管理列表
+export const getUserList = (params) => {
+    return axios({
+        url: '/park/zyb/zybVipUser/list',
+        method: 'get',
+        params
+    })
+}
+
+// 结算
+export const settlementUser = (data) => {
+    return axios({
+        url: '/park/zyb/zybVipUser/clear',
+        method: 'post',
+        data,
+        headers: header
+    })
+}
+
+//获取消费记录
+export const getConsumeList = (params) => {
+    return axios({
+        url: '/park/zyb/zybVipUser/list',
+        method: 'get',
+        params
+    })
+}
+
+//获取消费记录
+export const getRechargeList = (params) => {
+    return axios({
+        url: '/park/zyb/zybVipRechargeLog/list',
+        method: 'get',
+        params
+    })
+}
+
+
+/* 
+ * 会员管理  end
+ */

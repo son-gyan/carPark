@@ -161,3 +161,6 @@
   border: solid 1px #e5e5e5;
   margin-left: 0.3rem;
 }
+.fullWidth {
+  width: 100%;
+}

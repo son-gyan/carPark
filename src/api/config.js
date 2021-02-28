@@ -11,13 +11,15 @@ if(flag){
     pageUrl = "http://gzh1.52tingche.com"
     appID = "wx09a13be6962ab9a8"
 } */
-
+sessionStorage.setItem('appId',JSON.parse(JSON.stringify(appID)))
+console.log(appID,'appID1')
+console.log(sessionStorage.getItem('appId'),'appID2')
 export default {
     method: 'get',
     // 基础url前缀
     baseUrl: baseUrl,
     pageUrl:pageUrl,
-    appID:appID,
+    appID:JSON.parse(JSON.stringify(appID)),
     // 请求头信息
     headers: {
         'Content-Type': 'application/json;charset=UTF-8',

@@ -141,9 +141,9 @@ export default {
 
         },
         logout(){
-            window.location.replace(
+            /* window.location.replace(
                 window.location.origin + "/loginOwner?openid="+this.user.openid
-            );
+            ); */
         }
     },
     beforeRouteEnter  (to, from, next) {

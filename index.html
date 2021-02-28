@@ -11,23 +11,58 @@
     <script src="https://cdn.jsdelivr.net/npm/vant@2.10/lib/vant.min.js"></script> -->
     <script src="https://cdn.bootcss.com/echarts/4.8.0/echarts.min.js"></script>
     <script>
+        function getQueryPram (str,name){
+          //获取？号出现几次
+          var tempArr = str.split('?');
+
+          // //如果大于1
+          if(tempArr.length-1>1){
+            var rt = null;
+            for(var i in tempArr){
+              var s = tempArr[i]
+              var reg1 = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+              var r1 = s.match(reg1); //匹配目标参数
+              if (r1 != null) {
+                rt = decodeURIComponent(r1[2]);//一直覆盖，要最后的就行了
+              }
+            }
+
+            return rt
+          }
+          var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+          if(!str.split("?")[1])return null;
+          var r = str.split("?")[1].match(reg); //匹配目标参数
+
+          if (r != null) {
+            return decodeURIComponent(r[2]);
+
+          }
+          return null; //返回参数值
+
+        }
+        
         let flag = 'dev'  // 'prod'  // 'localhost' //  
+
+        //http://gzh1.52tingche.com/loading?appId=123
+        const url=window.location.href;//获取当前地址栏
+        const appIdVal = getQueryPram(url,'appId');
         let baseUrl = "",
             pageUrl = "",
-            appID = "";
+            appID = "";            
         if(flag == 'prod'){
             baseUrl = "http://52tingche.com"
             pageUrl = "http://gzh.52tingche.com"
-            appID = "wx653ad587382d8bf5"
+            appID = appIdVal;
         }else if(flag == 'dev'){
             baseUrl = "http://beta.52tingche.com" 
             pageUrl = "http://gzh1.52tingche.com"
-            appID = "wx09a13be6962ab9a8"
+            appID = appIdVal;
         } else if(flag == 'localhost'){
             baseUrl = "http://beta.52tingche.com" 
             pageUrl = "http://gzh1.52tingche.com"
-            appID = "wx09a13be6962ab9a8"
+            appID = appIdVal;
         }
+        console.log(appID,"appID+init")
     </script>
   </head>
   <body>

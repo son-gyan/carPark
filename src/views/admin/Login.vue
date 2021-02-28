@@ -21,6 +21,7 @@
 </template>
 <script>
 import {GetQueryByString} from '@/utils'
+import config from "@/api/config";
 export default {
     data() {
         return {
@@ -28,19 +29,23 @@ export default {
                 username: '',
                 password: '',
                 openId:'',
-                type:0
+                type:0,
+                appId:config.appID||localStorage.getItem('appId')
             }
         };
     },
     created() {
-        const url=window.location.href;//获取当前地址栏
+        /* const url=window.location.href;//获取当前地址栏
         const openid=GetQueryByString(url,'openid');//GetQueryByString 自己封装的方法来获取地址栏的参数
+        console.log(config.appID||sessionStorage.getItem('appId'),'appID4') */
+        const openid = this.$route.query.openid
         if(!openid){            
             //this.wxLogin()
         }else{
             this.form.openId = openid
+            this.form.appId = this.$route.query.appId
+            console.log(config.appID||sessionStorage.getItem('appId'),'appID5')
         }
-        console.log()
     },
     methods: {
         onSubmit() {
@@ -49,8 +54,10 @@ export default {
                     this.$store.dispatch('setUser', res.result.userInfo)
                     this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                     sessionStorage.setItem('token',res.result.token)
+                    
                     if(res.result.depart){                        
                         sessionStorage.setItem('departName',res.result.depart.departName)
+                        this.$store.dispatch('setDepartInfo', res.result.depart)
                     }
                     this.$router.push('/index')
                 }else{

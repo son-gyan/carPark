@@ -58,7 +58,7 @@
                     <van-grid-item  text="预约车场" @click='jumpTo(7)'  :icon="require('../../assets/images/orderCar.png')"/>
                     <van-grid-item  text="黑名单"   @click='jumpTo(5)'  :icon="require('../../assets/images/blacklist.png')"/>
                     <van-grid-item  text="统计报表" @click='jumpTo(6)'  :icon="require('../../assets/images/statistical.png')"/>
-                    <van-grid-item  text="会员管理(集团)" @click='jumpTo(11)'  :icon="require('../../assets/images/member.png')"/>
+                    <van-grid-item  :text="'会员管理('+(payCode?'集团':'未开放')+')'" @click='jumpTo(11)'  :icon="require('../../assets/images/member.png')" v-if="groupOrgCategory==2"/>
                     <van-grid-item  text="月租审核" @click='jumpTo(12)'  :icon="require('../../assets/images/examine.png')"/>
                 </van-grid>
                 <!-- <van-grid :gutter="5" :column-num="3" class="vanGrid">
@@ -72,6 +72,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex"
+import config from "@/api/config";
 export default {
     data() {
         return {
@@ -82,14 +83,20 @@ export default {
             },
             projectLst:[],
             carParkLst:[],
-            departName:sessionStorage.getItem('departName')
+            departName:sessionStorage.getItem('departName'),
+            groupOrgCategory:"",
+            payCode:""
         }
     },
     computed: {
-        ...mapGetters(["orgCategory",'depId','user'])
+        ...mapGetters(["orgCategory",'depId','user','departInfo'])
     },
     created() {
+        this.groupOrgCategory = this.departInfo.orgCategory
+        this.payCode =  this.departInfo.payCode
+        //debugger
         this.getProject()
+
     },
     methods: {
         //获取当前项目
@@ -186,7 +193,9 @@ export default {
                         this.$router.push('/payRecords')
                         break;                
                     case 11:
-                        this.$router.push('/member')
+                        if(this.payCode){                            
+                            this.$router.push('/member')
+                        }
                         break;                
                     case 12:
                         this.$router.push('/examine')
@@ -198,9 +207,18 @@ export default {
 
         },
         logout(){
-            window.location.replace(
-                window.location.origin + "/login?openid="+this.user.openid
-            );
+            console.log(config.appID||sessionStorage.getItem('appId'),'appID6')
+            let appId = config.appID||sessionStorage.getItem('appId')
+            this.$router.push({
+                path:"/login",
+                query:{
+                    openid:this.user.openid,
+                    appId:config.appID
+                }
+            })
+            /* window.location.replace(
+                window.location.origin + "/login?openid="+this.user.openid+'&appId='+appId
+            ); */
         }
     },
     beforeRouteEnter  (to, from, next) {

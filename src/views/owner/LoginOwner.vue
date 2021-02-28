@@ -36,6 +36,7 @@
 </template>
 <script>
 import {GetQueryByString} from '@/utils'
+import config from "@/api/config";
 export default {
     data() {
         return {
@@ -69,7 +70,8 @@ export default {
             }else{
                 let params = {
                     openId:this.form.openId,
-                    phone:this.form.phone
+                    phone:this.form.phone,
+                    appId:config.appID||localStorage.getItem('appId')
                 }
                 let formData = new FormData();
                 formData.append('phone',params.phone)

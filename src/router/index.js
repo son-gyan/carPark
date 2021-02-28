@@ -198,11 +198,11 @@ function wxLogin(path){
         window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid}&redirect_uri=${redirect_uri}&response_type=code&scope=${snsapi_scope}&state=STATUS#wechat_redirect`
     }
     if(path == '/loading'){        
-        wxLoginJump(config.appID, config.pageUrl+'/Blankpage',snsapiScope)
+        wxLoginJump(config.appID, config.pageUrl+'/Blankpage?appId='+config.appID,snsapiScope)
     }else if(path == '/loadingShop'){
-        wxLoginJump(config.appID, config.pageUrl+'/BlankpageShop',snsapiScope)
+        wxLoginJump(config.appID, config.pageUrl+'/BlankpageShop?appId='+config.appID,snsapiScope)
     }else if(path == '/loadingOwner'){
         snsapiScope="snsapi_userinfo"
-        wxLoginJump(config.appID, config.pageUrl+'/BlankpageOwner',snsapiScope)
+        wxLoginJump(config.appID, config.pageUrl+'/BlankpageOwner?appId='+config.appID,snsapiScope)
     }
 }
