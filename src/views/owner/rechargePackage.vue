@@ -111,9 +111,9 @@ export default {
     }
     
     .vanCard{
-        display: inline-block;
+        /* display: inline-block;
         width: calc(100% - .6rem);
-        margin: 0.3rem;
+        margin: 0.3rem; */
         padding: .3rem .2rem;
         background-color: #fff;
         font-size: .3rem;
