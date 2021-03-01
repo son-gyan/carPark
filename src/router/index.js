@@ -61,6 +61,7 @@ const renew = () => import("@/views/owner/renew")
 const invoice = () => import("@/views/owner/invoice")
 const afterPayment = () => import("@/views/owner/afterPayment")
 const memberRecharge = () => import("@/views/owner/member")
+const rechargePackage = () => import("@/views/owner/rechargePackage")
 const temporaryStop = () => import("@/views/owner/temporaryStop")
 const payTasaday = () => import("@/views/owner/payTasaday")
 const advert = () => import("@/views/owner/advert")
@@ -141,6 +142,7 @@ const router = new Router({
         { path: "/invoice",name: "invoice",component: invoice },
         { path: "/afterPayment",name: "afterPayment",component: afterPayment },
         { path: "/memberRecharge",name: "memberRecharge",component: memberRecharge },
+        { path: "/rechargePackage",name: "rechargePackage",component: rechargePackage },
         { path: "/temporaryStop", name: "temporaryStop",component: temporaryStop },
         { path: "/payTasaday", name: "payTasaday", component: payTasaday },
         { path: "/advert",name: "advert",component: advert },

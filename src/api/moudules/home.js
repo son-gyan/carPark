@@ -377,13 +377,13 @@ export const settlementUser = (data) => {
 //获取消费记录
 export const getConsumeList = (params) => {
     return axios({
-        url: '/park/zyb/zybVipUser/list',
+        url: '/park/zyb/data/vipPayList',
         method: 'get',
         params
     })
 }
 
-//获取消费记录
+//获取充值记录
 export const getRechargeList = (params) => {
     return axios({
         url: '/park/zyb/zybVipRechargeLog/list',

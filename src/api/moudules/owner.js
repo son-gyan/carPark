@@ -148,3 +148,22 @@ export const getAdvancePay = (data) => {
         data
     })
 }
+
+// 获取车主套餐列表  getCzPagelist
+export const getCzPagelist = (params) => {
+    return axios({
+        url: '/park/yzb/vippackage/czPagelist',
+        method: 'get',
+        params
+    })
+}
+
+// VIP套餐下单
+export const vipPackagePay = (data) => {
+    return axios({
+        url: '/park/zyb/pay/vipPackagePay',
+        method: 'POST',
+        data,
+        headers: header
+    })
+}

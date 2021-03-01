@@ -28,14 +28,7 @@
                                     <van-col span="12" class="vanCol">
                                         <div>
                                             收款类型: 
-                                            <span v-if="item.payType==1">现金</span> 
-                                            <span v-else-if="item.payType==2">移动支付</span> 
-                                            <span v-else-if="item.payType==3">无感支付</span> 
-                                            <span v-else-if="item.payType==4">储值扣费</span> 
-                                            <span v-else-if="item.payType==5">二维码支付</span> 
-                                            <span v-else-if="item.payType==6">预交费付款</span> 
-                                            <span v-else-if="item.payType==99">免费</span>
-                                            <span v-else>无</span>
+                                            <span v-if="item.payType==7">VIP消费</span>
                                         </div>  
                                     </van-col>
                                 </van-col>
@@ -106,7 +99,7 @@ export default {
     },
     created(){
         this.params.depId = this.departInfo.id
-        //this.init()
+        this.init()
     },
     methods:{
         //返回
@@ -126,6 +119,7 @@ export default {
             this.params.pageSize = this.pageSize
             this.$api.home.getConsumeList(this.params).then(res=>{
                 if(res.code == 200){
+                    debugger
                     this.loading = false;
                     this.total = res.result.total
                     let rows = res.result.records; //请求返回当页的列表
