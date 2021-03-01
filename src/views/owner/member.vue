@@ -15,7 +15,7 @@
                         <h2>会员名：13846873541</h2>
                         <p >剩余金额：20.56元</p>
                         <p class="pFooter">
-                            <van-button type="info" size="mini" >续费</van-button>
+                            <van-button type="info" size="mini" @click="jumpTo">充值</van-button>
                         </p>
                     </template>
                 </van-card>
@@ -65,6 +65,9 @@ export default {
                 this.loading = false;
             }); */
         },
+        jumpTo(){
+            this.$router.push('/rechargePackage')
+        }
     }
 }
 </script>

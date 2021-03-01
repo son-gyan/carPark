@@ -139,7 +139,7 @@ export default {
         },
         //返回
         onClickLeft(){
-            this.$router.go(-1)
+            this.$router.push('/indexOwner')
         },
         getCarList(){
             this.$api.owner.getCarList().then(res=>{
