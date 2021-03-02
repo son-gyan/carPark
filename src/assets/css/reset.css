@@ -162,5 +162,5 @@
   margin-left: 0.3rem;
 }
 .fullWidth {
-  width: 100%;
+  width: 100% !important;
 }

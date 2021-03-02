@@ -71,7 +71,7 @@ export default {
                 let params = {
                     openId:this.form.openId,
                     phone:this.form.phone,
-                    appId:config.appID||localStorage.getItem('appId')
+                    appId:config.appID||sessionStorage.getItem('appId')
                 }
                 let formData = new FormData();
                 formData.append('phone',params.phone)
@@ -159,7 +159,9 @@ export default {
                         sessionStorage.setItem('token',res.result.token)
                         if(res.result.userInfo){                            
                             sessionStorage.setItem('userId',res.result.userInfo.id)
+                            this.$store.dispatch('setUser', res.result.userInfo)
                         }
+                        sessionStorage.setItem('vipMoney',res.result.vipMoney)
                         this.$router.push('/indexOwner')
                     }else{
                         this.$toast(res.message);

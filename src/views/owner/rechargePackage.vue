@@ -4,7 +4,7 @@
         <div class="mainWrap fixedMain">
             <van-card class="vanCard">
                 <template #title>
-                    <p >用户名:12245687616</p>
+                    <p >用户名:{{user.phone}}</p>
                     <p > 
                         <span class="vanRadio">套餐：</span> 
                         <van-radio-group v-model="form.packageId" direction="horizontal" class="vanRadio">
@@ -45,7 +45,7 @@ export default {
     },
     created() {
         this.params.appId = config.appID  //  "wx09a13be6962ab9a8"//
-        this.form.userId = this.user.id||localStorage.getItem('userId')
+        this.form.userId = this.user.id||sessionStorage.getItem('userId')
         this.getCzPagelist()
     },
     methods: {

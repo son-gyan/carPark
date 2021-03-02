@@ -126,7 +126,7 @@ export default {
         ...mapGetters(['user'])
     },
     created(){
-        this.params.userId = this.user.id||localStorage.getItem('userId')
+        this.params.userId = this.user.id||sessionStorage.getItem('userId')
         this.init()
         this.getCarList()
         /* let dayNum = getDayNum("2020-12-24")

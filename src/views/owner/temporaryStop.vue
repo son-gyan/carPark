@@ -92,7 +92,7 @@ export default {
         ...mapGetters(['user'])
     },
     created(){
-        this.params.userId = this.user.id||localStorage.getItem('userId')
+        this.params.userId = this.user.id||sessionStorage.getItem('userId')
         this.init()
     },
     methods:{

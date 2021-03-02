@@ -43,10 +43,10 @@
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
                         <el-form-item label="套餐金额：">
-                            <el-input v-model.number="form.price" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
+                            <el-input-number class="fullWidth" v-model="form.price" :min="0" :controls="false" :precision="1"></el-input-number>
                         </el-form-item>
                         <el-form-item label="赠送金额：">
-                            <el-input v-model.number="form.givePrice" oninput ="value=value.replace(/[^0-9.]/g,'')"></el-input>
+                            <el-input-number class="fullWidth" v-model="form.givePrice" :min="0" :controls="false" :precision="1"></el-input-number>
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="onSubmit">提交</el-button>

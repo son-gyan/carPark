@@ -392,6 +392,15 @@ export const getRechargeList = (params) => {
     })
 }
 
+//VIP收入统计
+export const getDuesData = (params) => {
+    return axios({
+        url: '/park/zyb/zybVipRechargeLog/vipRechargeChar',
+        method: 'get',
+        params
+    })
+}
+
 
 /* 
  * 会员管理  end

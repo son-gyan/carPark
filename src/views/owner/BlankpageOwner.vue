@@ -33,11 +33,9 @@ export default {
                                 if(res.result.userInfo){                            
                                     sessionStorage.setItem('userId',res.result.userInfo.id)
                                 }
+                                sessionStorage.setItem('vipMoney',res.result.vipMoney)
                                 //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                                 sessionStorage.setItem('token',res.result.token)
-                                /* window.location.replace(
-                                    window.location.origin +"/indexOwner"  //授权成功返回的页面
-                                ); */
                                 this.$router.push('/indexOwner')
                             }else if(res.code == 201){
                                 /* window.location.replace(

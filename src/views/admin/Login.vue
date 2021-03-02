@@ -30,7 +30,7 @@ export default {
                 password: '',
                 openId:'',
                 type:0,
-                appId:config.appID||localStorage.getItem('appId')
+                appId:config.appID||sessionStorage.getItem('appId')
             }
         };
     },
