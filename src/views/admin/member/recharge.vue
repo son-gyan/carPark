@@ -17,9 +17,10 @@
                 ><!-- :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
                 @click-thumb="imgPreview(item.imgUrl)" -->
                 <template #desc>
-                    <p >会员名称：{{item.userName}}</p>
-                    <p >会员电话：{{item.phone}}</p>
-                    <p >会员余额：{{item.money}}</p>
+                    <p >日期：{{item.createTime}}</p>
+                    <p >会员名称：{{item.wxName}}</p>
+                    <p >电话号码：{{item.phone}}</p>
+                    <p >充值金额：{{item.price}}</p>
                 </template>
             </van-card>
             <div class="noSearch" v-if="cardList.length === 0">暂无查询数据</div>

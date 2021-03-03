@@ -401,6 +401,27 @@ export const getDuesData = (params) => {
     })
 }
 
+//项目绑定信息查询
+export const getBindlist = (params) => {
+    return axios({
+        url: '/park/sys/sysDepart/bindlist',
+        method: 'get',
+        params
+    })
+}
+
+//项目绑定数据提交
+export const saveBindData = (data) => {
+    return axios({
+        url: '/park/sys/sysDepart/bindData',
+        method: 'post',
+        data,
+        headers: header
+    })
+}
+
+
+
 
 /* 
  * 会员管理  end
