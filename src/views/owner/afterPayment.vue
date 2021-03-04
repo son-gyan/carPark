@@ -149,6 +149,17 @@ export default {
 </script>
 <style lang="less" scoped>
 .van-card{
+    .vanCol{
+        padding-bottom:.1rem ;
+        img{
+            max-width: 95%;
+            max-height: 2rem;
+        }
+        .photoLabel{
+            display: inline-block;
+            margin-bottom: .1rem;
+        }
+    }
     .pFooter{
         text-align: right;
     }
