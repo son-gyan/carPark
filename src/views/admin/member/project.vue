@@ -60,6 +60,8 @@ export default {
             this.totalProject.map((item,j)=>{
                 if(item.parentId==val){
                     this.projectList.push(item)
+                }
+                if(item.vipPay==1){
                     this.projectArray.push(item.id)
                 }
             })
@@ -73,15 +75,14 @@ export default {
                 }
             })
         }, */
-        /* projectArray(val){
+        projectArray(val){
             //debugger
             this.totalProject.map((item,j)=>{
                 if(item.id==val){
                     this.companyArray.push(item.parentId)
                 }
-            })
-            
-        } */
+            })            
+        }
     },
     created() {
         this.params.depId = this.departInfo.id
@@ -99,8 +100,13 @@ export default {
                     this.companyList = res.result.gs
                     this.totalProject = res.result.xm
                     this.parentId = this.companyList[0].id
-                    this.pId = this.companyList[0].id
-                    this.companyArray.push(this.companyList[0].id)
+                    this.companyList.map((item,index)=>{
+                        if(item.vipPay==1){
+                            this.companyArray.push(item.id)
+                        }
+                    })
+                    /* this.pId = this.companyList[0].id
+                    this.companyArray.push(this.companyList[0].id) */
                     //debugger
                 }else{
                     this.$toast(res.message);
@@ -143,6 +149,7 @@ export default {
             this.$api.home.saveBindData(formdata).then(res=>{
                 if(res.code == 200){
                     //debugger
+                    this.init()
                     this.$toast(res.message);
                 }else{
                     this.$toast(res.message);
