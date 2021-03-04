@@ -4,7 +4,7 @@
         <div class="mainWrap fixedMain">
             <van-search
                 v-model="searchVal"
-                placeholder="搜索用户"
+                placeholder="搜索会员名称"
                 @search="onSearch"
                 show-action
                 background="#dcdfe6"
@@ -14,8 +14,9 @@
             <van-card
                 class="vanCard"
                 v-for="(item,index) in cardList"  :key="index"
-                ><!-- :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
-                @click-thumb="imgPreview(item.imgUrl)" -->
+                :thumb="item.headUrl?item.headUrl:'../../assets/images/defaultImg.png'"
+                @click-thumb="imgPreview(item.headUrl)"
+                >
                 <template #desc>
                     <p >日期：{{item.createTime}}</p>
                     <p >会员名称：{{item.wxName}}</p>
@@ -38,7 +39,8 @@ export default {
             cardList:[],
             searchVal:'',
             params:{
-                //userName:'',
+                wxName:'',
+                userId:"",
                 depId:'',
                 pageNo:1,
                 pageSize:10 
@@ -53,6 +55,7 @@ export default {
     },
     created() {
         this.params.depId = this.departInfo.id
+        this.params.userId = this.$route.query.userId
         this.init();
     },
     methods:{
@@ -62,7 +65,7 @@ export default {
         },
         //查询
         onSearch(){
-            this.params.userName = this.searchVal
+            this.params.wxName = this.searchVal
             this.cardList = []
             this.pageNo = 1
             this.loading = true

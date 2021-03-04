@@ -30,10 +30,11 @@ export default {
                             if(res.code == 200){
                                 //this.$store.dispatch('setDepId', res.result.merInfo.depId)
                                 this.$store.dispatch('setUser', res.result.userInfo)
+                                this.$store.dispatch('setVipUser', res.result.vipUser)
                                 if(res.result.userInfo){                            
                                     sessionStorage.setItem('userId',res.result.userInfo.id)
                                 }
-                                sessionStorage.setItem('vipMoney',res.result.vipMoney)
+                                sessionStorage.setItem('vipMoney',res.result.vipUser.money)
                                 //this.$store.dispatch('setOrgCategory', res.result.park.orgCategory)
                                 sessionStorage.setItem('token',res.result.token)
                                 this.$router.push('/indexOwner')

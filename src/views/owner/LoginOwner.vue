@@ -163,7 +163,10 @@ export default {
                             sessionStorage.setItem('userId',res.result.userInfo.id)
                             this.$store.dispatch('setUser', res.result.userInfo)
                         }
-                        sessionStorage.setItem('vipMoney',res.result.vipMoney)
+                        if(res.result.vipUser){
+                            this.$store.dispatch('setVipUser', res.result.vipUser)
+                            sessionStorage.setItem('vipMoney',res.result.vipUser.money)
+                        }
                         this.$router.push('/indexOwner')
                     }else{
                         this.$toast(res.message);

@@ -1,5 +1,6 @@
 import {
     SET_USER,
+    SET_VIPUSER,
     SET_ORGCATEGORY,
     SET_DEPID,
     SET_CARPARKINFO,
@@ -8,6 +9,7 @@ import {
 export default {
     state: {
         user:'',
+        vipUser:'',
         orgCategory:'',
         depId:'',
         carParkInfo:{},
@@ -16,6 +18,9 @@ export default {
     getters: {
         user (state) {
             return state.user
+        },
+        vipUser (state) {
+            return state.vipUser
         },
         orgCategory(state) {
             return state.orgCategory
@@ -34,6 +39,10 @@ export default {
         [SET_USER]: (state, user) => {
             state.user = user
             sessionStorage.setItem('user', JSON.stringify(user))
+        },
+        [SET_VIPUSER]: (state, vipUser) => {
+            state.vipUser = vipUser
+            sessionStorage.setItem('vipUser', JSON.stringify(vipUser))
         },
         [SET_ORGCATEGORY]: (state, orgCategory) => {
             state.orgCategory = orgCategory
@@ -55,6 +64,9 @@ export default {
     actions: {
         setUser ({ commit }, user) {
             commit(SET_USER, user)
+        },
+        setVipUser ({ commit }, vipUser) {
+            commit(SET_VIPUSER, vipUser)
         },
         setOrgCategory ({ commit }, orgCategory) {
             commit(SET_ORGCATEGORY, orgCategory)

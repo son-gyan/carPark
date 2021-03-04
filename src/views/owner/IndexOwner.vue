@@ -13,13 +13,13 @@
                             round
                             width="1rem"
                             height="1rem"
-                            src="https://img.yzcdn.cn/vant/cat.jpeg"
+                            :src="vipUser.headUrl?vipUser.headUrl:'https://img.yzcdn.cn/vant/cat.jpeg'"
                             />
                     </van-col>
                     <van-col span="16">                        
                         <van-col span="24">{{user.phone}}</van-col>
-                        <van-col span="24">微信号：wxy1234567895</van-col>
-                        <van-col span="24">已绑车辆：鄂E88888 鄂E88888 鄂E88888 鄂E88888 鄂E88888</van-col>
+                        <van-col span="24">微信号：{{vipUser.wxName}}</van-col>
+                        <van-col span="24">已绑车辆：{{bindCar}}</van-col>
                     </van-col>
                 </van-row>
                 <el-form ref="form" :model="form" label-width="0" size="mini" class="elForm">
@@ -28,7 +28,7 @@
                             <p class="p1">我的VIP特权</p>
                             <p class="p2"><van-icon class="memberIcon" :name="require('@/assets/images/icon-member.png')" />智泊云停车会员</p>
                             <p class="p3"><el-progress :percentage="50" color="#fff" :text-inside="true"></el-progress></p>
-                            <p class="p1">会员余额：123.00元 <span class="fr">加入日期：2019.01.01</span></p>
+                            <p class="p1">会员余额：{{vipUser.money}}元 <span class="fr">加入日期：{{vipUser.createTime}}</span></p>
                         </div>
                     </el-form-item>
                 </el-form>
@@ -37,12 +37,12 @@
                 <van-grid  :column-num="3" class="gridGroup">
                     <van-grid-item  text="月卡" @click='jumpTo(5)' >
                         <template slot="icon">
-                            <div>1</div>
+                            <div>{{monthlyCarList.length}}</div>
                         </template>
                     </van-grid-item>
                     <van-grid-item  text="积分" @click='jumpTo(6)' >
                         <template slot="icon">
-                            <div>100</div>
+                            <div>0</div>
                         </template>
                     </van-grid-item>
                     <van-grid-item  text="优惠券" @click='jumpTo(7)' >
@@ -76,22 +76,58 @@ import { mapGetters } from "vuex"
 export default {
     data() {
         return {
+            params:{
+                userId:""
+            },
+            bindCar:"",
+            monthlyCarList:[],
             loading:false,
             form: { //form表单
                 curProject:'',
                 carPark:''
             },
             projectLst:[],
-            carParkLst:[]
+            carParkLst:[],
+            vipMoney:0
         }
     },
     computed: {
-        ...mapGetters(['user'])
+        ...mapGetters(['user','vipUser'])
     },
     created() {
-        //this.getProject()
+        this.params.userId = this.user.id||sessionStorage.getItem('userId')
+        this.init()
     },
     methods: {
+        init(){
+            this.$api.owner.getMyCarList(this.params).then(res=>{
+                if(res.code == 200){
+                    if(res.result&&res.result.length>0){
+                        let rows = res.result; //请求返回当页的列表
+                        //debugger
+                        rows.map((o)=>{
+                            this.bindCar+=o.carNum+' '
+                        })
+                    }                    
+                }else{
+                    this.$toast(res.message);
+                }
+                this.loading = false;
+            }).catch((res) => {
+                this.loading = false;
+            });
+            this.$api.owner.getMonthlyCarList(this.params).then(res=>{
+                if(res.code == 200){
+                    //debugger
+                    let rows = res.result; //请求返回当页的列表
+                    this.monthlyCarList = rows
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
+        },
         jumpTo(type){
             /* if(this.form.carPark == ''){
                 this.$toast('请选择车场');

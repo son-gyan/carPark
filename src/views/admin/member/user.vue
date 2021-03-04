@@ -10,27 +10,28 @@
                 @load="onLoad"
                 :offset="10"
                 >
-                <!-- <van-search
+                <van-search
                     v-model="searchVal"
-                    placeholder="搜索用户"
+                    placeholder="搜索会员名称"
                     @search="onSearch"
                     show-action
                     background="#dcdfe6"
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
-                </van-search> -->
+                </van-search>
                 <van-card
                     class="vanCard"
                     v-for="(item,index) in cardList"  :key="index"
-                    ><!-- :thumb="item.imgUrl?item.imgUrl:'../../assets/images/defaultImg.png'"
-                    @click-thumb="imgPreview(item.imgUrl)" -->
+                    :thumb="item.headUrl?item.headUrl:'../../assets/images/defaultImg.png'"
+                    @click-thumb="imgPreview(item.headUrl)"
+                    ><!--  -->
                     <template #desc>
-                        <p >会员名称：{{item.userName}}</p>
+                        <p >会员名称：{{item.wxName}}</p>
                         <p >会员电话：{{item.phone}}</p>
                         <p >会员余额：{{item.money}}</p>
                     </template>
                     <template #footer>
-                        <!-- <van-button type="info" size="mini" @click="updatePresentCar(item)">记录</van-button> -->
+                        <van-button type="info" size="mini" @click="jumpTo(item)">记录</van-button>
                         <van-button type="info" size="mini" @click="settlement(item)">结算</van-button>
                     </template>
                 </van-card>
@@ -50,7 +51,7 @@ export default {
             cardList:[],
             searchVal:'',
             params:{
-                //userName:'',
+                wxName:'',  
                 depId:'',
                 pageNo:1,
                 pageSize:10 
@@ -74,7 +75,7 @@ export default {
         },
         //查询
         onSearch(){
-            this.params.userName = this.searchVal
+            this.params.wxName = this.searchVal
             this.cardList = []
             this.pageNo = 1
             this.loading = true
@@ -148,6 +149,14 @@ export default {
             }).catch(() => {
                 // on cancel
             });
+        },
+        jumpTo(item){
+            this.$router.push({
+                path:"/recharge",
+                query:{
+                    userId:item.userId
+                }
+            })
         }
     }
 }

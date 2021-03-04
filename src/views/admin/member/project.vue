@@ -113,13 +113,13 @@ export default {
             if(val.length==0){
                 this.projectArray=[]
             }
-            this.companyArray.map((item,i)=>{
+            /* this.companyArray.map((item,i)=>{
                 this.totalProject.map((o,j)=>{
                     if(item=o.id){
                         this.projectArray.push(o.id)
                     }
                 })
-            })
+            }) */
             console.log(this.companyArray,"companyArray");
             console.log(this.projectArray,"projectArray");
         },
@@ -129,12 +129,14 @@ export default {
             console.log(this.projectArray,"projectArray");
         },
         save(){
-            let bindIds = this.companyArray.join(',')+this.projectArray.join(',')
+            //debugger
+            let bindIds = this.companyArray.join(',')+','+this.projectArray.join(',')
             let noBindIds = ""
             let param = {
                 bindIds:bindIds,
                 depId:this.params.depId
             }
+            console.log(bindIds,"bindIds")
             let formdata = new FormData()
                 formdata.append('bindIds',bindIds)
                 formdata.append('depId',this.params.depId)
