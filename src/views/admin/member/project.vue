@@ -133,11 +133,11 @@ export default {
             let noBindIds = ""
             let param = {
                 bindIds:bindIds,
-                noBindIds:noBindIds
+                depId:this.params.depId
             }
             let formdata = new FormData()
                 formdata.append('bindIds',bindIds)
-                formdata.append('noBindIds',noBindIds)
+                formdata.append('depId',this.params.depId)
             this.$api.home.saveBindData(formdata).then(res=>{
                 if(res.code == 200){
                     //debugger

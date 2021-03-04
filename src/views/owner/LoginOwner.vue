@@ -146,6 +146,7 @@ export default {
                 return
             }else{
                 let params = {
+                    appId:config.appID||sessionStorage.getItem('appId'),
                     openId:this.form.openId,
                     phone:this.form.phone,
                     code:this.form.code
@@ -154,6 +155,7 @@ export default {
                 formData.append('openId',params.openId)
                 formData.append('phone',params.phone)
                 formData.append('code',params.code)
+                formData.append('appId',params.appId)
                 this.$api.owner.register(formData).then((res) => {
                     if(res.code == 200){
                         sessionStorage.setItem('token',res.result.token)
