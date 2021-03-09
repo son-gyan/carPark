@@ -89,6 +89,7 @@
     </div>
 </template>
 <script>
+import config from "@/api/config";
 import { mapGetters } from "vuex"
 export default {
     data(){
