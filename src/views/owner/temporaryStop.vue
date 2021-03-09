@@ -48,9 +48,9 @@
                         <van-col span="24">
                             <van-col span="12" class="vanCol"><div>总金额:{{item.orderMoney?item.orderMoney:0}}元</div></van-col>
                             <van-col span="12" class="vanCol"><div>收费金额:{{item.payMoney?item.payMoney:0}}元</div></van-col>
-                            <van-col span="12" class="vanCol btnWrap">
+                            <van-col span="24" class="vanCol btnWrap">
                                 <van-button type="info" size="mini" @click="payBack(item)" v-if="item.outTime">支付</van-button>
-                        <van-button type="info" size="mini" @click="advancePay(item)" v-else>预付</van-button>
+                                <van-button type="info" size="mini" @click="advancePay(item)" v-else>预付</van-button>
                             </van-col>
                         </van-col>
                     </van-row>
@@ -136,14 +136,17 @@ export default {
                 channel: domT, 
                 recordId: item.id
             }
-            this.$api.owner.getpayadress(data).then(res => {
+            let formData = new FormData();
+                formData.append('channel','weixin');
+                formData.append('recordId',item.id);
+            this.$api.owner.getpayadress(formData).then(res => {
                 if (+res.code === 200) {
                     window.location.href = res.result
                 } else {
-                    this.$toast('提示', `${res.message}`)
+                    this.$toast(`${res.message}`)
                 }
             }).catch(error => {
-                this.$toast('提示', `${error}`)
+                this.$toast(`${error}`)
             })
         },
         //预付
@@ -161,14 +164,17 @@ export default {
                 channel: domT, 
                 recordId: item.id
             }
-            this.$api.owner.getAdvancePay(data).then(res => {
+            let formData = new FormData();
+                formData.append('channel','weixin');
+                formData.append('recordId',item.id);
+            this.$api.owner.getAdvancePay(formData).then(res => {
                 if (+res.code === 200) {
                     window.location.href = res.result
                 } else {
-                    this.$toast('提示', `${res.message}`)
+                    this.$toast(`${res.message}`)
                 }
             }).catch(error => {
-                this.$toast('提示', `${error}`)
+                this.$toast(`${error}`)
             })
         }
     }
@@ -185,6 +191,10 @@ export default {
         .photoLabel{
             display: inline-block;
             margin-bottom: .1rem;
+        }
+        &.btnWrap{
+            position: absolute;
+            text-align: right;
         }
     }
     .pFooter{

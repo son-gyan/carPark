@@ -136,7 +136,8 @@ export const getpayadress = (data) => {
     return axios({
         url: '/park/zyb/pay/outCodePay',
         method: 'post',
-        data
+        data,
+        headers: header
     })
 }
 
@@ -145,7 +146,8 @@ export const getAdvancePay = (data) => {
     return axios({
         url: '/park/zyb/pay/preInPay',
         method: 'post',
-        data
+        data,
+        headers: header
     })
 }
 

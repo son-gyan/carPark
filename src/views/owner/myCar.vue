@@ -149,20 +149,29 @@ export default {
             this.form.carNum = ""
         },
         delMyCar(item){
-            let formData = new FormData();
-                formData.append('id',item.id)
-            this.$api.owner.delMyCar(formData).then(res=>{
-                if(res.code == 200){
-                    this.cancelDialog();
-                    this.$toast(res.message);
-                    this.loading = true
-                    this.myCarList = []
-                    this.initData();
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
+            this.$dialog.confirm({
+                title: '删除',
+                message: '确认删除？',
+            })
+            .then(() => {
+                let formData = new FormData();
+                    formData.append('id',item.id)
+                this.$api.owner.delMyCar(formData).then(res=>{
+                    if(res.code == 200){
+                        this.cancelDialog();
+                        this.$toast(res.message);
+                        this.loading = true
+                        this.myCarList = []
+                        this.initData();
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            })
+            .catch(() => {
+                // on cancel
             });
         }
     },

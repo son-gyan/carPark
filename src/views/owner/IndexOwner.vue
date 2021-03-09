@@ -40,12 +40,12 @@
                             <div>{{monthlyCarList.length}}</div>
                         </template>
                     </van-grid-item>
-                    <van-grid-item  text="积分" @click='jumpTo(6)' >
+                    <van-grid-item  text="积分"  >  <!-- @click='jumpTo(6)' -->
                         <template slot="icon">
                             <div>0</div>
                         </template>
                     </van-grid-item>
-                    <van-grid-item  text="优惠券" @click='jumpTo(7)' >
+                    <van-grid-item  text="优惠券" > <!-- @click='jumpTo(7)' -->
                         <template slot="icon">
                             <div>0</div>
                         </template>

@@ -48,7 +48,7 @@ export default {
               updateTime: null,
               username: "18602701015"
             },
-            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTQ2MTA4MDEsInVzZXJuYW1lIjoib0o5Y2U2QVJlWTkyX05LcjdmR3lCS29Bd05VVSJ9.mtdb_OcFXN2t8WfqxgQVdY-a66C_wPq_gjoy_T7q8gE";
+            tokenTest = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2MTUzMDIxNDYsInVzZXJuYW1lIjoib0o5Y2U2QVJlWTkyX05LcjdmR3lCS29Bd05VVSJ9.Pmo0eVhWAtTsIAyGUd671uRKcJ1DhUwT7SyNKL9NdZw";
             this.$store.dispatch('setUser', userInfoTest)                           
             sessionStorage.setItem('userId',userInfoTest.id)
             sessionStorage.setItem('token',tokenTest)

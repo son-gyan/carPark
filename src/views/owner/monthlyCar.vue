@@ -193,14 +193,17 @@ export default {
                 channel: domT, 
                 recordId: item.id
             }
-            this.$api.owner.getpayadress(data).then(res => {
+            let formData = new FormData();
+                formData.append('channel','weixin');
+                formData.append('recordId',item.id);
+            this.$api.owner.getpayadress(formData).then(res => {
                 if (res.code === 200) {
                     window.location.href = res.result
                 } else {
-                    this.$toast('提示', `${res.message}`)
+                    this.$toast(`${res.message}`)
                 }
             }).catch(error => {
-                this.$toast('提示', `${error}`)
+                this.$toast(`${error}`)
             })
         },
         onChangeSelect(val){
@@ -272,10 +275,10 @@ export default {
                     this.cancleHandle()
                     this.init()
                 } else {
-                    this.$toast('提示', `${res.message}`)
+                    this.$toast(`${res.message}`)
                 }
             }).catch(error => {
-                this.$toast('提示', `${error}`)
+                this.$toast(`${error}`)
             })
         },
         cancleHandle(){

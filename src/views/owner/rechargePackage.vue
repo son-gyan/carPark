@@ -85,10 +85,10 @@ export default {
                     //debugger
                     window.location.href = res.result
                 } else {
-                    this.$toast('提示', `${res.message}`)
+                    this.$toast(`${res.message}`)
                 }
             }).catch(error => {
-                this.$toast('提示', `${error}`)
+                this.$toast(`${error}`)
             })
         }
     },

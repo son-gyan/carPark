@@ -1,6 +1,10 @@
 <template>
     <div class="pages couponPage">
-        <van-nav-bar class="navBar" :title="title"  fixed></van-nav-bar>
+        <van-nav-bar class="navBar" :title="title"  fixed>
+            <template #right>
+                <span class="span" @click="logout" style="margin-left:10px;">切换账号</span>
+            </template>
+        </van-nav-bar>
         <el-container v-loading="loading" direction="vertical" class="mainWrap fixedMain">
             <!-- <el-header></el-header> -->
             <el-main>
@@ -219,6 +223,16 @@ export default {
                     break;
             }
         },
+        logout(){
+            sessionStorage.clear();
+            this.$router.push({
+                path:"/login",
+                query:{
+                    openid:this.user.openid,
+                    appId:config.appID
+                }
+            })
+        }
     }
 }
 </script>
