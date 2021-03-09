@@ -48,7 +48,7 @@ export default {
                                     window.location.origin + "/loginShop?openid="+res.message
                                 ); */
                                 this.$router.push({
-                                    path:"/login",
+                                    path:"/loginShop",
                                     query:{
                                         openid:res.message,
                                         appId:config.appID

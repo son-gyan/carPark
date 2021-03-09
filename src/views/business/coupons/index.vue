@@ -2,7 +2,7 @@
     <div class="pages couponPage">
         <van-nav-bar class="navBar" :title="title"  fixed>
             <template #right>
-                <span class="span" @click="logout" style="margin-left:10px;">切换账号</span>
+                <span class="span" @click="logout" style="margin-left:10px;">切换账号<van-icon :name="require('../../../assets/images/changeAccout.png')" /></span>
             </template>
         </van-nav-bar>
         <el-container v-loading="loading" direction="vertical" class="mainWrap fixedMain">
