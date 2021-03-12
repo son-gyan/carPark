@@ -71,7 +71,12 @@ export default {
             this.$router.go(-1)
         },
         onSearch(){
-
+            this.params.carNum = this.searchVal
+            this.tableData=[]
+            this.pageNo = 1
+            this.loading = true
+            this.finished = false;
+            this.init()
         },
         // 下拉加载
         onLoad () {

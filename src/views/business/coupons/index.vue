@@ -240,6 +240,11 @@ export default {
 <style lang="less" scoped>
     #app .pages.couponPage{
         height:auto;
+        .navBar{
+            .span{
+                color:#fff;
+            }
+        }
     }
     .elMain{            
         width: 93%;

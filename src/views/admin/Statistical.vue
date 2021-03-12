@@ -25,6 +25,7 @@
             </div>
             <span class="btnWrap">
                 <el-button type="primary" size="mini" @click="searchData">查询</el-button>
+                <el-button type="primary" size="mini" @click="weekData">周报</el-button>
                 <el-button type="primary" size="mini" @click="reportData">月报</el-button>
             </span>
         </div>
@@ -141,6 +142,13 @@ export default {
         searchData(){           
             this.initData();
         },
+        //周报
+        weekData(){
+            let curDate = new Date();
+            this.params.bTime = formatDate(new Date(curDate.getTime() - 7*24*60*60*1000));
+            this.params.endTime = formatDate(curDate); 
+            this.initData(); 
+        },
         //月报
         reportData(){
             let curDate = new Date();
@@ -161,7 +169,7 @@ export default {
             let monthcarArry = []
             let temporaryArry = []
             let unlicensedArry = []
-            let incomeArry = [], refundArry=[],settlementArry=[]
+            let incomeArry = [], refundArry=[],settlementArry=[],cashArry=[]
             for (let i = 0; i < chartArry.length; i++) {
                 const item = chartArry[i];
                 daysArry.push(item.days)
@@ -171,17 +179,67 @@ export default {
                 incomeArry.push(item.income)
                 refundArry.push(item.refund)
                 settlementArry.push(item.settlement)
+                cashArry.push(item.cash)
             }
             let option = {
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    },
+                    formatter: function (param) {
+                        console.log(param)
+                        console.log(param[0].axisValue)
+                        // if (param[0].axisValue !== that.tagerTime) {
+                        //that.tagerTime = param[0].axisValue
+                        for (let i = 0; i < daysArry.length; i++) {
+                            if (param[0].axisValue === daysArry[i]) {
+                                return [
+                                    `<div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;background:${param[0].color}"></div>
+                                        <div style="display:inline-block;">月租充值:</div>
+                                        <div style="display:inline-block;">${param[0].value}</div>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;background:${param[1].color}"></div>
+                                        <div style="display:inline-block;">临时车:</div>
+                                        <div style="display:inline-block;">${param[1].value}</div>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;background:${param[3].color}"></div>
+                                        <div style="display:inline-block;">无牌预付:</div>
+                                        <div style="display:inline-block;">${param[3].value}</div>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;background:${param[2].color}"></div>
+                                        <div style="display:inline-block;">现金支付:</div>
+                                        <div style="display:inline-block;">${param[2].value}</div>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;"></div>
+                                        <div style="display:inline-block;">退款金额:</div>
+                                        <div style="display:inline-block;">${refundArry[i]}</div>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;"></div>
+                                        <div style="display:inline-block;">总金额:</div>
+                                        <div style="display:inline-block;">${incomeArry[i]}</div>
+                                    </div>
+                                    <div>
+                                        <div style="display:inline-block;height:10px;width:10px;border-radius:50%;"></div>
+                                        <div style="display:inline-block;">结算金额:</div>
+                                        <div style="display:inline-block;">${settlementArry[i]}</div>
+                                    </div>
+                                    `
+                                ]
+                            }
+                        }
                     }
                 },
                 legend: {
-                    data: ['月租充值', '临时车', '无牌预付','退款金额']
+                    data: ['月租充值', '临时车', '无牌预付', '现金支付']
                 },
+                calculable: true,
                 xAxis: {
                     type: 'category',
                     data: daysArry
@@ -189,6 +247,7 @@ export default {
                 yAxis: {
                     type: 'value'
                 },
+                color: ['#60ACFC', '#5BC49F', '#00FFFF', '#FF7C7C'],
                 series: [
                     {   
                         name: '月租充值',
@@ -211,44 +270,16 @@ export default {
                         }
                     },
                     {
+                        name: '现金支付',
+                        type: 'bar',
+                        stack: '总量',
+                        data: cashArry
+                    },
+                    {
                         name: '无牌预付',
                         data: unlicensedArry,
                         type: 'bar',
-                        stack: '总量',
-                        showBackground: true,
-                        backgroundStyle: {
-                            color: 'rgba(220, 220, 220, 0.8)'
-                        }
-                    },
-                    {
-                        name: '总金额',
-                        data: incomeArry,
-                        type: 'bar',
-                        stack: '总量',
-                        showBackground: false,
-                        backgroundStyle: {
-                            color: 'rgba(220, 220, 220, 0.8)'
-                        }
-                    },
-                    {
-                        name: '退款金额',
-                        data: refundArry,
-                        type: 'bar',
-                        stack: '总量',
-                        showBackground: true,
-                        backgroundStyle: {
-                            color: 'rgba(220, 220, 220, 0.8)'
-                        }
-                    },
-                    {
-                        name: '结算金额',
-                        data: settlementArry,
-                        type: 'bar',
-                        stack: '总量',
-                        showBackground: false,
-                        backgroundStyle: {
-                            color: 'rgba(220, 220, 220, 0.8)'
-                        }
+                        stack: '总量'
                     }
                 ]
             };

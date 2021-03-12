@@ -10,7 +10,7 @@
                 @load="onLoad"
                 :offset="10"
                 >
-                <!-- <van-search class="vanSearch"
+                <van-search class="vanSearch"
                     v-model="searchVal"
                     placeholder="请输入"
                     @search="onSearch"
@@ -18,9 +18,9 @@
                     background="#dcdfe6"
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
-                </van-search> -->
+                </van-search>
                 <div class="list cardList">
-                    <van-tabs  v-model="activeName" @click="onClickTabs"  type="card" sticky color="#1989fa">
+                    <van-tabs  v-model="activeName" @click="onClickTabs"  type="card" sticky color="#1989fa" offset-top="100">
                         <van-tab title="发放记录" name="1">
                             <van-card  class="vanCard" v-for="(item,index) in tableData" :key="index">
                                 <template #title>
@@ -233,13 +233,14 @@ export default {
     }
     .fixedMain .cardList.list{
         position: relative;
-        margin-top:0;
+        /* margin-top:0; */
         /deep/ .van-sticky--fixed{
             top:46px;//100px;
             
         }
         /deep/ .van-tabs__nav--card{
-            margin:0 2.5%;
+            /* margin:0 2.5%; */
+            margin:0
         }
         .vanCard{
             .colInfo{
