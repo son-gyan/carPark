@@ -4,17 +4,17 @@
       <div class="singleBlock">
         <div class="card-header" v-if="!noLabel">车牌号：</div>
         <div class="num-box">
-          <div class="num0" @click="clickFirstWrap()">
+          <div class="num0" :class="activeKeyWordIndex==0?'focus':''" @click="clickFirstWrap()">
               <span>{{formData.num0}}</span>
           </div>
-          <div class="num1" @click="clickKeyWordWrap(1)"><span>{{formData.num1}}</span></div>
+          <div class="num1" :class="activeKeyWordIndex==1?'focus':''" @click="clickKeyWordWrap(1)"><span>{{formData.num1}}</span></div>
           <em class="spot"></em>
-          <div class="num1" @click="clickKeyWordWrap(2)"><span>{{formData.num2}}</span></div>
-          <div class="num1" @click="clickKeyWordWrap(3)"><span>{{formData.num3}}</span></div>
-          <div class="num1" @click="clickKeyWordWrap(4)"><span>{{formData.num4}}</span></div>
-          <div class="num1" @click="clickKeyWordWrap(5)"><span>{{formData.num5}}</span></div>
-          <div class="num1" @click="clickKeyWordWrap(6)"><span>{{formData.num6}}</span></div>
-          <div v-if="formData.commonCard == '2'" class="num1" @click="clickKeyWordWrap(7)"><span>{{formData.num7}}</span></div>
+          <div class="num1" :class="activeKeyWordIndex==2?'focus':''" @click="clickKeyWordWrap(2)"><span>{{formData.num2}}</span></div>
+          <div class="num1" :class="activeKeyWordIndex==3?'focus':''" @click="clickKeyWordWrap(3)"><span>{{formData.num3}}</span></div>
+          <div class="num1" :class="activeKeyWordIndex==4?'focus':''" @click="clickKeyWordWrap(4)"><span>{{formData.num4}}</span></div>
+          <div class="num1" :class="activeKeyWordIndex==5?'focus':''" @click="clickKeyWordWrap(5)"><span>{{formData.num5}}</span></div>
+          <div class="num1" :class="activeKeyWordIndex==6?'focus':''" @click="clickKeyWordWrap(6)"><span>{{formData.num6}}</span></div>
+          <div v-if="formData.commonCard == '2'" class="num1" :class="activeKeyWordIndex==7?'focus':''" @click="clickKeyWordWrap(7)"><span class="last">{{formData.num7}}</span></div>
         </div>
       </div>
       <!-- <div class="submit-box">
@@ -220,13 +220,13 @@ export default {
         No6: ['X', 'Y', 'Z'],
         No7: ['港', '澳', '学', '领', '警']
       },
-      activeKeyWordIndex: 1, // 当前车牌号
+      activeKeyWordIndex: -1, // 当前车牌号
       keyBoardStatus: false,
       firstWrapStatus: false, // 选择弹窗
       confirmTitle: '',
       submitConfirm: false,
       submitConfirmFalse: false,
-      submitConfirmText: ''
+      submitConfirmText: '',
     }
   },
   computed: {
@@ -341,6 +341,7 @@ export default {
       this.keyBoardStatus = true
       this.activeKeyWordIndex = activeKeyWordIndex
       this.formData['num' + this.activeKeyWordIndex] = ''
+      //debugger
     },
     finishedHandle(){
         let plateLicense
@@ -527,6 +528,10 @@ export default {
         width: .5rem;
         height: .5rem;
       border: 1px solid #e4e4e4;
+      background-color: #fff;
+      &.focus{
+        border: 1px solid #1989fa;
+      }
       &.first {
         position: relative;
         text-align: center;
@@ -552,6 +557,7 @@ export default {
           width: 100%;
           height: 100%;
           // background-color: #9cbce2;
+          background-color: #fff;
           color: #828282;
           line-height: .68rem;
         }
@@ -575,6 +581,9 @@ export default {
           color: #fff;
           text-indent: 0.2rem;
           border-radius: 0;
+        }
+        &.last{
+          background-color: #23e504;
         }
       }
     }

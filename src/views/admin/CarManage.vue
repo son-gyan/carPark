@@ -36,7 +36,7 @@
                     <template class="btnGroup" v-if='isShow[index]'>                        
                         <van-divider dashed class="divider"/>
                         <van-col span="12">
-                            {{item.phone}}
+                            <a :href="'tel:'+item.ownerPhone">{{item.phone}}</a>
                         </van-col>
                         <van-col span="12">
                             <van-button type="info" @click='delay(item)'>延期</van-button>

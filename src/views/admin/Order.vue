@@ -18,6 +18,7 @@
                     background="#dcdfe6"
                     >
                     <van-button class="searchBtn" slot="action" type="info" size="small" @click="onSearch">搜索</van-button>
+                    <van-button class="searchBtn" slot="action" type="info" size="small" @click="addOrderCar">添加</van-button>
                 </van-search>
                 <van-card
                     v-for="(item,index) in orderCarList"  :key="index"
@@ -41,6 +42,67 @@
                 <div class="noSearch" v-if="orderCarList.length === 0">暂无查询数据</div>
             </van-list>
         </div>
+        <!-- 弹框 -->
+        <div class="covers presentcarDialog" v-show="dialogShow">
+            <div class="dialog">
+                <header>{{dialogTit}}</header>
+                <main>
+                    <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
+                    <van-form @submit="saveData" class="formWrap" ref="form"> <!-- :key="+new Date()" -->
+                        <van-field
+                            v-model="form.ownerPhone"
+                            type="tel"
+                            name="ownerPhone"
+                            label="车主电话"
+                            label-align='right'
+                            placeholder="请输入车主电话"
+                            :rules="[
+                                { required: true, message: '请填写车主电话' },
+                                { pattern: /^1[3456789]\d{9}$/, message: '号码格式错误！'}
+                            ]"
+                        />
+                        <van-field
+                            readonly
+                            clickable
+                            name="reserveInTime"
+                            :value="form.reserveInTime"
+                            label="预约入场时间"
+                            placeholder="点击选择入场时间"
+                            @click.stop.prevent="showPickerStartTime = true"
+                            />
+                        <van-field
+                            readonly
+                            clickable
+                            name="reserveOutTime"
+                            :value="form.reserveOutTime"
+                            label="预约出场时间"
+                            placeholder="点击选择入场时间"
+                            @click.stop.prevent="showPickerEndTime = true"
+                            />
+                        <footer>
+                            <button native-type="submit">保存</button>
+                            <button @click="cancelDialog">取消</button>
+                        </footer>
+                    </van-form>
+                </main>
+            </div>
+        </div>
+        <van-popup v-model="showPickerStartTime" position="bottom">
+            <van-datetime-picker
+                v-model="currentStartDate"
+                type="datetime"
+                @confirm="onConfirmStartTime"
+                @cancel="showPickerStartTime = false"
+            />
+        </van-popup>
+        <van-popup v-model="showPickerEndTime" position="bottom">
+            <van-datetime-picker
+                v-model="currentEndDate"
+                type="datetime"
+                @confirm="onConfirmEndTime"
+                @cancel="showPickerEndTime = false"
+            />
+        </van-popup>
     </div>
 </template>
 <script>
@@ -48,9 +110,11 @@ import { mapGetters } from "vuex"
 import ClickOutside from 'element-ui/src/utils/clickoutside'
 import { ImagePreview } from 'vant';
 import {timeFormate} from '@/utils'
+import plateNumber from '@/components/plateNumber'
 export default {
     components: {
-        [ImagePreview.Component.name]: ImagePreview.Component
+        [ImagePreview.Component.name]: ImagePreview.Component,
+        plateNumber
     },
     data(){
         return {
@@ -73,6 +137,19 @@ export default {
             pageNo: 1,//请求第几页
             pageSize: 10,//每页请求的数量
             total: 0,//总共的数据条数
+            dialogShow:false,
+            dialogTit:"新增预约车辆",
+            form:{
+                merId:"",
+                carNum:'',
+                reserveInTime:'',
+                reserveOutTime:"",
+                ownerPhone:""
+            },
+            showPickerStartTime:false,
+            showPickerEndTime:false,
+            currentStartDate:new Date(),
+            currentEndDate: new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1)
         }
     },
     computed: {
@@ -84,6 +161,9 @@ export default {
         this.initData();
     },
     methods: {
+        getPlateLicense(data){
+            this.form.carNum = data
+        },
         //查询
         onSearch(){
             this.params.carNum = this.searchVal
@@ -159,7 +239,44 @@ export default {
                 showIndex:false,
                 closeable: true,
             });
-        }
+        },
+        //添加预约车辆
+        addOrderCar(){
+            this.dialogShow = true;
+            this.dialogTit = "新增预约车辆";
+            this.currentStartDate = new Date();
+            this.currentEndDate = new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1);
+            this.form.reserveInTime = this.formatDate(new Date());
+            this.form.reserveOutTime = this.formatDate(new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1));
+            this.$refs.form.resetValidation();
+        },
+        saveData(){
+
+        },
+        //弹窗关闭
+        cancelDialog(){
+            this.dialogShow = false
+            this.form={
+                merId:this.params.depId,
+                carNum:'',
+                inTime:this.formatDate(new Date()),
+                reserveInTime:this.formatDate(new Date()),
+                reserveOutTime:this.formatDate(new Date()),
+                ownerPhone:""
+            }
+        },
+        formatDate(dateTime) {
+            let year = dateTime.getFullYear()
+            let month = dateTime.getMonth() + 1
+            let day = dateTime.getDate()
+            let hh = dateTime.getHours();
+            let mm = dateTime.getMinutes();
+            let ss = dateTime.getSeconds();
+            return `${year}-${this.isZero(month)}-${this.isZero(day)}  ${this.isZero(hh)}:${this.isZero(mm)}:${this.isZero(ss)}`;
+        },
+        isZero(m){
+            return m<10?'0'+m:m
+        },
     },
 }
 </script>

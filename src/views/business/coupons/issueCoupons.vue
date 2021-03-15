@@ -17,7 +17,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-input placeholder="请输入电话号码" v-model="form.phone" :disabled="noCarNumStatus" type="tel" maxlength="11">
-                        <template slot="prepend">请输入电话号码：</template>
+                        <!-- <template slot="prepend" class="preText">请输入电话号码：</template> -->
                     </el-input>
                 </el-form-item>
                 <el-form-item class="verticalShow" >
@@ -232,6 +232,10 @@ export default {
                 .lLabel{
                     margin-left:.1rem;
                 }
+                
+            }
+            /deep/ .el-input-group__prepend{
+                color:#1989fa;
             }
             .verticalShow{
                 margin-bottom: 10px;
