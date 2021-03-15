@@ -9,6 +9,7 @@
                 class="vanCard"
                 v-for="(item,index) in myCarList"  :key="index"
                 :thumb="require('../../assets/images/defaultImg.png')"
+                @click-thumb="imgPreview(require('../../assets/images/defaultImg.png'))"
                 >
                 <template #desc>
                     <p >车牌：{{item.carNum}}</p>
@@ -172,6 +173,13 @@ export default {
             })
             .catch(() => {
                 // on cancel
+            });
+        },
+        imgPreview(url){
+            ImagePreview({
+                images: [url],
+                showIndex:false,
+                closeable: true,
             });
         }
     },
