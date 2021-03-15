@@ -230,6 +230,16 @@ export const queryByDepId = (params) => {
     })
 }
 
+
+// 获取商户列表
+export const getMerchantList = (params) => {
+    return axios({
+        url: '/park/zyb/coupon/listMerchants',
+        method: 'get',
+        params
+    })
+}
+
 // 预约车辆列表 /park/zyb/reservecar/manageReserveCarlist
 export const getOrderCarList = (params) => {
     return axios({

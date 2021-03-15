@@ -50,6 +50,17 @@
                     <plateNumber v-if="dialogShow" @getPlateLicense="getPlateLicense"></plateNumber>
                     <van-form @submit="saveData" class="formWrap" ref="form"> <!-- :key="+new Date()" -->
                         <van-field
+                            readonly
+                            clickable
+                            name="picker"
+                            :value="valMerchant"
+                            label="商户"
+                            label-align='right'
+                            placeholder="点击选择商户"
+                            @click.stop.prevent="showPickerMerchant = true"
+                            :rules="[{ required: true, message: '请选择商户' }]"
+                            />
+                        <van-field
                             v-model="form.ownerPhone"
                             type="tel"
                             name="ownerPhone"
@@ -87,6 +98,15 @@
                 </main>
             </div>
         </div>
+        <van-popup v-model="showPickerMerchant" position="bottom">
+            <van-picker
+                show-toolbar
+                value-key="name"
+                :columns="columnsMerchant"
+                @confirm="confirmMerchant"
+                @cancel="showPickerMerchant = false"
+            />
+        </van-popup>
         <van-popup v-model="showPickerStartTime" position="bottom">
             <van-datetime-picker
                 v-model="currentStartDate"
@@ -146,6 +166,9 @@ export default {
                 reserveOutTime:"",
                 ownerPhone:""
             },
+            valMerchant:"",
+            columnsMerchant:[],
+            showPickerMerchant:false,
             showPickerStartTime:false,
             showPickerEndTime:false,
             currentStartDate:new Date(),
@@ -213,6 +236,19 @@ export default {
             }).catch((res) => {
                 this.loading = false;
             });
+            let pram = {
+                depId:this.params.depId,
+                type:1
+            }
+            this.$api.home.getMerchantList(pram).then(res=>{
+                if(res.code == 200){
+                    this.columnsMerchant = res.result.records
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
         // 删除
         delOrderCar(id){
@@ -250,8 +286,49 @@ export default {
             this.form.reserveOutTime = this.formatDate(new Date(new Date(new Date().toLocaleDateString()).getTime()+24*60*60*1000-1));
             this.$refs.form.resetValidation();
         },
+        confirmMerchant(val){
+            //debugger
+            this.form.merId = val.id
+            this.valMerchant = val.name
+            this.showPickerMerchant = false
+        },
+        onConfirmStartTime(val){
+            this.form.reserveInTime = this.formatDate(val)
+            this.showPickerStartTime = false
+        },
+        onConfirmEndTime(val){
+            this.form.reserveOutTime = this.formatDate(val)
+            this.showPickerEndTime = false
+        },
         saveData(){
-
+            console.log(this.form,'this.form');
+            if(this.form.carNum == ''){
+                this.$toast('请输入车牌号')
+                return
+            }
+            if(this.form.reserveInTime ==""){
+                this.$toast("请选择预约入场时间");
+                return
+            }else if(this.form.reserveOutTime ==""){
+                this.$toast("请选择预约出场时间");
+                return
+            }
+            this.$api.business.addOrderCar(this.form).then(res=>{
+                if(res.code == 200){
+                    //debugger
+                    this.cancelDialog();
+                    this.$toast(res.message);
+                    this.orderCarList = []
+                    this.pageNo = 1
+                    this.loading = true
+                    this.finished = false;
+                    this.initData();
+                }else{
+                    this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
         //弹窗关闭
         cancelDialog(){
@@ -277,6 +354,7 @@ export default {
         isZero(m){
             return m<10?'0'+m:m
         },
+        
     },
 }
 </script>
