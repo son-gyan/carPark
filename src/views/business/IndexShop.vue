@@ -63,7 +63,7 @@ export default {
         logout(){
             sessionStorage.clear();
             this.$router.push({
-                path:"/login",
+                path:"/loginShop",
                 query:{
                     openid:this.user.openid,
                     appId:config.appID
@@ -76,7 +76,7 @@ export default {
     },
     beforeRouteEnter  (to, from, next) {
         next(vm => {
-            if (from.name === 'login') {
+            if (from.name === 'loginShop') {
                 vm.projectLst = []
                 vm.getProject()
             }

@@ -227,7 +227,7 @@ export default {
         logout(){
             sessionStorage.clear();
             this.$router.push({
-                path:"/login",
+                path:"/loginShop",
                 query:{
                     openid:this.user.openid,
                     appId:config.appID
