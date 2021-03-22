@@ -4,7 +4,8 @@ import {
     SET_ORGCATEGORY,
     SET_DEPID,
     SET_CARPARKINFO,
-    SET_DEPARTINFO
+    SET_DEPARTINFO,
+    SET_MERINFO
 } from '../type'
 export default {
     state: {
@@ -13,7 +14,8 @@ export default {
         orgCategory:'',
         depId:'',
         carParkInfo:{},
-        departInfo:{}
+        departInfo:{},
+        merInfo:{}
     },
     getters: {
         user (state) {
@@ -33,6 +35,9 @@ export default {
         },
         departInfo(state) {
             return state.departInfo
+        },
+        merInfo(state) {
+            return state.merInfo
         },
     },
     mutations: {
@@ -60,6 +65,10 @@ export default {
             state.departInfo = departInfo
             sessionStorage.setItem('departInfo', JSON.stringify(departInfo))
         },
+        [SET_MERINFO]: (state, merInfo) => {
+            state.merInfo = merInfo
+            sessionStorage.setItem('merInfo', JSON.stringify(merInfo))
+        },
     },
     actions: {
         setUser ({ commit }, user) {
@@ -79,6 +88,9 @@ export default {
         },
         setDepartInfo ({ commit }, departInfo) {
             commit(SET_DEPARTINFO, departInfo)
+        },
+        setMerInfo ({ commit }, merInfo) {
+            commit(SET_MERINFO, merInfo)
         },
     }
 }

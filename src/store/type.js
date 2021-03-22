@@ -5,3 +5,4 @@ export const SET_ORGCATEGORY = 'SET_ORGCATEGORY' // 机构类型
 export const SET_DEPID = 'SET_DEPID' // 机构类型
 export const SET_CARPARKINFO = 'SET_CARPARKINFO' // 车场信息
 export const SET_DEPARTINFO = 'SET_DEPARTINFO' // 集团信息
+export const SET_MERINFO = 'SET_MERINFO' // 商户信息

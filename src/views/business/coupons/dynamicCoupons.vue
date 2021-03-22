@@ -4,11 +4,38 @@
         <div class="mainWrap fixedMain">
             <el-form ref="form" :model="form" size="small" class="formWrap">
                 <el-form-item label="券类型" :label-width="labelWidth">
-                    <el-select v-model="form.id" placeholder="请选择券类型"  style="width: 100%;" @change="changeType">
-                        <el-option :label="typeName(item)" :value="item.id" v-for="(item,index) in quotaList" :key="index" v-if="item.quotaType!=5"></el-option>
+                    <el-select v-model="form.id" placeholder="请选择券类型" class="fullWidth" @change="changeType">
+                        <el-option :label="typeName(item)" :value="item.id" v-for="(item,index) in quotaList" :key="index" ></el-option> <!-- v-if="item.quotaType!=5" -->
                     </el-select>
                 </el-form-item>
-                <el-form-item :label-width="labelWidth">
+                <el-form-item :label-width="labelWidth" v-if="form.quotaType==5">
+                    <div slot="label" class="formLabel">
+                        开房类型
+                    </div>
+                    <van-radio-group v-model="form.type" direction="horizontal">
+                        <van-radio :name="0">住点车</van-radio>
+                        <van-radio :name="1">钟点房</van-radio>
+                    </van-radio-group>
+                </el-form-item>
+                <el-form-item label="开房天数" :label-width="labelWidth" v-if="form.quotaType==5&&form.type==0">
+                    <el-select v-model="form.days" placeholder="请选择开房天数" class="fullWidth">
+                        <el-option :label="item" :value="item" v-for="(item,index) in 30" :key="index"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="开始日期" :label-width="labelWidth" v-if="form.quotaType==5">
+                    <el-date-picker
+                        class="fullWidth"
+                        v-model="form.startTime"
+                        type="datetime"
+                        placeholder="选择日期时间"
+                        format="yyyy-MM-dd HH:mm:ss"
+                        value-format="yyyy-MM-dd HH:mm:ss">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="结束日期" :label-width="labelWidth" v-if="form.quotaType==5">
+                    <el-input v-model="form.endTime" readonly></el-input>
+                </el-form-item>
+                <el-form-item :label-width="labelWidth" v-if="form.quotaType!=5">
                     <div slot="label" class="formLabel">
                         券面值
                         <!-- <span v-if="form.quotaType==2">(小时)</span>
@@ -34,7 +61,7 @@
 </template>
 <script>
 import { mapGetters } from "vuex"
-import {timeFormate} from '@/utils'
+import {timeFormate,formatDate} from '@/utils'
 export default {
     data(){
         return {
@@ -42,24 +69,30 @@ export default {
             type:0,
             labelWidth:'1.6rem',//"2.3rem",
             quotaList:[],
+            couponType:'',
             form:{
                 stockNumber:"",
                 merchantsId: "",
                 quotData: "",
                 quotaName: "",
                 quotaNum: "",
-                quotaType: ""
+                quotaType: "",
+                type:0,
+                days:"",
+                startTime:"",
+                endTime:""
             }
         }
     },
     computed: {
-        ...mapGetters(["user"])
+        ...mapGetters(["user",'merInfo'])
     },
     created(){
         //this.form.merchantsId = this.user.merId||JSON.parse(sessionStorage.getItem('user')).merId
         this.quotaList = this.$route.query.quotaInfo
-        //debugger
         this.pageTit = "动态卷"
+        this.form.startTime = timeFormate(new Date())
+        this.form.endTime = formatDate(new Date())+' '+this.merInfo.leaveTime
     },
     methods:{
         //返回
@@ -109,6 +142,11 @@ export default {
                         this.disableStatus = false                    
                         this.form.stockNumber = item.quotaData+'元'
                     }else if(item.quotaType==4){ 
+                        //this.form.quotaData = ""
+                        this.form.stockNumber = ""
+                        this.disableStatus = false                 
+                        this.form.stockNumber = item.stockNum+'张'
+                    }else if(item.quotaType==5){ 
                         //this.form.quotaData = ""
                         this.form.stockNumber = ""
                         this.disableStatus = false                 
