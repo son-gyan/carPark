@@ -193,10 +193,11 @@ export default {
             })
         },
         toDynamicCoupons(){
+            debugger
             this.$router.push({
                 path:"/dynamicCoupons",
                 query:{
-                    quotaInfo:this.couponList
+                    quotaInfo:JSON.stringify(this.couponList)
                 }
             })
         },
