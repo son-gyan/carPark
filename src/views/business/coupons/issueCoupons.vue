@@ -436,15 +436,29 @@ export default {
             this.params.startTime = this.form.startTime
             this.params.endTime = this.form.endTime
             console.log(this.params,'onSubmit.params')
-            this.$api.business.addDirectionalQuota(this.params).then(res=>{
-                if(res.code == 200){
-                    this.$toast(res.message);
-                }else{
-                    this.$toast(res.message);
-                }
-            }).catch((res) => {
-                this.loading = false;
-            });
+            if(this.form.quotaType==5){
+                this.$api.business.addHotelQuota(this.params).then(res=>{
+                    if(res.code == 200){
+                        this.$router.go(-1)
+                        this.$toast(res.message);
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            }else{
+                this.$api.business.addDirectionalQuota(this.params).then(res=>{
+                    if(res.code == 200){
+                        this.$toast(res.message);
+                    }else{
+                        this.$toast(res.message);
+                    }
+                }).catch((res) => {
+                    this.loading = false;
+                });
+            }
+            
         },
         getYMDHMS (timestamp) {
             let time = new Date(timestamp)

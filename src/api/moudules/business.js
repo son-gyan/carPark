@@ -143,6 +143,15 @@ export const addDirectionalQuota = (data) => {
     })
 }
 
+//指定车牌发券
+export const addHotelQuota = (data) => {
+    return axios({
+        url: '/park/zyb/coupon/addHotelQuota',
+        method: 'POST',
+        data
+    })
+}
+
 //商户已绑套餐列表
 export const bindDisPacklist = (params) => {
     return axios({
