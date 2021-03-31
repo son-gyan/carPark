@@ -9,7 +9,7 @@
             <!-- <el-header></el-header> -->
             <el-main>
                 <el-row  gutter="10">
-                    <el-col span="24" class="elCol">
+                    <el-col span="24" class="elCol" v-if="quotaTypeStatus">
                         <div class="cardCoupon">
                             <div class="leftSide">
                                 <h3 class="h3">定额券</h3>
@@ -105,6 +105,7 @@ export default {
             pageNo: 1,//请求第几页
             pageSize: 1000,//每页请求的数量
             total: 0,//总共的数据条数
+            quotaTypeStatus:false
         }
     },
     computed: {
@@ -119,7 +120,14 @@ export default {
         },
         returnQuota(){
             let element = []
-            this.couponList.map((item) => {if(item.quotaType==1) element.push(item)})
+            this.couponList.map((item) => {
+                if(item.quotaType==1) {                    
+                    element.push(item)
+                    this.quotaTypeStatus = true
+                }else{
+                    this.quotaTypeStatus = false
+                }
+            })
             return element
         }
     },

@@ -17,7 +17,7 @@
                     <div class="formLabel">无车牌<span class="lLabel"><el-checkbox v-model="checked" @change="checkCarNum"></el-checkbox></span></div>
                 </el-form-item>
                 <el-form-item>
-                    <el-input placeholder="请输入电话号码" v-model="form.phone" :disabled="noCarNumStatus" type="tel" maxlength="11">
+                    <el-input placeholder="请输入电话号码" v-model="form.phone" :disabled="noCarNumStatus" type="tel" maxlength="11" @blur="checkPhone">
                         <!-- <template slot="prepend" class="preText">请输入电话号码：</template> -->
                     </el-input>
                 </el-form-item>
@@ -205,6 +205,25 @@ export default {
                     this.loading = false;
                 });
             }
+        },
+        checkPhone(){
+            let pram = {
+                carNum:this.form.phone,
+                merId:this.params.merchantsId
+            }
+            this.$api.business.checkCarMoney(pram).then(res=>{
+                //debugger
+                if(res.code == 0){
+                    this.noteTime = dateCalculation(res.result.time)
+                    this.noteMoney = res.result.money
+                    this.showNote = true
+                    //this.$toast(res.message);
+                }else{
+                    //this.$toast(res.message);
+                }
+            }).catch((res) => {
+                this.loading = false;
+            });
         },
         //返回
         onClickLeft(){
@@ -512,7 +531,7 @@ export default {
                     padding-bottom: 0;
                     text-align: left;                    
                     .rLabel{
-                        font-size:.2rem;
+                        /* font-size:.2rem; */
                         float: right;
                     }
                 }

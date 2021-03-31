@@ -138,10 +138,10 @@ export default {
                         this.$router.push('/myCar')
                         break;
                     case 2:
-                        this.$router.push('/payment')
+                        //this.$router.push('/payment')
                         break;
                     case 3:
-                        this.$router.push('/carPark')
+                        //this.$router.push('/carPark')
                         break;
                     case 4:
                         this.$router.push('/bill')
@@ -150,7 +150,7 @@ export default {
                         this.$router.push('/monthlyCar')
                         break;
                     case 6:
-                        this.$router.push('/invoice')
+                        //this.$router.push('/invoice')
                         break;                
                     case 7:
                         this.$router.push('/afterPayment')
@@ -165,7 +165,7 @@ export default {
                         this.$router.push('/payTasaday')
                         break;                
                     case 11:
-                        this.$router.push('/advert')
+                        //this.$router.push('/advert')
                         break;                
                     case 12:
                         this.$router.push('/contactUs')
